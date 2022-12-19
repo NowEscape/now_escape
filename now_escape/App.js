@@ -8,11 +8,6 @@ export default class extends React.Component {
   state = {
     isLoading : true
   };
-  componentDidMount = async() => {
-    // 1000초가 1초
-    setTimeout(() => {this.setState({isLoading: false})}, 10000);
-  }
-
   render() {
     if(this.state.isLoading) {
       return <Loading/>
@@ -20,6 +15,11 @@ export default class extends React.Component {
     else {
       return <Main/>
     }
+  }
+
+  componentDidMount = async() => {
+    // 1000초가 1초
+    setTimeout(() => {this.setState({isLoading: false})}, 10000);
   }
 }
 
