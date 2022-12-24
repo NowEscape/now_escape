@@ -2,7 +2,8 @@
 // import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Loading from './Loading';
-import Main from './Main'
+// import Main from './Main'
+import RigionSetting from 'now_escape/screens/RigionSetting/RigionSetting.js'
 
 export default class extends React.Component {
   state = {
@@ -13,13 +14,13 @@ export default class extends React.Component {
       return <Loading/>
     }
     else {
-      return <Main/>
+      return <RigionSetting/>
     }
   }
 
   componentDidMount = async() => {
     // 1000초가 1초
-    setTimeout(() => {this.setState({isLoading: false})}, 10000);
+    setTimeout(() => {this.setState({isLoading: false})}, 3000);
   }
 }
 
