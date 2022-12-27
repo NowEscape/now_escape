@@ -21,7 +21,7 @@ const styles = (active, height) => StyleSheet.create({
             },
             text: {
                 textAlign: 'center',
-                // fontFamily: 'Pretendard',
+                fontFamily: 'Pretendard',
                 fontWeight: 'bold',
                 fontSize: 18,
                 letterSpacing: 1.62,
