@@ -1,9 +1,27 @@
-import React from 'react'
-import { Image, View, Text, StyleSheet } from 'react-native'
+import React, {Component} from 'react'
+import { Image, View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import Button from '../../components/Button/button'
+import * as Font from 'expo-font'
 
-export default class RegionSetting extends React.Component  {
+export default class RegionSetting extends Component  {
+
+  state = {
+    isReady:false
+  }
+
+  componentDidMount = async() => {
+    await Font.loadAsync({
+      Pretendard: require('now_escape/assets/fonts/Pretendard-Bold.otf')
+    });
+    this.setState({isReady: true});
+  }
+
   render() {
+    if(!this.state.isReady) {
+      return <ActivityIndicator/>;
+    }
+
+
     return (
       <View style={styles.container}>
         <View style={styles.textBox}>
@@ -41,7 +59,7 @@ const styles = StyleSheet.create({
   text_1: {
     width: '100%',
     height: '80%',
-    // fontFamily: "Pretendard",
+    fontFamily: "Pretendard",
     fontSize: 24,
     fontWeight: 'bold',
     fontStyle: 'normal',
@@ -53,7 +71,7 @@ const styles = StyleSheet.create({
   text_2: {        
     width: '100%',
     height: '20%',
-    // fontFamily: "Pretendard",
+    fontFamily: "Pretendard",
     fontSize: 15,
     fontWeight: '500',
     fontStyle: 'normal',
