@@ -1,47 +1,40 @@
-import React, {Component} from 'react'
+import React, {Component, useCallback} from 'react'
 import { Image, View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import Button from '../../components/Button/button'
-import * as Font from 'expo-font'
+import { useFonts } from 'expo-font'
 
-export default class RegionSetting extends Component  {
 
-  state = {
-    isReady:false
-  }
+export default function RegionSetting() {
+  const [fontsLoaded] = useFonts({
+    'Pretendard' : require('now_escape/assets/fonts/Pretendard-Bold.otf'),
+  });
 
-  componentDidMount = async() => {
-    await Font.loadAsync({
-      Pretendard: require('now_escape/assets/fonts/Pretendard-Bold.otf')
-    });
-    this.setState({isReady: true});
-  }
-
-  render() {
-    if(!this.state.isReady) {
+  const onLayoutRootView = useCallback(async () => {
+    if (!fontsLoaded) {
       return <ActivityIndicator/>;
     }
+  })
 
-
-    return (
-      <View style={styles.container}>
-        <View style={styles.textBox}>
-          <Text style={styles.text_1}        
-          >방탈출 지역을{"\n"}설정해주세요</Text>
-          <Text style={styles.text_2}        
-          >선택한 지역의 방탈출을 모아 볼 수 있어요.</Text>
-        </View>
-        <View style={styles.secondBox}>
-          <Image style={styles.doorOpenImage}
-              source= {require('now_escape/assets/img_door_open.png')}/>
-          <View style={styles.sectionBar}/>
-          <View style={styles.regionList}/>          
-        </View>
-        <View style={styles.confirmButton}>
-          <Button text="시작하기" height={74}/>
-        </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.textBox}>
+        <Text style={styles.text_1}        
+        >방탈출 지역을{"\n"}설정해주세요</Text>
+        <Text style={styles.text_2}        
+        >선택한 지역의 방탈출을 모아 볼 수 있어요.</Text>
       </View>
-    )
-  }
+      <View style={styles.secondBox}>
+        <Image style={styles.doorOpenImage}
+            source= {require('now_escape/assets/img_door_open.png')}/>
+        <View style={styles.sectionBar}/>
+        <View style={styles.regionList}/>          
+      </View>
+      <View style={styles.confirmButton}>
+        <Button text="시작하기" height={74}/>
+      </View>
+    </View>
+  )
+  
 };
 
 const styles = StyleSheet.create({
@@ -59,7 +52,7 @@ const styles = StyleSheet.create({
   text_1: {
     width: '100%',
     height: '80%',
-    fontFamily: "Pretendard",
+    fontFamily: 'Pretendard',
     fontSize: 24,
     fontWeight: 'bold',
     fontStyle: 'normal',
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
   text_2: {        
     width: '100%',
     height: '20%',
-    fontFamily: "Pretendard",
+    fontFamily: 'Pretendard',
     fontSize: 15,
     fontWeight: '500',
     fontStyle: 'normal',
