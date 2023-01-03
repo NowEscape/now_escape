@@ -1,42 +1,46 @@
 // import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import Loading from './Loading';
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen'
+import * as Font from 'expo-font'
+import Entypo from '@expo/vector-icons/Entypo'
 import Main from './Main'
 
-export default class extends React.Component {
-  state = {
-    isLoading : true
-  };
-  componentDidMount = async() => {
-    // 1000초가 1초
-    setTimeout(() => {this.setState({isLoading: false})}, 10000);
+SplashScreen.preventAutoHideAsync();
+
+export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    async function prepare() {
+      try {
+        await Font.loadAsync(Entypo.font);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+    
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
   }
 
-  render() {
-    if(this.state.isLoading) {
-      return <Loading/>
-    }
-    else {
-      return <Main/>
-    }
-  }
+  return (
+    <View
+      style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+      onLayout={onLayoutRootView}>
+      <Main/>
+    </View>
+  );
 }
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
