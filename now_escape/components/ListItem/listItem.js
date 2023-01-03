@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 13,
         width: 181.4,
-        height: 40
+        height: 43
     },
     text: {
         title: {
