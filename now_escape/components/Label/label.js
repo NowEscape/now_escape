@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native'
 
 export default function Label(props) {
-  const {content='', height, borderRadius} = props;
+  const {content='', height, borderRadius, type} = props;
 
   return (
     <View style={styles(height, borderRadius).container}>
