@@ -33,7 +33,7 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
     backgroundColor: 'rgba(234, 75, 155, 0.13)',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row'
   },
   search: {
     width: width,
@@ -46,7 +46,7 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
   },
   text: {
     width: '100%',
-    height: '100%',
+    lineHeight: 'props.height',
     // fontFamily: 'Pretendard',
     fontSize: 17,
     fontWeight: 'bold',
@@ -54,16 +54,5 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    // borderWidth: 2,
-    // borderRadius: 5,
-    // borderStyle: 'solid',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    textAlignVertical: 'bottom',
-    // alignSelf: 'center',
-    // alignContent: 'center'
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
   }
 })
