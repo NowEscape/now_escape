@@ -1,21 +1,22 @@
 import create from "zustand";
+import _ from "lodash";
 
 interface genreState{
-    genreList: [string, boolean][];
+    genreList: boolean[];
     setGenreList: (genreIdx: number) => void;
 }
 
 function settingGenre(genreIdx: number){
-    let copyGenreList = [...this.state.genreList];
-    if(!this.state.genreList[genreIdx][1]){
-        copyGenreList[this.state.genreList.indexOf(true)][1] = false;
-        copyGenreList[genreIdx][1]=true;
+    let copyGenreList = _.cloneDeep(this.state.genreList);
+    if(!this.state.genreList[genreIdx]){
+        copyGenreList[this.state.genreList.indexOf(true)] = false;
+        copyGenreList[genreIdx]=true;
     }
     return copyGenreList;
 }
 
 const genreStore = create<genreState>((set)=>({
-    genreList: [["전체장르",true],["코믹",false],["로맨스",false],["감성",false],["추리",false],["SF",false],["공포",false]],
+    genreList: [true, false, false, false, false, false, false, false, false],
     setGenreList: (genreIdx)=>set((state)=>({
         genreList: settingGenre(genreIdx)
     }))
