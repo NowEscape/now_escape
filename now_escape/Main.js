@@ -1,14 +1,13 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet } from "react-native";
-import Genre from "./components/setting/Genre/genre";
 
 export default class Loading extends React.Component {
   render() {
     return (
         <View style={styles.container}>
-          <Genre search={true}/>
-          <Genre search={false}/>
+          <Text>Main</Text>
+          <StatusBar style="auto" />
         </View>
     );
   }
@@ -16,9 +15,9 @@ export default class Loading extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-      flex:0.12,
-    flexDirection: 'column',
+    flex: 1,
     backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
