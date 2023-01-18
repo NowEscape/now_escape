@@ -3,23 +3,24 @@ import _ from "lodash";
 
 interface genreState{
     genreList: boolean[];
-    setGenreList: (genreIdx: number) => void;
-}
-
-function settingGenre(genreIdx: number){
-    let copyGenreList = _.cloneDeep(this.state.genreList);
-    if(!this.state.genreList[genreIdx]){
-        copyGenreList[this.state.genreList.indexOf(true)] = false;
-        copyGenreList[genreIdx]=true;
-    }
-    return copyGenreList;
+    setGenreList: (genreList:boolean[], genreIdx: number) => void;
 }
 
 const genreStore = create<genreState>((set)=>({
     genreList: [true, false, false, false, false, false, false, false, false],
-    setGenreList: (genreIdx)=>set((state)=>({
-        genreList: settingGenre(genreIdx)
+    setGenreList: (genreList, genreIdx)=>set((state)=>({
+        genreList: settingGenre(genreList, genreIdx)
     }))
 }))
+
+function settingGenre(genreList:boolean[],genreIdx: number){
+    const isTrue = (element) => element==true;
+    let copyGenreList = _.cloneDeep(genreList);
+    if(!genreList[genreIdx]){
+        copyGenreList[genreList.findIndex(isTrue)] = false;
+        copyGenreList[genreIdx]=true;
+    }
+    return copyGenreList;
+}
 
 export default genreStore;
