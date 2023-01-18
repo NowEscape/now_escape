@@ -46,13 +46,13 @@ const styles = StyleSheet.create({
 
             },
             ios:{
-                height:315,
+                height:350,
                 width:325,
                 borderRadius: 8,
                 backgroundColor: 'white',
                 overflow:'hidden',
                 paddingTop: 26,
-                paddingBottom:12
+                paddingBottom:20
             }
         })
     },
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
             android:{},
             ios:{
                 height:200,
-                width:144
+                width:144,
+                marginVertical: 15
             }
         })
     },
