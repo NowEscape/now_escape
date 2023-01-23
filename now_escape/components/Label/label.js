@@ -1,30 +1,33 @@
 import React, {Fragment,useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native'
-import Svg from 'now_escape/assets/iconTriangleDown.js'
+import TriangleDown from 'now_escape/assets/iconTriangleDown.js'
+import ArrowDown from 'now_escape/assets/iconArrowDown.js'
+import ArrowUp from 'now_escape/assets/iconArrowUp.js'
 
 
 export default function Label(props) {
-  const {height, width, borderRadius, type='', icon, text=''} = props;
+  const {height, width, borderRadius, type, icon, text=''} = props;
   const style = styles(width, height, borderRadius);
   const [show, setShow] = useState(true);
 
   return (
     <Fragment>
       {/* 타입별 스타일 및 이벤트 */}
-      {props.type == 'mainLabel' && (
+      {type === 'mainLabel' && (
         <TouchableOpacity onPress={()=>alert('main label')}>
           <View style={style.main}>
             <View style={style.textBox}>
               <Text style={style.text}>{props.text}</Text>
-              { show && <Svg/> }
+              { show && <TriangleDown/> }
             </View>
           </View>
         </TouchableOpacity>   
       )}
-      {props.type == 'searchLabel' && (
+      {type === 'searchLabel' && (
         <TouchableOpacity onPress={()=>alert('search label')}>
           <View style={style.search}>
-            <Text style={styles(width, height).text}>{props.text}</Text>            
+            <Text style={style.text}>{props.text}</Text>   
+            {show && <ArrowUp/>}        
           </View>
         </TouchableOpacity>   
       )}     
@@ -45,14 +48,17 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
   search: {
     width: width,
     height: height,
-    borderRadius: borderRadius,
+    borderRadius: 10,
     backgroundColor: '#ffffff',
     borderStyle: 'solid',
     borderWidth: 2,
     borderColor: "#ffd2e6",
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingLeft: 17,
+    paddingRight: 17
   },
   textBox: {
     width: width,
@@ -65,8 +71,8 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
   text: {
     lineHeight: 'props.height',
     // fontFamily: 'Pretendard',
-    fontSize: 17,
-    fontWeight: 'bold',
+    fontSize: 15,
+    fontWeight: '500',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
