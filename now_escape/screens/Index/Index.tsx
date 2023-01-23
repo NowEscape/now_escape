@@ -2,12 +2,14 @@ import * as React from 'react';
 import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList} from "react-native";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
+import SearchSvg from '../../assets/iconSearchBlack'
 
 export default function Index(){
     return(
         <SafeAreaView>
             <View style={styles.container}>
                 <View style={styles.filterBar}>
+                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start', }}>
                     <Label
                         height={32}
                         width={130}
@@ -22,7 +24,11 @@ export default function Index(){
                         type={'mainLabel'}
                         text={'서울/홍대'}
                     />
-                    <Text>Search Button</Text>
+                    </View>
+                    <View style={{display: 'flex', paddingRight: 23.1, justifyContent: 'center',}}>
+                    <SearchSvg/>                        
+                    </View>
+
                 </View>
                 <View style={styles.banner}></View>
                 <ListItem/>
@@ -33,14 +39,16 @@ export default function Index(){
 
 const styles = StyleSheet.create({
     container:{
+        width: '100%',
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         ...Platform.select({
-            android:{},
+            android:{
+                height:'84dp',
+            },
             ios:{
                 height:60,
-                width:'100%'
             }
         })
     },
