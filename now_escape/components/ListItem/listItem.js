@@ -1,42 +1,49 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Image, Text, View, StyleSheet, FlatList} from 'react-native';
+import escapeListStore from "../../store/escapeListStore";
 
-{/*
-   const [data, setData] = useState([{
-    poster: '',
-    title: '시간의 타임',
-    location: '키이스케이프 창동점',
-    time: ['9:45','10:55','12:45','20:45','21:55']
-}]);
-*/}
-
-const renderItem = ({item}) => {
+const renderTimeList = ({timeItem}) => {
     return(
-          <Text style={styles.text.timeListItem}>{item}</Text>
+          <Text style={styles.text.timeListItem}>{timeItem}</Text>
     );
 }
 
-export default function ListItem(props) {
-    const {poster, title, location, time} = props;
+const renderEscapeList = ({escapeListItem}) => {
     return(
-            <View style={styles.container}>
-                <Image style={styles.poster} source={poster}/>
-                <View style={styles.textBox}>
-                    <Text style={styles.text.title}>{title}</Text>
-                    <View style={styles.locationBox}>
-                        <Image style={styles.locationIcon} source={require('../../assets/icon_location.png')}/>
-                        <Text style={styles.text.location}>{location}</Text>
-                    </View>
-                    <View style={styles.timeList}>
-                        <FlatList data={time} renderItem={renderItem} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
-                    </View>
+        <View style={styles.itemContainer}>
+            <Image style={styles.poster} source={escapeListItem.theme.themeImageUrl}/>
+            <View style={styles.textBox}>
+                <Text style={styles.text.title}>{escapeListItem.theme.themeName}</Text>
+                <View style={styles.locationBox}>
+                    <Image style={styles.locationIcon} source={require('../../assets/icon_location.png')}/>
+                    <Text style={styles.text.location}>{escapeListItem.cafeName}</Text>
+                </View>
+                <View style={styles.timeList}>
+                    <FlatList data={escapeListItem.theme.themeDateList} renderItem={renderTimeList} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
                 </View>
             </View>
+        </View>
+    );
+}
+
+export default function ListItem() {
+    const {escapeList, getEscapeList} = escapeListStore();
+    getEscapeList();
+
+    return(
+        <View style={styles.container}>
+            <FlatList data={escapeList} renderItem={renderEscapeList}/>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container:{
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center'
+    },
+    itemContainer:{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
