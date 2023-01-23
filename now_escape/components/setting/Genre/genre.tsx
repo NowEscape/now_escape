@@ -6,16 +6,14 @@ interface genrePropsType{
     search: boolean;
 }
 
-const genre = ["전체장르","감성","로맨스","공포","SF","추리","19금","기타"];
-
 export default function Genre(props:genrePropsType){
-    const {genreList, setGenreList} = genreStore();
+    const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search} = props;
 
     const renderItem = ({item, index}:{item:any, index:number}) => {
         const search = true;
         return(
-            <Pressable onPress={()=>setGenreList(genreList, index)}>
+            <Pressable onPress={()=> {setGenreList(genreList, index); setGenreValue(genreListName, index)}}>
                 <Text style={styles(genreList[index],search).text}>{item}</Text>
             </Pressable>
 
@@ -25,7 +23,7 @@ export default function Genre(props:genrePropsType){
     return(
         <FlatList
                 style={styles(0, search).container}
-                data={genre}
+                data={genreListName}
                 renderItem={renderItem}
                 keyExtractor={(item, index)=> String(index)}
                 horizontal={true}
@@ -38,12 +36,13 @@ const styles = (selected, search) => StyleSheet.create({
         display:'flex',
         flexDirection: 'row',
         width: "100%",
+        marginTop:11,
         backgroundColor: search?'rgb(255,232,242)':'rgba(254,254,254,0.9)',
         ...Platform.select({
             android: {
                 height: 48,
                 paddingHorizontal: "40dp",
-                paddingVertical: "16dp"
+                paddingVertical: "16dp",
             },
             ios: {
                 height: 50,
