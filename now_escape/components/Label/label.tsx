@@ -1,30 +1,28 @@
 import React, {Fragment,useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native'
-import Svg from 'now_escape/assets/iconTriangleDown.js'
-
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import Svg from "react-native-svg";
 
 export default function Label(props) {
-  const {height, width, borderRadius, type='', icon, text=''} = props;
+  const {height, width, borderRadius, type='', icon, text='', open} = props;
   const style = styles(width, height, borderRadius);
   const [show, setShow] = useState(true);
 
   return (
     <Fragment>
-      {/* 타입별 스타일 및 이벤트 */}
-      {props.type == 'mainLabel' && (
-        <TouchableOpacity onPress={()=>alert('main label')}>
+      {type === 'mainLabel' && (
+        <TouchableOpacity onPress={open}>
           <View style={style.main}>
             <View style={style.textBox}>
               <Text style={style.text}>{props.text}</Text>
               { show && <Svg/> }
             </View>
           </View>
-        </TouchableOpacity>   
+        </TouchableOpacity>
       )}
-      {props.type == 'searchLabel' && (
-        <TouchableOpacity onPress={()=>alert('search label')}>
+      {type === 'searchLabel' && (
+        <TouchableOpacity onPress={open}>
           <View style={style.search}>
-            <Text style={styles(width, height).text}>{props.text}</Text>            
+            <Text style={styles(width, height, borderRadius).text}>{props.text}</Text>
           </View>
         </TouchableOpacity>   
       )}     
@@ -63,8 +61,6 @@ const styles = (width, height, borderRadius) => StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    lineHeight: 'props.height',
-    // fontFamily: 'Pretendard',
     fontSize: 17,
     fontWeight: 'bold',
     fontStyle: 'normal',
