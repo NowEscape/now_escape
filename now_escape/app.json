@@ -18,6 +18,8 @@
         "expo.tsx",
         "expo.js",
         "expo.jsx",
+        "ts",
+        "tsx",
         "js",
         "jsx",
         "json",

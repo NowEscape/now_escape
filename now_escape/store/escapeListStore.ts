@@ -1,5 +1,5 @@
 import create from "zustand";
-import axios from "axios";
+// import axios from "axios";
 
 interface escapeListContent{
     cafeName: string;
@@ -21,19 +21,19 @@ interface escapeListState{
 }
 
 function getEscapeList(){
-    axios.get('http://localhost:8080/openTimeThemeList')
-        .then((response)=>{
-            response.data.children.map(child=>({
-                cafeName: child.data.cafeName,
-                theme: child.data.theme,
-                themeDateList: child.data.themeDateList
-            }));
-            console.log(response.data);
-            console.log("getEscapeList success")
-        })
-        .catch(()=>{
-            console.log('getEscapeList fail')
-        })
+    // axios.get('http://localhost:8080/openTimeThemeList')
+    //     .then((response)=>{
+    //         response.data.children.map(child=>({
+    //             cafeName: child.data.cafeName,
+    //             theme: child.data.theme,
+    //             themeDateList: child.data.themeDateList
+    //         }));
+    //         console.log(response.data);
+    //         console.log("getEscapeList success")
+    //     })
+    //     .catch(()=>{
+    //         console.log('getEscapeList fail')
+    //     })
 }
 
 const escapeListStore = create<escapeListState>((set, get)=>({
