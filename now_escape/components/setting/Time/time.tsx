@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Pressable, Platform} from "react-native";
+import {Text, View, StyleSheet, Platform, Modal} from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import Button from "../../Button/button";
 import timeStore from "../../../store/timeStore";
 
 export default function Time(){
-    const {time, setTime, timeList} = timeStore();
+    const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
     const timeListItem = timeList.map(
         (value, index)=>(
             <Picker.Item
@@ -16,22 +16,24 @@ export default function Time(){
             />));
 
     return(
-      <View style={styles.container}>
-          <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
-          <Picker
-              style={styles.picker}
-              selectedValue={time}
-              numberOfLines={3}
-              onValueChange={(itemValue, itemIndex) =>
-                  setTime(itemValue)
-              }>
-              {timeListItem}
-          </Picker>
-          <View style={styles.buttonBox}>
-              <Button text={'취소'} active={true} rounded={true} canceled={true} height={48} width={144}/>
-              <Button text={'적용'} active={true} rounded={true} canceled={false} height={48} width={144}/>
-          </View>
-      </View>
+        <Modal animationType={'slide'} transparent={true} visible={timeVisible} onRequestClose={()=>setTimeVisible(timeVisible)}>
+            <View style={styles.container}>
+                <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
+                <Picker
+                    style={styles.picker}
+                    selectedValue={time}
+                    numberOfLines={3}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setTime(itemValue)
+                    }>
+                    {timeListItem}
+                </Picker>
+                <View style={styles.buttonBox}>
+                    <Button text={'취소'} active={true} rounded={true} canceled={true} height={48} width={144} onPress={()=>setTimeVisible(timeVisible)}/>
+                    <Button text={'적용'} active={true} rounded={true} canceled={false} height={48} width={144} onPress={()=>setTimeVisible(timeVisible)}/>
+                </View>
+            </View>
+        </Modal>
     );
 }
 
@@ -41,6 +43,8 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems:'center',
         justifyContent: 'center',
+        marginTop:200,
+        marginLeft:20,
         ...Platform.select({
             android:{
 

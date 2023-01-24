@@ -4,6 +4,8 @@ interface timeState{
     timeList: string[];
     time: string,
     setTime: (time:string) => void;
+    timeVisible:boolean;
+    setTimeVisible:(visible:boolean)=>void;
 }
 
 const timeStore = create<timeState>((set)=>({
@@ -12,6 +14,14 @@ const timeStore = create<timeState>((set)=>({
     setTime: (time)=>set((state)=>({
         time: time
     })),
+    timeVisible:false,
+    setTimeVisible: (timeVisible)=>set((state)=>({
+        timeVisible: settingTimeVisible(timeVisible)
+    }))
 }))
+
+const settingTimeVisible = (timeVisible) =>{
+    return !timeVisible;
+}
 
 export default timeStore;
