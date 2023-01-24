@@ -1,83 +1,79 @@
-import React, {Fragment,useState} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import CalenderSVG from '../../assets/iconCalendar'
-import ClockSVG from '../../assets/iconClock'
-import ArrowUpSVG from '../../assets/iconArrowUp'
-import ArrowDownSVG from '../../assets/iconArrowDown'
-import TriangleDownSVG from '../../assets/iconTriangleDown'
+import * as React from 'react';
+import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList} from "react-native";
+import Label from "../../components/Label/label";
+import ListItem from "../../components/ListItem/listItem";
+import SearchSvg from '../../assets/iconSearchBlack'
 
-export default function Label(props) {
-  const {height, width, type='', icon=true, text='', open, active=false} = props;
-  const style = styles(active, width, height);
-  const [show, setShow] = useState(true);
+export default function Index(){
+    return(
+        <SafeAreaView>
+            <View style={styles.container}>
+                <View style={styles.filterBar}>
+                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start', }}>
+                    <Label
+                        height={32}
+                        width={130}
+                        borderRadius={16}
+                        type={'mainLabel'}
+                        text={'2022.11.24'}
+                    />
+                    <Label
+                        height={32}
+                        width={115}
+                        borderRadius={16}
+                        type={'mainLabel'}
+                        text={'서울/홍대'}
+                    />
+                    </View>
+                    <View style={{display: 'flex', paddingRight: 23.1, justifyContent: 'center',}}>
+                    <SearchSvg/>                        
+                    </View>
 
-  return (
-    <Fragment>
-      {type === 'mainLabel' && (
-        <TouchableOpacity onPress={open}>
-          <View style={style.main}>
-          <Text style={style.text}>{props.text}</Text>
-          <TriangleDownSVG/>
-          </View>
-        </TouchableOpacity>
-      )}
-      {type === 'searchLabel' && (
-        <TouchableOpacity onPress={open}>
-          <View style={style.search}>
-            <View style={{flexDirection: 'row'}}>
-            <CalenderSVG/>
-            <Text style={style.text}>{props.text}</Text>      
+                </View>
+                <View style={styles.banner}></View>
+                <ListItem/>
             </View>
-            { show && active?<ArrowUpSVG/>:<ArrowDownSVG/> }
-          </View>
-        </TouchableOpacity>   
-      )}     
-    </Fragment>
-  );
+        </SafeAreaView>
+    );
 }
 
-const styles = (active, width, height) => StyleSheet.create({
-  main: {
-    width: width,
-    height: height,
-    borderRadius: 16,
-    backgroundColor: 'rgba(234, 75, 155, 0.13)',
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  search: {
-    width: width,
-    height: height,
-    borderRadius: 10,
-    backgroundColor: active?'#ffe8f2':'#ffffff',
-    borderStyle: 'solid',
-    borderWidth: 2,
-    borderColor: "#ffd2e6",
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  textBox: {
-    width: width,
-    height: height,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: {
-    fontSize: 17,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
-    letterSpacing: 0.3,
-    textAlign: 'center',
-    color: '#000000',
-  },
+const styles = StyleSheet.create({
+    container:{
+        width: '100%',
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center',
+        ...Platform.select({
+            android:{
+                height:'84dp',
+            },
+            ios:{
+                height:60,
+            }
+        })
+    },
+    filterBar:{
+        display:'flex',
+        flexDirection:'row',
+        ...Platform.select({
+            android:{},
+            ios:{
+                paddingTop:15,
+                paddingBottom:13,
+                paddingLeft:17
+            }
+        })
+    },
+    banner:{
+        display:'flex',
+        backgroundColor: 'rgb(255,223,232)',
+        ...Platform.select({
+            android:{},
+            ios:{
+                height:168,
+                width:'100%'
+            }
+        })
+    }
+
 })
