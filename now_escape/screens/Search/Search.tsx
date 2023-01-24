@@ -7,33 +7,52 @@ import searchStore from "../../store/searchStore";
 import Genre from "../../components/setting/Genre/genre";
 import genreStore from "../../store/genreStore";
 
+import { Dimensions } from 'react-native';
+import {fonts, width, height} from '../../globalStyles'
+
+import ArrowBackSVG from '../../assets/iconArrowBack'
+import SearchSVG from '../../assets/iconSearchPink'
+
+const currentWidth = width as unknown as number;
+const currentHeight = height as unknown as number;
+
 export default function Search(){
     const {searchText, setSearchText} = searchStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(true);
 
+
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.rowContainer}>
-                <Text>뒤로가기</Text>
+                <ArrowBackSVG/>
                 <TextInput
                     style={styles.searchInput}
                     value={searchText}
                     onChangeText={(text)=>{setSearchText(text)}}
                 />
+                <SearchSVG/>
             </View>
+            <View style={{
+                    justifyContent: 'flex-end',
+                    width: currentWidth*300,
+                    height: 1,
+                    backgroundColor: "#000000",
+                    paddingLeft: 100,
+                    alignContent: 'flex-end'
+                }}></View>
             <Label
                 style={styles.firstLabel}
-                height={49}
-                width={341}
+                height={currentHeight*49}
+                width={currentWidth*341}
                 borderRadius={10}
                 type={"searchLabel"}
                 text={"2023.01.23"}
             />
             <Label
                 style={styles.secondLabel}
-                height={49}
-                width={341}
+                height={currentHeight*49}
+                width={currentWidth*341}
                 borderRadius={10}
                 type={"searchLabel"}
                 text={"09:00 이후"}
@@ -41,8 +60,8 @@ export default function Search(){
             <View style={styles.rowContainer}>
                 <Label
                     style={styles.thirdLabel}
-                    height={49}
-                    width={165}
+                    height={currentHeight*49}
+                    width={currentWidth*165}
                     borderRadius={10}
                     type={"searchLabel"}
                     text={genre}
@@ -50,33 +69,41 @@ export default function Search(){
                 />
                 <Label
                     style={styles.thirdLabel}
-                    height={49}
-                    width={165}
+                    height={currentHeight*49}
+                    width={currentWidth*165}
                     borderRadius={10}
                     type={"searchLabel"}
                     text={"서울 홍대"}
                 />
             </View>
             {isGenreSettingOpen === true ? <Genre search={true}/> : null}
+            <View
+                style={{
+                    position: 'absolute',
+                    bottom: currentHeight*17
+                }}
+            >
             <Button
                 text={'검색'}
                 active={true}
                 rounded={true}
                 canceled={false}
-                height={63}
-                width={341}
-            />
+                height={currentHeight*63}
+                width={currentHeight*341}
+            />                
+            </View>
+
         </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         display:'flex',
         flexDirection:'column',
-        alignItems:'center',
         width:'100%',
-        padding:17,
+        alignItems: 'center',
         ...Platform.select({
             android:{},
             ios:{}
@@ -85,21 +112,35 @@ const styles = StyleSheet.create({
     searchInput:{
         display:'flex',
         flexDirection:'row',
-        width:300,
-        height: 30,
+        width: currentWidth*300,
+        height: currentHeight*30,
+        ...Platform.select({
+            android:{},
+            ios:{}
+        })
+    },
+    searchContainer:{
+        display:'flex',
+        flexDirection:'column',
+        width: currentWidth*300,
+        height: currentHeight*30,
         ...Platform.select({
             android:{},
             ios:{}
         })
     },
     rowContainer:{
+        width: '100%',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:"space-between",
+        justifyContent: 'space-between',
         ...Platform.select({
             android:{},
-            ios:{}
+            ios:{
+                paddingLeft: currentWidth*17,
+                paddingRight: currentWidth*17
+            }
         })
     },
     firstLabel:{
@@ -115,7 +156,7 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{},
             ios:{
-                marginBottom: 17,
+                // marginBottom: 17,
             }
         })
     },
@@ -123,7 +164,8 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{},
             ios:{
-                height:49
+                // height:49,
+                // marginTop: 20
             }
         })
     }
