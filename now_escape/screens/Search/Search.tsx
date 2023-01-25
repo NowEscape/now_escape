@@ -1,15 +1,21 @@
 import * as React from 'react';
-import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Pressable} from "react-native";
+import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal} from "react-native";
 import {useState} from "react";
 import Label from "../../components/Label/label";
 import Button from "../../components/Button/button";
 import searchStore from "../../store/searchStore";
 import Genre from "../../components/setting/Genre/genre";
 import genreStore from "../../store/genreStore";
+import timeStore from "../../store/timeStore";
+import dateStore from "../../store/dateStore";
+import Date from "../../components/setting/Date/date";
+import Time from "../../components/setting/Time/time";
 
 export default function Search(){
     const {searchText, setSearchText} = searchStore();
     const {genre} = genreStore();
+    const {time, setTimeVisible, timeVisible} = timeStore();
+    const {date, setDateVisible, dateVisible} = dateStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(true);
 
     return(
@@ -28,16 +34,20 @@ export default function Search(){
                 width={341}
                 borderRadius={10}
                 type={"searchLabel"}
-                text={"2023.01.23"}
+                text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
+                open={()=>{setDateVisible(dateVisible)}}
             />
+            <Date/>
             <Label
                 style={styles.secondLabel}
                 height={49}
                 width={341}
                 borderRadius={10}
                 type={"searchLabel"}
-                text={"09:00 이후"}
+                text={time + ' 이후'}
+                open={()=>{setTimeVisible(timeVisible)}}
             />
+            <Time/>
             <View style={styles.rowContainer}>
                 <Label
                     style={styles.thirdLabel}

@@ -3,20 +3,25 @@ import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatLi
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
+import Date from "../../components/setting/Date/date";
+import dateStore from "../../store/dateStore";
 
 export default function Index(){
+    const {date, setDateVisible, dateVisible} = dateStore();
+
     return(
         <SafeAreaView>
             <View style={styles.container}>
                 <View style={styles.filterBar}>
-                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start', }}>
+                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start' }}>
                     <Label
                         height={32}
                         width={130}
                         borderRadius={16}
                         type={'mainLabel'}
-                        text={'2022.11.24'}
-                    />
+                        text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
+                        open={()=>{setDateVisible(dateVisible)}}
+                    /><Date/>
                     <Label
                         height={32}
                         width={115}
