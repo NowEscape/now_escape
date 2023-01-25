@@ -1,10 +1,14 @@
 import React, {Fragment,useState} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
-import Svg from "react-native-svg";
+import CalenderSVG from '../../assets/iconCalendar'
+import ClockSVG from '../../assets/iconClock'
+import ArrowUpSVG from '../../assets/iconArrowUp'
+import ArrowDownSVG from '../../assets/iconArrowDown'
+import TriangleDownSVG from '../../assets/iconTriangleDown'
 
 export default function Label(props) {
-  const {height, width, borderRadius, type='', icon, text='', open} = props;
-  const style = styles(width, height, borderRadius);
+  const {height, width, type='', icon=true, text='', open, active=false} = props;
+  const style = styles(active, width, height);
   const [show, setShow] = useState(true);
 
   return (
@@ -12,17 +16,19 @@ export default function Label(props) {
       {type === 'mainLabel' && (
         <TouchableOpacity onPress={open}>
           <View style={style.main}>
-            <View style={style.textBox}>
-              <Text style={style.text}>{props.text}</Text>
-              { show && <Svg/> }
-            </View>
+          <Text style={style.text}>{props.text}</Text>
+          <TriangleDownSVG/>
           </View>
         </TouchableOpacity>
       )}
       {type === 'searchLabel' && (
         <TouchableOpacity onPress={open}>
           <View style={style.search}>
-            <Text style={styles(width, height, borderRadius).text}>{props.text}</Text>
+            <View style={{flexDirection: 'row'}}>
+            <CalenderSVG/>
+            <Text style={style.text}>{props.text}</Text>      
+            </View>
+            { show && active?<ArrowUpSVG/>:<ArrowDownSVG/> }
           </View>
         </TouchableOpacity>   
       )}     
@@ -30,27 +36,33 @@ export default function Label(props) {
   );
 }
 
-const styles = (width, height, borderRadius) => StyleSheet.create({
+const styles = (active, width, height) => StyleSheet.create({
   main: {
     width: width,
     height: height,
-    borderRadius: borderRadius,
+    borderRadius: 16,
     backgroundColor: 'rgba(234, 75, 155, 0.13)',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   search: {
     width: width,
     height: height,
-    borderRadius: borderRadius,
-    backgroundColor: '#ffffff',
+    borderRadius: 10,
+    backgroundColor: active?'#ffe8f2':'#ffffff',
     borderStyle: 'solid',
     borderWidth: 2,
     borderColor: "#ffd2e6",
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 10,
+    paddingRight: 10
   },
   textBox: {
     width: width,
