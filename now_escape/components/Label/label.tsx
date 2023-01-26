@@ -31,7 +31,7 @@ export default function Label(props) {
       )}
       {type === 'searchLabel' && (
         <TouchableOpacity onPress={()=>{
-          open
+          {open()}
           active?setActive(false):setActive(true)
         }}>
           <View style={style.search}>

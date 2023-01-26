@@ -30,7 +30,7 @@ export default function Search(){
     return(
         <SafeAreaView style={styles.container}>
             <View style={styles.rowContainer}>
-                <ArrowBackSVG/>
+                <View style={{marginTop: currentHeight*4.5}}><ArrowBackSVG/></View>
                 <TextInput
                     style={styles.searchInput}
                     value={searchText}
@@ -55,7 +55,6 @@ export default function Search(){
                     icon={'date'}
                     text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
                     open={()=>{setDateVisible(dateVisible)}}
-
                 />
             </View>
             <Date/>
@@ -72,13 +71,8 @@ export default function Search(){
             />
             </View>
             <Time/>
-            <View
-            style={{
-                marginTop: currentHeight*17,
-                flexDirection: 'row',
-                display: 'flex',
-                width: '100%',
-            }}>
+
+            <View style={styles.thirdContainer}>
                 <Label
                     height={currentHeight*49}
                     width={currentWidth*165}
@@ -97,22 +91,25 @@ export default function Search(){
                     arrow='true'
                 />
             </View>
+            <View style={{height: currentHeight*70}}>
             {isGenreSettingOpen === true ? <Genre search={true}/> : null}
+            </View>
+
+            <View style={{ flex: 1}}/>
             <View
-                style={{
-                    position: 'absolute',
-                    bottom: currentHeight*17
-                }}
-            >
-                <Button
+            style={{
+                position: 'absolute',
+                bottom: currentHeight*17
+            }}>
+            <Button
                     text={'검색'}
                     active={true}
                     rounded={true}
                     canceled={false}
                     height={currentHeight*63}
                     width={currentHeight*341}
-                />                
-            </View> 
+            />   
+            </View>
         </SafeAreaView>
     );
 }
@@ -124,6 +121,8 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         width:'100%',
         alignItems: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
         ...Platform.select({
             android:{},
             ios:{
@@ -150,5 +149,11 @@ const styles = StyleSheet.create({
             android:{},
             ios:{}
         })
+    },
+    thirdContainer: {
+        flexDirection: 'row',
+        width: currentWidth*341,
+        justifyContent: 'space-between',
+        marginTop: currentHeight*17      
     }
 })

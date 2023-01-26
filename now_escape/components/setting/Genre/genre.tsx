@@ -2,6 +2,11 @@ import * as React from 'react';
 import {Text, StyleSheet, FlatList, Platform, Pressable} from "react-native";
 import genreStore from "../../../store/genreStore";
 
+import {fonts, width, height} from '../../../globalStyles'
+
+const currentWidth = width as unknown as number;
+const currentHeight = height as unknown as number;
+
 interface genrePropsType{
     search: boolean;
 }
@@ -9,6 +14,7 @@ interface genrePropsType{
 export default function Genre(props:genrePropsType){
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search} = props;
+
 
     const renderItem = ({item, index}:{item:any, index:number}) => {
         const search = true;
@@ -45,7 +51,7 @@ const styles = (selected, search) => StyleSheet.create({
                 paddingVertical: "16dp",
             },
             ios: {
-                height: 50,
+                height: currentHeight*50,
                 paddingHorizontal: 42,
                 paddingVertical: 17
             }
@@ -61,7 +67,8 @@ const styles = (selected, search) => StyleSheet.create({
                 fontSize: 13
              },
             ios:{
-                fontSize: 14
+                fontSize: currentHeight*16,
+                fontWeight: 'normal'
             }
 })
 }
