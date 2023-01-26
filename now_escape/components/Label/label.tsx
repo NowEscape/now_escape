@@ -6,10 +6,18 @@ import ArrowUpSVG from '../../assets/iconArrowUp'
 import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
 
+import {fonts, width, height} from '../../globalStyles'
+
+const currentWidth = width as unknown as number;
+const currentHeight = height as unknown as number;
+
 export default function Label(props) {
-  const {height, width, type='', icon=true, text='', open, active=false} = props;
-  const style = styles(active, width, height);
+  const {height, width, type='', icon='', text='', open, arrow} = props;
   const [show, setShow] = useState(true);
+  const [active, setActive] = useState(false);
+
+  const style = styles(active, width, height, icon);
+
 
   return (
     <Fragment>
@@ -22,13 +30,17 @@ export default function Label(props) {
         </TouchableOpacity>
       )}
       {type === 'searchLabel' && (
-        <TouchableOpacity onPress={open}>
+        <TouchableOpacity onPress={()=>{
+          open
+          active?setActive(false):setActive(true)
+        }}>
           <View style={style.search}>
             <View style={{flexDirection: 'row'}}>
-            <CalenderSVG/>
+            {icon=== 'date' && <CalenderSVG/>}
+            {icon=== 'time' && <ClockSVG/>}
             <Text style={style.text}>{props.text}</Text>      
             </View>
-            { show && active?<ArrowUpSVG/>:<ArrowDownSVG/> }
+            { arrow && (active?<ArrowUpSVG/>:<ArrowDownSVG/>) }
           </View>
         </TouchableOpacity>   
       )}     
@@ -36,7 +48,7 @@ export default function Label(props) {
   );
 }
 
-const styles = (active, width, height) => StyleSheet.create({
+const styles = (active, width, height, icon) => StyleSheet.create({
   main: {
     width: width,
     height: height,
@@ -61,7 +73,7 @@ const styles = (active, width, height) => StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingLeft: 10,
+    paddingLeft: 20,
     paddingRight: 10
   },
   textBox: {
@@ -73,11 +85,12 @@ const styles = (active, width, height) => StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    fontSize: 17,
-    fontWeight: 'bold',
+    fontSize: currentWidth*17,
+    fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
+    paddingLeft: icon?10:0
   },
 })
