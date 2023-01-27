@@ -1,69 +1,127 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, FlatList, Platform, Pressable} from "react-native";
+import {useState} from "react";
+import _ from "lodash";
 import regionStore from "../../../store/rigionStore";
 
-interface RigionPropsType{
-    search: boolean;
-}
-interface obj {
-	[key: string] : string[]
-  서울 : string[],
-  경기: string[]
-  충청: string[]
-}
-const rigion: obj = {
-  서울: ["강남", "홍대", "신촌"],
-  경기: ["수원", "인천", "성남"],
-  충청: ["충청a", "충청b", "충청c"]
-};
+export default function Rigion(props){
+  const {rigion, rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
+  const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
 
-
-export default function Rigion(props:RigionPropsType){
-  const {rigionList, setRigionList} = regionStore();
-  const {search} = props;
+  const renderRigionItem = ({item, index}:{item:any, index:number}) => {
+      return(
+          <Pressable
+              onPress={()=>{
+                setRigionList(rigionList,currentRigionIdx,index);
+                setRigion(rigionName,rigionListString,currentRigionIdx,index)}}
+          >
+              <Text style={styles.rigionSecond}>{item}</Text>
+          </Pressable>
+      );
+  }
 
   const renderItem = ({item, index}:{item:any, index:number}) => {
-    const search = true;
-    console.log(rigion)
     return(
-      <Pressable onPress={()=>setRigionList(rigionList, index)}>
-        <Text>{item} {rigion[item]}</Text>
-      </Pressable>
+        <Pressable
+            style={{backgroundColor:
+                    index === currentRigionIdx
+                        ? 'rgb(255,210,230)'
+                        : 'rgb(239,239,239)'}}
+            onPress={()=>setCurrentRigionIdx(index)}
+        >
+            <Text style={styles.rigionFirst}>{item}</Text>
+        </Pressable>
     );
-    }
+  }
 
     return(
-      <View>
-        <FlatList
-          style={styles(0, search).container}
-          data={Object.keys(rigion)}
-          renderItem={renderItem}
-        />
+      <View style={styles.container}>
+          <Text style={styles.text}>지역 설정</Text>
+          <View style={styles.rigionBox}>
+              <FlatList
+                  data={rigionName}
+                  renderItem={renderItem}
+              />
+              {
+                  <FlatList
+                      data={rigionListString[currentRigionIdx]}
+                      renderItem={renderRigionItem}
+                  />
+              }
+          </View>
       </View>
     );
-
 }
 
-const styles = (selected, search) => StyleSheet.create({
+function findRigionIdx(rigionList:boolean[][]){
+    for(let i=0; i<rigionList.length; i++){
+        if(-1 !== _.indexOf(rigionList[i], true)){
+            return i;
+        }
+    }
+}
+
+const styles = StyleSheet.create({
   container:{
     display:'flex',
     flexDirection: 'column',
-    width: '100%',
-    height: '100%',
     backgroundColor: "#ffffff",
+      borderTopLeftRadius: 25,
+      borderTopRightRadius: 25,
+      paddingTop:28,
+      paddingHorizontal: 17,
+      width:'100%',
+      height:'90%'
   },
   text:{
-    display:'flex',
-    color: selected? 'rgb(234,75,155)':'black',
+      alignItems:'center',
     textAlign: 'center',
-    marginHorizontal: 8,
+      fontWeight:'bold',
     ...Platform.select({
         android:{
-            fontSize: 13
+            fontSize: 17
           },
         ios:{
-            fontSize: 14
+            fontSize: 17,
+            lineHeight:31,
+            letterSpacing:0.34,
+            marginBottom:20.9
         }
     })
-  }
+  },
+    rigionBox:{
+      display:'flex',
+        flexDirection:'row'
+    },
+    rigionFirst:{
+      display:'flex',
+        flexDirection:'column',
+        textAlign: 'center',
+        justifyContent: 'center',
+        fontSize: 17,
+        ...Platform.select({
+            android:{},
+            ios:{
+                width:117,
+                height:61,
+                paddingTop:20,
+            }
+        })
+    },
+    rigionSecond:{
+      display:'flex',
+        flexDirection:'column',
+        textAlign: 'center',
+        justifyContent: 'center',
+        fontSize: 17,
+        ...Platform.select({
+            android:{},
+            ios:{
+                height:61,
+                paddingTop:20,
+                width:224
+            }
+        })
+
+    }
 })
