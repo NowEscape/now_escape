@@ -6,10 +6,10 @@ import ArrowUpSVG from '../../assets/iconArrowUp'
 import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
 
-import {fonts, width, height} from '../../globalStyles'
+import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
 
-const currentWidth = width as unknown as number;
-const currentHeight = height as unknown as number;
+const currentWidth = iosWidth as unknown as number;
+const currentHeight = iosHeight as unknown as number;
 
 export default function Label(props) {
   const {height, width, type='', icon='', text='', open, arrow} = props;

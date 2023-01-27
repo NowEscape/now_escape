@@ -4,6 +4,14 @@ import {useState} from "react";
 import _ from "lodash";
 import regionStore from "../../../store/rigionStore";
 
+import {iosWidth, iosHeight} from '../../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
+
 export default function Rigion(props){
   const {rigion, rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
@@ -37,6 +45,7 @@ export default function Rigion(props){
     return(
       <View style={styles.container}>
           <Text style={styles.text}>지역 설정</Text>
+          <View style={styles.sectionBar}/>
           <View style={styles.rigionBox}>
               <FlatList
                   data={rigionName}
@@ -65,46 +74,77 @@ const styles = StyleSheet.create({
   container:{
     display:'flex',
     flexDirection: 'column',
-    backgroundColor: "#ffffff",
-      borderTopLeftRadius: 25,
-      borderTopRightRadius: 25,
-      paddingTop:28,
-      paddingHorizontal: 17,
-      width:'100%',
-      height:'90%'
-  },
-  text:{
-      alignItems:'center',
-    textAlign: 'center',
-      fontWeight:'bold',
+    alignItems: 'center',
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: '#ffffff',
     ...Platform.select({
         android:{
-            fontSize: 17
+            width: aosWidthRatio*360,
+            height:aosHeightRatio*593,
+            paddingLeft: aosWidthRatio*16,
+            paddingRight: aosHeightRatio*16,            
           },
         ios:{
-            fontSize: 17,
-            lineHeight:31,
-            letterSpacing:0.34,
-            marginBottom:20.9
+            width: iosWidthRatio*375,
+            height:iosHeightRatio*618,
+            paddingLeft: iosWidthRatio*17,
+            paddingRight: iosWidthRatio*17,
         }
     })
   },
+  text:{
+    alignItems:'center',
+    textAlign: 'center',
+    fontWeight:'bold',
+    // fontFamily: "Pretendard",
+    ...Platform.select({
+        android:{
+            // width: 60,
+            // height: 19,
+            fontSize: 16,
+            lineHeight: 29,
+            letterSpacing: 0.32,
+        },
+        ios:{
+            fontSize: iosWidthRatio < 1? 17:iosWidthRatio*19,
+            lineHeight:31,
+            letterSpacing:0.34,
+            marginBottom:iosHeightRatio*20.9,
+            marginTop:iosHeightRatio*28
+        }
+    })
+  },
+  sectionBar: {
+    width: iosWidthRatio*341.3,
+    height: 1,
+    backgroundColor: "#939393",
+  },
     rigionBox:{
-      display:'flex',
-        flexDirection:'row'
+        display:'flex',
+        flexDirection:'row',
+        // marginLeft: currentWidth*17,
+        // marginRight: currentHeight*17,
     },
     rigionFirst:{
-      display:'flex',
+        display:'flex',
         flexDirection:'column',
         textAlign: 'center',
-        justifyContent: 'center',
-        fontSize: 17,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // alignSelf: 'center',
         ...Platform.select({
-            android:{},
+            android:{
+                fontSize: aosWidthRatio*17,
+                width:aosWidthRatio*113,
+                height:aosHeightRatio*59,
+                paddingTop:aosHeightRatio*20,
+            },
             ios:{
-                width:117,
-                height:61,
-                paddingTop:20,
+                fontSize: iosWidthRatio*17,
+                width:iosWidthRatio*117,
+                height:iosHeightRatio*61,
+                paddingTop:iosHeightRatio*20,
             }
         })
     },
@@ -112,14 +152,21 @@ const styles = StyleSheet.create({
       display:'flex',
         flexDirection:'column',
         textAlign: 'center',
-        justifyContent: 'center',
-        fontSize: 17,
+        // alignItems: 'center',
+        // justifyContent: 'center',
+        // alignSelf: 'center',
         ...Platform.select({
-            android:{},
+            android:{
+                fontSize: aosWidthRatio*16,
+                height: aosHeightRatio*59,
+                width: aosWidthRatio*214.6,
+                paddingTop: aosHeightRatio*20,
+            },
             ios:{
-                height:61,
-                paddingTop:20,
-                width:224
+                fontSize: iosWidthRatio*17,
+                height:iosHeightRatio*61,
+                width:iosWidthRatio*224,
+                paddingTop:iosHeightRatio*20,
             }
         })
 

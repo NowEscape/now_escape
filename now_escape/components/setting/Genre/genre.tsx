@@ -2,10 +2,10 @@ import * as React from 'react';
 import {Text, StyleSheet, FlatList, Platform, Pressable} from "react-native";
 import genreStore from "../../../store/genreStore";
 
-import {fonts, width, height} from '../../../globalStyles'
+import {fonts, iosWidth, iosHeight} from '../../../globalStyles_ios'
 
-const currentWidth = width as unknown as number;
-const currentHeight = height as unknown as number;
+const currentWidth = iosWidth as unknown as number;
+const currentHeight = iosHeight as unknown as number;
 
 interface genrePropsType{
     search: boolean;

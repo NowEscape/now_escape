@@ -11,13 +11,13 @@ import dateStore from "../../store/dateStore";
 import Date from "../../components/setting/Date/date";
 import Time from "../../components/setting/Time/time";
 
-import {fonts, width, height} from '../../globalStyles'
+import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
 
 import ArrowBackSVG from '../../assets/iconArrowBack'
 import SearchSVG from '../../assets/iconSearchPink'
 
-const currentWidth = width as unknown as number;
-const currentHeight = height as unknown as number;
+const currentWidth = iosWidth as unknown as number;
+const currentHeight = iosHeight as unknown as number;
 
 export default function Search(){
     const {searchText, setSearchText} = searchStore();

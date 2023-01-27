@@ -8,12 +8,12 @@ export const basicDimensions = { // 현재 작업하고 있는 XD파일 스크�
   width: 375,
 };
 
-export const height = (
+export const iosHeight = (
   Dimensions.get('screen').height *
   (1 / basicDimensions.height)
 ).toFixed(2);
 
-export const width = (
+export const iosWidth = (
   Dimensions.get('screen').width *
   (1 / basicDimensions.width)
 ).toFixed(2);
