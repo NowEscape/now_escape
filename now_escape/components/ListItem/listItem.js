@@ -2,37 +2,54 @@ import React from 'react';
 import {Image, Text, View, StyleSheet, FlatList} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
 
-const renderTimeList = ({timeItem}) => {
-    return(
-          <Text style={styles.text.timeListItem}>{timeItem}</Text>
-    );
-}
-
-const renderEscapeList = ({escapeListItem}) => {
+const RenderEscapeListItem = ({cafeName, theme, themeDateList}) => {
     return(
         <View style={styles.itemContainer}>
-            <Image style={styles.poster} source={escapeListItem.theme.themeImageUrl}/>
+            <Image style={styles.poster} source={theme.themeImageUrl}/>
             <View style={styles.textBox}>
-                <Text style={styles.text.title}>{escapeListItem.theme.themeName}</Text>
+                <Text style={styles.text.title}>{theme.themeName}</Text>
                 <View style={styles.locationBox}>
                     <Image style={styles.locationIcon} source={require('../../assets/icon_location.png')}/>
-                    <Text style={styles.text.location}>{escapeListItem.cafeName}</Text>
+                    <Text style={styles.text.location}>{cafeName}</Text>
                 </View>
                 <View style={styles.timeList}>
-                    <FlatList data={escapeListItem.theme.themeDateList} renderItem={renderTimeList} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
+                    <FlatList
+                        data={themeDateList}
+                        renderItem={({index})=><RenderTimeList
+                                themeDateListItem = {themeDateList[index]}
+                        />}
+                        keyExtractor={(item) => String(item.index)}
+                        numColumns={Math.ceil(themeDateList.length / 2)}
+                    />
                 </View>
             </View>
         </View>
     );
 }
 
+const RenderTimeList = ({themeDateListItem}) => {
+    console.log(themeDateListItem);
+    return(
+        <View>
+            <Text style={styles.text.timeListItem}>{themeDateListItem}</Text>
+        </View>
+    );
+}
+
 export default function ListItem() {
     const {escapeList, getEscapeList} = escapeListStore();
-    getEscapeList();
 
     return(
         <View style={styles.container}>
-            <FlatList data={escapeList} renderItem={renderEscapeList}/>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                data={escapeList}
+                renderItem={({item})=><RenderEscapeListItem
+                    cafeName={item.cafeName}
+                    theme={item.theme}
+                    themeDateList={item.themeDateList}
+                />}
+            />
         </View>
     );
 }
@@ -41,7 +58,8 @@ const styles = StyleSheet.create({
     container:{
         display:'flex',
         flexDirection:'column',
-        alignItems:'center'
+        alignItems:'center',
+        width:"100%",
     },
     itemContainer:{
         display: 'flex',
@@ -63,7 +81,6 @@ const styles = StyleSheet.create({
     textBox: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         width: 181.9,
         height:120,
         paddingTop: 12.5,
@@ -85,7 +102,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginTop: 13,
         width: 181.4,
-        height: 43
+        height: 43,
     },
     text: {
         title: {
@@ -103,6 +120,7 @@ const styles = StyleSheet.create({
             marginLeft: 5.3
         },
         timeListItem: {
+            display:'flex',
             width: 42.4,
             height: 18,
             borderRadius: 9,
@@ -113,6 +131,7 @@ const styles = StyleSheet.create({
             letterSpacing: 0.24,
             color: 'black',
             marginBottom: 5.6,
+            marginLeft:3,
             overflow: 'hidden'
         }
     }

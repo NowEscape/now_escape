@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: '#ffffff',
+      justifyContent:'center',
+      zIndex:2,
     ...Platform.select({
         android:{
             width: aosWidthRatio*360,

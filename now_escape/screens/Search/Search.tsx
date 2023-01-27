@@ -10,6 +10,8 @@ import timeStore from "../../store/timeStore";
 import dateStore from "../../store/dateStore";
 import Date from "../../components/setting/Date/date";
 import Time from "../../components/setting/Time/time";
+import rigionStore from "../../store/rigionStore";
+import Rigion from "../../components/setting/Rigion/rigion";
 
 import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
 
@@ -24,7 +26,9 @@ export default function Search(){
     const {genre} = genreStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
-    const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(true);
+    const {rigion} = rigionStore();
+    const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
+    const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
 
 
     return(
@@ -87,12 +91,14 @@ export default function Search(){
                     width={currentWidth*165}
                     borderRadius={10}
                     type={"searchLabel"}
-                    text={"서울 홍대"}
+                    text={rigion}
+                    open={()=>setIsRigionSettingOpen((prevState => !prevState))}
                     arrow='true'
                 />
             </View>
             <View style={{height: currentHeight*70}}>
             {isGenreSettingOpen === true ? <Genre search={true}/> : null}
+                {isRigionSettingOpen === true ? <Rigion/> : null}
             </View>
 
             <View style={{ flex: 1}}/>

@@ -11,7 +11,7 @@ interface rigionState{
 }
 
 const rigionStore = create<rigionState>((set)=>({
-    rigion : "서울 전체",
+    rigion : "",
     rigionName : ["서울", "경기", "충청"],
     rigionListString : [["전체","강남","홍대"],["전체","수원","파주"],["전체","대전","세종"]],
     rigionList: [[true, false, false],[false, false, false],[false, false, false],],

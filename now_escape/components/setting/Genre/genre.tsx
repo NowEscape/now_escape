@@ -43,6 +43,7 @@ const styles = (selected, search) => StyleSheet.create({
         flexDirection: 'row',
         width: "100%",
         marginTop:11,
+        zIndex:2,
         backgroundColor: search?'rgb(255,232,242)':'rgba(254,254,254,0.9)',
         ...Platform.select({
             android: {

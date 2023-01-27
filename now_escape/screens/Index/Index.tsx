@@ -5,15 +5,20 @@ import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
 import Date from "../../components/setting/Date/date";
 import dateStore from "../../store/dateStore";
+import rigionStore from "../../store/rigionStore";
+import Rigion from "../../components/setting/Rigion/rigion";
+import {useState} from "react";
 
 export default function Index(){
     const {date, setDateVisible, dateVisible} = dateStore();
+    const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const {rigion} = rigionStore();
 
     return(
         <SafeAreaView>
             <View style={styles.container}>
                 <View style={styles.filterBar}>
-                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start' }}>
+                    <View style={{flexDirection:'row',flex: 1, justifyContent: 'flex-start'}}>
                     <Label
                         height={32}
                         width={130}
@@ -27,15 +32,16 @@ export default function Index(){
                         width={115}
                         borderRadius={16}
                         type={'mainLabel'}
-                        text={'서울/홍대'}
+                        text={rigion}
+                        open={()=>setIsRigionSettingOpen((prevState => !prevState))}
                     />
                     </View>
                     <View style={{display: 'flex', paddingRight: 23.1, justifyContent: 'center',}}>
-                    <SearchSvg/>                        
+                    <SearchSvg/>
                     </View>
-
                 </View>
-                <View style={styles.banner}></View>
+                {isRigionSettingOpen === true ? <Rigion/> : null}
+                <View style={styles.banner}>{""}</View>
                 <ListItem/>
             </View>
         </SafeAreaView>
@@ -44,10 +50,13 @@ export default function Index(){
 
 const styles = StyleSheet.create({
     container:{
-        width: '100%',
         display:'flex',
+        flex:1,
+        width: '100%',
         flexDirection:'column',
         alignItems:'center',
+        justifyContent:'flex-start',
+        paddingTop:17,
         ...Platform.select({
             android:{
                 height:'84dp',
@@ -60,6 +69,7 @@ const styles = StyleSheet.create({
     filterBar:{
         display:'flex',
         flexDirection:'row',
+        alignItems:'flex-start',
         ...Platform.select({
             android:{},
             ios:{
@@ -76,7 +86,7 @@ const styles = StyleSheet.create({
             android:{},
             ios:{
                 height:168,
-                width:'100%'
+                width:400
             }
         })
     }
