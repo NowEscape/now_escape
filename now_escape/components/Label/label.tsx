@@ -6,17 +6,20 @@ import ArrowUpSVG from '../../assets/iconArrowUp'
 import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
 
-import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
+import {iosWidth, iosHeight} from '../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
-const currentWidth = iosWidth as unknown as number;
-const currentHeight = iosHeight as unknown as number;
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
-  const {height, width, fontSize, type='', icon='', text='', open, arrow} = props;
+  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight} = props;
   const [show, setShow] = useState(true);
   const [active, setActive] = useState(false);
 
-  const style = styles(active, width, height, fontSize, icon);
+  const style = styles(active, width, height, fontSize, marginRight, icon);
 
 
   return (
@@ -30,7 +33,7 @@ export default function Label(props) {
             {icon=== 'date' && <CalenderSVG height={10.8}/>}
             {icon=== 'time' && <ClockSVG height={10.8}/>}
             <Text style={style.text}>{props.text}</Text>
-            { arrow && <TriangleDownSVG/> }
+            { arrow && <TriangleDownSVG /> }
           </View>
         </TouchableOpacity>
       )}
@@ -53,7 +56,7 @@ export default function Label(props) {
   );
 }
 
-const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
+const styles = (active, width, height, fontSize, marginRight, icon) => StyleSheet.create({
   main: {
     width: width,
     height: height,
@@ -62,9 +65,10 @@ const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: icon?'flex-start':'center',
+    justifyContent: icon?'flex-start':'space-between',
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    marginRight: marginRight?marginRight:0
   },
   search: {
     width: width,
@@ -90,12 +94,12 @@ const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    fontSize: fontSize?currentWidth*fontSize:17,
+    fontSize: fontSize?iosWidthRatio*fontSize:17,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    paddingLeft: icon?currentWidth*10:0,
+    paddingLeft: icon?iosWidthRatio*10:2,
   },
 })

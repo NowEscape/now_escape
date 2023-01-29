@@ -1,5 +1,5 @@
 import React from 'react'
-import Svg, { SvgXml, Path } from 'react-native-svg'
+import Svg, { SvgXml, Path, SvgProps } from 'react-native-svg'
 
 const logo = `
   const logo = 
@@ -8,8 +8,8 @@ const logo = `
   </svg>
 `
 
-const svg = () => {
-  const LogoSvg = () => <SvgXml xml={logo}/>;
+const svg = ({height}:SvgProps) => {
+  const LogoSvg = () => <SvgXml xml={logo} height={height}/>;
   return <LogoSvg/>
 }
 
