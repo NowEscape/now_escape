@@ -12,11 +12,11 @@ const currentWidth = iosWidth as unknown as number;
 const currentHeight = iosHeight as unknown as number;
 
 export default function Label(props) {
-  const {height, width, type='', icon='', text='', open, arrow} = props;
+  const {height, width, fontSize, type='', icon='', text='', open, arrow} = props;
   const [show, setShow] = useState(true);
   const [active, setActive] = useState(false);
 
-  const style = styles(active, width, height, icon);
+  const style = styles(active, width, height, fontSize, icon);
 
 
   return (
@@ -24,8 +24,10 @@ export default function Label(props) {
       {type === 'mainLabel' && (
         <TouchableOpacity onPress={open}>
           <View style={style.main}>
-          <Text style={style.text}>{props.text}</Text>
-          <TriangleDownSVG/>
+            {icon=== 'date' && <CalenderSVG/>}
+            {icon=== 'time' && <ClockSVG/>}
+            <Text style={style.text}>{props.text}</Text>
+            { arrow && <TriangleDownSVG/> }
           </View>
         </TouchableOpacity>
       )}
@@ -48,7 +50,7 @@ export default function Label(props) {
   );
 }
 
-const styles = (active, width, height, icon) => StyleSheet.create({
+const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
   main: {
     width: width,
     height: height,
@@ -85,7 +87,7 @@ const styles = (active, width, height, icon) => StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    fontSize: currentWidth*17,
+    fontSize: fontSize?currentWidth*fontSize:17,
     fontWeight: 'normal',
     fontStyle: 'normal',
     letterSpacing: 0.3,
