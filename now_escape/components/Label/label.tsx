@@ -22,10 +22,13 @@ export default function Label(props) {
   return (
     <Fragment>
       {type === 'mainLabel' && (
-        <TouchableOpacity onPress={open}>
+        <TouchableOpacity onPress={()=>{
+          {open()}
+          active?setActive(false):setActive(true)
+        }}>
           <View style={style.main}>
-            {icon=== 'date' && <CalenderSVG/>}
-            {icon=== 'time' && <ClockSVG/>}
+            {icon=== 'date' && <CalenderSVG height={10.8}/>}
+            {icon=== 'time' && <ClockSVG height={10.8}/>}
             <Text style={style.text}>{props.text}</Text>
             { arrow && <TriangleDownSVG/> }
           </View>
@@ -38,7 +41,7 @@ export default function Label(props) {
         }}>
           <View style={style.search}>
             <View style={{flexDirection: 'row'}}>
-            {icon=== 'date' && <CalenderSVG/>}
+            {/* {icon=== 'date' && <CalenderSVG/>} */}
             {icon=== 'time' && <ClockSVG/>}
             <Text style={style.text}>{props.text}</Text>      
             </View>
@@ -55,11 +58,11 @@ const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
     width: width,
     height: height,
     borderRadius: 16,
-    backgroundColor: 'rgba(234, 75, 155, 0.13)',
+    backgroundColor: active?'#ffd2e6':'rgba(234, 75, 155, 0.13)',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: icon?'flex-start':'center',
     paddingLeft: 10,
     paddingRight: 10
   },
@@ -93,6 +96,6 @@ const styles = (active, width, height, fontSize, icon) => StyleSheet.create({
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    paddingLeft: icon?10:0
+    paddingLeft: icon?currentWidth*10:0,
   },
 })

@@ -16,6 +16,8 @@ import Time from "../../components/setting/Time/time";
 import Genre from "../../components/setting/Genre/genre";
 import Rigion from "../../components/setting/Rigion/rigion";
 
+import { Modal, Pressable } from 'react-native';
+
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
@@ -32,6 +34,7 @@ export default function SearchResult(){
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const [modal, setModal] = useState(false);
 
     return(
         <SafeAreaView style={styles.container}>
@@ -56,11 +59,12 @@ export default function SearchResult(){
                 horizontal={true}
                 contentContainerStyle={styles.scrollLabelContainer}
                 showsHorizontalScrollIndicator={false}
+
             >
                 <Label
                     height={iosHeightRatio*31}
                     width={iosWidthRatio*124}
-                    fontSize={16}
+                    fontSize={13}
                     type={"mainLabel"}
                     icon={'date'}
                     text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
@@ -69,7 +73,7 @@ export default function SearchResult(){
                 <Label
                     height={iosHeightRatio*31}
                     width={iosWidthRatio*107}
-                    fontSize={16}
+                    fontSize={13}
                     type={"mainLabel"}
                     icon={'time'}
                     text={time + ' ~'}
@@ -78,7 +82,7 @@ export default function SearchResult(){
                 <Label
                     height={iosHeightRatio*31}
                     width={iosWidthRatio*83}
-                    fontSize={16}
+                    fontSize={13}
                     type={"mainLabel"}
                     text={genre}
                     open={()=>setIsGenreSettingOpen((prevState => !prevState))}
@@ -86,21 +90,46 @@ export default function SearchResult(){
                 <Label
                     height={iosHeightRatio*31}
                     width={iosWidthRatio*90}
-                    fontSize={16}
+                    fontSize={13}
                     type={"mainLabel"}
                     text={rigion}
-                    open={()=>setIsRigionSettingOpen((prevState => !prevState))}
+                    open={()=>{
+                        setIsRigionSettingOpen((prevState => !prevState))
+                        setModal(true)
+                    }}
                 />
             </ScrollView>
-            {isGenreSettingOpen === true ? <Genre search={true}/> : null}
-            {isRigionSettingOpen === true ? <Rigion/> : null}
             <View
             style={{
                 width:iosWidthRatio*375,
-                height: iosHeightRatio*600
+                height: iosHeightRatio*620
             }}>
             <ListItem/>
+
+            {isGenreSettingOpen === true ? 
+            <View
+                style={{
+                    position: 'absolute',
+                    top: iosHeightRatio*11
+                }}
+            >
+                <Genre search={false}/></View> : null}
             </View>
+            {isRigionSettingOpen === true ? 
+            <Modal 
+            visible={modal} 
+            transparent={true}
+            animationType={'slide'}
+            presentationStyle={'pageSheet'}
+            onRequestClose={()=>setModal(false)}
+            >
+                <Pressable style={{
+                    flex:1,
+                }}
+                onPress={()=>setModal(false)}
+                />
+                <Rigion/>
+            </Modal> : null}
         </SafeAreaView>
     );
 }
@@ -133,8 +162,6 @@ const styles = StyleSheet.create({
     },
     scrollLabelContainer:{
         display:'flex',
-        // paddingHorizontal:iosWidthRatio*17,
-        // paddingVertical: iosHeightRatio*7,
         justifyContent: 'flex-start',
         width:iosWidthRatio*375,
         height:iosHeightRatio*31,

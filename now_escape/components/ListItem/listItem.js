@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import {Image, Text, View, StyleSheet, FlatList} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
 
+import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
+
 const RenderEscapeListItem = ({cafeName, theme, themeDateList}) => {
     return(
+        <Fragment>
         <View style={styles.itemContainer}>
             <Image style={styles.poster} source={theme.themeImageUrl}/>
             <View style={styles.textBox}>
@@ -23,7 +26,16 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList}) => {
                     />
                 </View>
             </View>
-        </View>
+            
+        </View>        
+        <View
+            style={{
+                width: iosWidth*340.4,
+                height: iosHeight*1.5,
+                backgroundColor: "#e9e9e9"
+            }}>
+            </View>    
+        </Fragment>        
     );
 }
 
@@ -49,7 +61,7 @@ export default function ListItem() {
                     theme={item.theme}
                     themeDateList={item.themeDateList}
                 />}
-            />
+            />            
         </View>
     );
 }
@@ -59,22 +71,22 @@ const styles = StyleSheet.create({
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
-        width:"100%",
+        width: iosWidth*375,
     },
     itemContainer:{
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        width: 340.4,
-        height: 153.3,
-        paddingLeft: 4.7,
-        paddingBottom: 15.9,
-        paddingTop: 15.3,
-        paddingRight: 36
+        width: iosWidth*340.4,
+        height: iosHeight*153.3,
+        paddingLeft: iosWidth*4.7,
+        paddingRight: 36,
+        paddingTop: iosHeight*15.3,
+        paddingBottom: iosHeight*15.9,
     },
     poster: {
-        width: 91,
-        height: 122,
+        width: iosWidth*91,
+        height: iosHeight*122,
         borderRadius: 6,
         backgroundColor: 'rgb(216, 216, 216)'
     },
@@ -82,7 +94,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         width: 181.9,
-        height:120,
+        height: 120,
         paddingTop: 12.5,
         marginLeft: 26.8,
         paddingBottom: 12
@@ -106,7 +118,7 @@ const styles = StyleSheet.create({
     },
     text: {
         title: {
-            fontSize: 18,
+            fontSize: iosWidth*18,
             fontWeight: 'bold',
             lineHeight: 19,
             letterSpacing: 0.72,
@@ -114,18 +126,18 @@ const styles = StyleSheet.create({
             color: 'black'
         },
         location:{
-            fontSize: 14,
+            fontSize: iosWidth*14,
             textAlign: 'left',
             letterSpacing: 0.28,
             marginLeft: 5.3
         },
         timeListItem: {
             display:'flex',
-            width: 42.4,
-            height: 18,
+            width: iosWidth*42.4,
+            height: iosHeight*18,
             borderRadius: 9,
             backgroundColor: 'rgba(234, 75, 155, 0.13)',
-            fontSize: 12,
+            fontSize: iosWidth*12,
             textAlign: 'center',
             paddingTop: 1.8,
             letterSpacing: 0.24,
