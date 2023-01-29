@@ -4,6 +4,14 @@ import dateStore from "../../../store/dateStore";
 import Button from "../../Button/button";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import {iosWidth, iosHeight} from '../../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
+
 export default function Date(){
     const {date, setDate, dateVisible, setDateVisible} = dateStore();
 
@@ -18,8 +26,22 @@ export default function Date(){
                     onChange={(event, date)=>{setDate(date)}}
                 />
                 <View style={styles.buttonBox}>
-                    <Button text={'취소'} active={true} rounded={true} canceled={true} height={48} width={144} onPress={()=>setDateVisible(dateVisible)}/>
-                    <Button text={'적용'} active={true} rounded={true} canceled={false} height={48} width={144} onPress={()=>setDateVisible(dateVisible)}/>
+                    <Button 
+                        text={'취소'} 
+                        active={true} 
+                        rounded={true} 
+                        canceled={true} 
+                        height={iosHeightRatio*48} 
+                        width={iosWidthRatio*145} 
+                        onPress={()=>setDateVisible(dateVisible)}/>
+                    <Button 
+                        text={'적용'} 
+                        active={true} 
+                        rounded={true} 
+                        canceled={false} 
+                        height={iosHeightRatio*48} 
+                        width={iosWidthRatio*145} 
+                        onPress={()=>setDateVisible(dateVisible)}/>
                 </View>
             </View>
         </Modal>
@@ -32,30 +54,37 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor:'gray',
-        marginTop: 200,
-        marginLeft:20,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        overflow:'hidden',
         ...Platform.select({
             android:{
+                height:aosHeightRatio*302,
+                width:aosWidthRatio*312,
+                marginTop: aosHeightRatio*169,
+                marginLeft: aosWidthRatio*24,
+                paddingTop: aosHeightRatio*25,
+                paddingBottom: aosHeightRatio*12,
             },
             ios:{
-                height:285,
-                width:325,
-                borderRadius: 8,
-                backgroundColor: 'white',
-                overflow:'hidden',
-                paddingTop: 26,
-                paddingBottom:20
+                height:iosHeightRatio*285,
+                width:iosWidthRatio*325,
+                marginTop: iosHeightRatio*249,
+                marginLeft: iosWidthRatio*25,
+                paddingTop: iosHeightRatio*26,
+                paddingBottom: iosHeightRatio*12,
             }
         })
     },
     picker:{
-        display:'flex',
         ...Platform.select({
-            android:{},
+            android:{
+                marginTop: aosHeightRatio*60,
+                marginBottom: aosHeightRatio*60,
+            },
             ios:{
-                width: 170,
-                height:150
+                marginTop: iosHeightRatio*60,
+                marginBottom: iosHeightRatio*60,
             }
         })
     },
@@ -63,18 +92,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Pretendard',
         fontWeight: 'bold',
-        fontSize:17,
-        lineHeight: 33,
-        letterSpacing:0.34
+        ...Platform.select({
+            android:{
+                fontSize: 16,
+                letterSpacing:0.32,
+            },
+            ios:{
+                fontSize: 17,
+                letterSpacing:0.34,
+            }
+        })
     },
     buttonBox:{
         display:'flex',
         flexDirection:'row',
-        justifyContent:"space-between",
+        justifyContent: 'space-between',
         ...Platform.select({
-            android:{},
+            android:{
+                width: aosWidthRatio*285,
+            },
             ios:{
-                width:295
+                width: iosWidthRatio*299,
             }
         })
     }
