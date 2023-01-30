@@ -85,7 +85,10 @@ export default function SearchResult(){
                     fontSize={13}
                     type={"mainLabel"}
                     text={genre}
-                    open={()=>setIsGenreSettingOpen((prevState => !prevState))}
+                    open={()=>{
+                        setIsGenreSettingOpen((prevState => !prevState))
+                        {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
+                    }}
                 />
                 <Label
                     height={iosHeightRatio*31}
@@ -96,6 +99,7 @@ export default function SearchResult(){
                     open={()=>{
                         setIsRigionSettingOpen((prevState => !prevState))
                         setModal(true)
+                        {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
                     }}
                 />
             </ScrollView>
@@ -113,7 +117,7 @@ export default function SearchResult(){
                     top: iosHeightRatio*11
                 }}
             >
-                <Genre search={false}/></View> : null}
+                <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/></View> : null}
             </View>
             {isRigionSettingOpen === true ? 
             <Modal 
@@ -128,7 +132,7 @@ export default function SearchResult(){
                 }}
                 onPress={()=>setModal(false)}
                 />
-                <Rigion/>
+                <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
             </Modal> : null}
         </SafeAreaView>
     );

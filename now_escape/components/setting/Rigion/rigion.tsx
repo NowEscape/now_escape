@@ -16,13 +16,16 @@ const aosHeightRatio = aosHeight as unknown as number;
 export default function Rigion(props){
   const {rigion, rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
+  const {isOpen} = props;
 
   const renderRigionItem = ({item, index}:{item:any, index:number}) => {
       return(
           <Pressable
               onPress={()=>{
                 setRigionList(rigionList,currentRigionIdx,index);
-                setRigion(rigionName,rigionListString,currentRigionIdx,index)}}
+                setRigion(rigionName,rigionListString,currentRigionIdx,index);
+                isOpen();
+              }}
           >
               <Text style={styles.rigionSecond}>{item}</Text>
           </Pressable>

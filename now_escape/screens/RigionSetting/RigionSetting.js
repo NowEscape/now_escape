@@ -41,7 +41,9 @@ export default function RegionSetting() {
                 text={rigion}
                 open={()=>setIsRigionSettingOpen((prevState => !prevState))}
             />
-            {isRigionSettingOpen === true ? <Rigion/> : null}
+            {isRigionSettingOpen === true
+                ? <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                : null}
           </View>
           <View style={styles.confirmButton}>
             {rigion !== ""

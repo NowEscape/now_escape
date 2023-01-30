@@ -72,7 +72,7 @@ export default function Index(){
                         style={{flex:1}}
                         onPress={()=>setModal(false)}
                     />
-                    <Rigion/>
+                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
                 </Modal> : null}
             </View>
         </SafeAreaView>

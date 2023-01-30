@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
-import {Image, Text, View, StyleSheet, FlatList, Platform} from 'react-native';
+import React, {Fragment, useState} from 'react';
+import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
+
+import ListItemDetail from "../ListItemDetail/listItemDetail";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -11,37 +13,42 @@ const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
-const RenderEscapeListItem = ({cafeName, theme, themeDateList}) => {
+const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress}) => {
     return(
         <Fragment>
-        <View style={styles.itemContainer}>
-            <Image style={styles.poster} source={theme.themeImageUrl}/>
-            <View style={styles.textBox}>
-                <Text style={styles.textTitle}>{theme.themeName}</Text>
-                <View style={styles.locationBox}>
-                    <LocationSVG/>
-                    <Text style={styles.textLocation}>{cafeName}</Text>
+            <Pressable
+                onPress={()=>{
+                    setModal(true)
+                    onPress()
+                }}
+            >
+                <View style={styles.itemContainer}>
+                    <Image style={styles.poster} source={theme.themeImageUrl}/>
+                    <View style={styles.textBox}>
+                        <Text style={styles.textTitle}>{theme.themeName}</Text>
+                        <View style={styles.locationBox}>
+                            <LocationSVG/>
+                            <Text style={styles.textLocation}>{cafeName}</Text>
+                        </View>
+                        <View style={styles.timeList}>
+                            <FlatList
+                                data={themeDateList}
+                                renderItem={({index})=><RenderTimeList
+                                    themeDateListItem = {themeDateList[index]}
+                                />}
+                                keyExtractor={(item) => String(item.index)}
+                                numColumns={Math.ceil(themeDateList.length / 2)}
+                            />
+                        </View>
+                    </View>
                 </View>
-                <View style={styles.timeList}>
-                    <FlatList
-                        data={themeDateList}
-                        renderItem={({index})=><RenderTimeList
-                                themeDateListItem = {themeDateList[index]}
-                        />}
-                        keyExtractor={(item) => String(item.index)}
-                        numColumns={Math.ceil(themeDateList.length / 2)}
-                    />
-                </View>
-            </View>
-            
-        </View>        
-        <View style={styles.sectionBar}/>    
-        </Fragment>        
+            </Pressable>
+        <View style={styles.sectionBar}/>
+        </Fragment>
     );
 }
 
 const RenderTimeList = ({themeDateListItem}) => {
-    console.log(themeDateListItem);
     return(
         <View>
             <Text style={styles.timeListItem}>{themeDateListItem}</Text>
@@ -51,18 +58,37 @@ const RenderTimeList = ({themeDateListItem}) => {
 
 export default function ListItem() {
     const {escapeList, getEscapeList} = escapeListStore();
+    const [modal, setModal] = useState(false);
+    const [escapeID, setEscapeID] = useState(0);
 
     return(
         <View style={styles.container}>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={escapeList}
-                renderItem={({item})=><RenderEscapeListItem
+                renderItem={({item, index})=><RenderEscapeListItem
                     cafeName={item.cafeName}
                     theme={item.theme}
                     themeDateList={item.themeDateList}
+                    setModal={()=>setModal(true)}
+                    onPress={()=>setEscapeID(index)}
                 />}
-            />            
+            />
+            <Modal
+                visible={modal}
+                transparent={true}
+                animationType={'slide'}
+                presentationStyle={'pageSheet'}
+                onRequestClose={()=>{
+                    setModal(false)
+                }}
+                style={{
+                    display:'flex',
+                    flexDirection:'column-reverse'
+                }}
+            >
+                <ListItemDetail escapeID={escapeID}/>
+            </Modal>
         </View>
     );
 }

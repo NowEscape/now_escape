@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal} from "react-native";
+import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal, Pressable} from "react-native";
 import {useState} from "react";
 import Label from "../../components/Label/label";
 import Button from "../../components/Button/button";
@@ -29,6 +29,7 @@ export default function Search(){
     const {rigion} = rigionStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const [modal, setModal] = useState(false);
 
 
     return(
@@ -83,7 +84,10 @@ export default function Search(){
                     borderRadius={10}
                     type={"searchLabel"}
                     text={genre}
-                    open={()=>setIsGenreSettingOpen((prevState => !prevState))}
+                    open={()=>{
+                        {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
+                        setIsGenreSettingOpen((prevState => !prevState))
+                    }}
                     arrow='true'
                 />
                 <Label
@@ -92,13 +96,41 @@ export default function Search(){
                     borderRadius={10}
                     type={"searchLabel"}
                     text={rigion}
-                    open={()=>setIsRigionSettingOpen((prevState => !prevState))}
+                    open={()=>{
+                        {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
+                        setIsRigionSettingOpen((prevState => !prevState))
+                        setModal(true)
+                    }}
                     arrow='true'
                 />
             </View>
             <View style={{height: currentHeight*70}}>
-            {isGenreSettingOpen === true ? <Genre search={true}/> : null}
-                {isRigionSettingOpen === true ? <Rigion/> : null}
+            {isGenreSettingOpen === true
+                ?<Genre
+                    search={true}
+                    isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}
+                />
+                : null
+            }
+            {isRigionSettingOpen === true ?
+                <Modal
+                    visible={modal}
+                    transparent={true}
+                    animationType={'slide'}
+                    presentationStyle={'pageSheet'}
+                    onRequestClose={()=>{
+                        setModal(false)
+                        setIsRigionSettingOpen((prevState => !prevState))
+                    }}
+                >
+                    <Pressable
+                        style={{flex:1}}
+                        onPress={()=>setModal(false)}
+                    />
+                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                </Modal>
+                : null
+            }
             </View>
 
             <View style={{ flex: 1}}/>
