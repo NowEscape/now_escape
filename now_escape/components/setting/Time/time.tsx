@@ -4,6 +4,14 @@ import {Picker} from '@react-native-picker/picker';
 import Button from "../../Button/button";
 import timeStore from "../../../store/timeStore";
 
+import {iosWidth, iosHeight} from '../../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
+
 export default function Time(){
     const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
     const timeListItem = timeList.map(
@@ -28,9 +36,24 @@ export default function Time(){
                     }>
                     {timeListItem}
                 </Picker>
+
                 <View style={styles.buttonBox}>
-                    <Button text={'취소'} active={true} rounded={true} canceled={true} height={48} width={144} onPress={()=>setTimeVisible(timeVisible)}/>
-                    <Button text={'적용'} active={true} rounded={true} canceled={false} height={48} width={144} onPress={()=>setTimeVisible(timeVisible)}/>
+                    <Button 
+                        text={'취소'} 
+                        active={true} 
+                        rounded={true} 
+                        canceled={true} 
+                        height={iosHeightRatio*48} 
+                        width={iosWidthRatio*145} 
+                        onPress={()=>setTimeVisible(timeVisible)}/>
+                    <Button 
+                        text={'적용'} 
+                        active={true} 
+                        rounded={true} 
+                        canceled={false} 
+                        height={iosHeightRatio*48} 
+                        width={iosWidthRatio*145} 
+                        onPress={()=>setTimeVisible(timeVisible)}/>
                 </View>
             </View>
         </Modal>
@@ -39,24 +62,29 @@ export default function Time(){
 
 const styles = StyleSheet.create({
     container:{
-        display:'flex',
+        display: 'flex',
         flexDirection: 'column',
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'center',
-        marginTop:200,
-        marginLeft:20,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        overflow:'hidden',
         ...Platform.select({
             android:{
-
+                height:aosHeightRatio*302,
+                width:aosWidthRatio*312,
+                marginTop: aosHeightRatio*169,
+                marginLeft: aosWidthRatio*24,
+                paddingTop: aosHeightRatio*25,
+                paddingBottom: aosHeightRatio*12,
             },
             ios:{
-                height:350,
-                width:325,
-                borderRadius: 8,
-                backgroundColor: 'white',
-                overflow:'hidden',
-                paddingTop: 26,
-                paddingBottom:20
+                height:iosHeightRatio*285,
+                width:iosWidthRatio*325,
+                marginTop: iosHeightRatio*249,
+                marginLeft: iosWidthRatio*25,
+                paddingTop: iosHeightRatio*26,
+                paddingBottom: iosHeightRatio*12,
             }
         })
     },
@@ -64,35 +92,40 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Pretendard',
         fontWeight: 'bold',
-        fontSize:17,
-        lineHeight: 33,
-        letterSpacing:0.34
+        ...Platform.select({
+            android:{
+                fontSize: 16,
+                letterSpacing:0.32,
+            },
+            ios:{
+                fontSize: 17,
+                letterSpacing:0.34,
+            }
+        })
     },
     picker:{
-        display:'flex',
-        justifyContent:'center',
         ...Platform.select({
             android:{},
             ios:{
-                height:200,
-                width:144,
-                marginVertical: 15
+                width:iosWidthRatio*300,
             }
         })
     },
     pickerItem:{
         textAlign: 'center',
         fontFamily: 'Pretendard',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     buttonBox:{
         display:'flex',
         flexDirection:'row',
-        justifyContent:"space-between",
+        justifyContent: 'space-between',
         ...Platform.select({
-            android:{},
+            android:{
+                width: aosWidthRatio*285,
+            },
             ios:{
-                width:295
+                width: iosWidthRatio*299,
             }
         })
     }
