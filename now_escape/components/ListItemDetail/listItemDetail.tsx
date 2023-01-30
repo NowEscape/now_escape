@@ -1,33 +1,36 @@
 import React from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView} from "react-native";
 import Button from "../Button/button";
+import escapeListStore from "../../store/escapeListStore";
 
 const renderItem = ({item}) => {
     return(
-        <Text style={styles.text.timeListItem}>{item}</Text>
+        <Text style={styles.timeListItem}>{item}</Text>
     );
 }
 
 export default function ListItemDetail(props){
-    const {poster, title, location, time, synopsis} = props;
+    const {escapeList} = escapeListStore();
+    const {escapeID} = props;
+
     return(
         <View style={styles.container}>
                 <View style={styles.listItem}>
-                    <Image style={styles.poster} source={poster}/>
+                    <Image style={styles.poster} source={{uri:escapeList[escapeID].theme.themeImageUrl}}/>
                     <View style={styles.textBox}>
-                        <Text style={styles.text.title}>{title}</Text>
+                        <Text style={styles.title}>{escapeList[escapeID].theme.themeName}</Text>
                         <View style={styles.locationBox}>
                             <Image style={styles.locationIcon} source={require('../../assets/icon_location.png')}/>
-                            <Text style={styles.text.location}>{location}</Text>
+                            <Text style={styles.location}>{escapeList[escapeID].cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
-                            <FlatList data={time} renderItem={renderItem} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
+                            <FlatList data={escapeList[escapeID].themeDateList} renderItem={renderItem} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
                         </View>
                     </View>
                 </View>
                 <ScrollView style={styles.scrollBox}>
-                    <Text style={styles.text.synopsis}>
-                        {synopsis}
+                    <Text style={styles.synopsis}>
+                        {escapeList[escapeID].theme.themeDescription}
                     </Text>
                 </ScrollView>
                 <Button onPress={()=>{}} text={'예약하기'} active={true} rounded={true} canceled={false} height={63} width={331}/>
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
     timeList:{
         display:'flex',
         flexDirection: 'column',
-        flexWrap:'warp',
+        flexWrap:'wrap',
         ...Platform.select({
             android:{},
             ios:{
@@ -126,44 +129,37 @@ const styles = StyleSheet.create({
             }
         })
     },
-    text:{
-        ...Platform.select({
-            android:{},
-            ios:{
-                title:{
-                    fontSize:21,
-                    fontWeight: 'bold',
-                    textAlign:'left',
-                    color:'black'
-                },
-                location:{
-                    fontSize: 14,
-                    textAlign:'left',
-                    letterSpacing: 0.28,
-                    marginLeft: 4.3
-                },
-                timeListItem: {
-                    height: 18.1,
-                    width: 48.1,
-                    borderRadius: 9,
-                    backgroundColor: 'rgba(234, 75, 155, 0.13)',
-                    fontSize: 13,
-                    textAlign: 'center',
-                    paddingTop: 1.8,
-                    letterSpacing: 0.26,
-                    color:'black',
-                    overflow:'hidden',
-                    marginBottom: 9.6
-                },
-                synopsis:{
-                    fontSize: 14,
-                    textAlign: 'left',
-                    lineHeight: 21,
-                    letterSpacing: 0.28,
-                    color:'black'
-                }
-            }
-        })
+    title:{
+        fontSize:21,
+        fontWeight: 'bold',
+        textAlign:'left',
+        color:'black'
+    },
+    location:{
+        fontSize: 14,
+        textAlign:'left',
+        letterSpacing: 0.28,
+        marginLeft: 4.3
+    },
+    timeListItem: {
+        height: 18.1,
+        width: 48.1,
+        borderRadius: 9,
+        backgroundColor: 'rgba(234, 75, 155, 0.13)',
+        fontSize: 13,
+        textAlign: 'center',
+        paddingTop: 1.8,
+        letterSpacing: 0.26,
+        color:'black',
+        overflow:'hidden',
+        marginBottom: 9.6
+    },
+    synopsis:{
+        fontSize: 14,
+        textAlign: 'left',
+        lineHeight: 21,
+        letterSpacing: 0.28,
+        color:'black'
     },
     scrollBox:{
         backgroundColor: 'rgb(255,232,242)',

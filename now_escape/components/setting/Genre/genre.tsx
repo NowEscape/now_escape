@@ -10,19 +10,24 @@ const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
-interface genrePropsType{
+interface genrePropsType {
     search: boolean;
+    isOpen: () => void;
 }
+
 
 export default function Genre(props:genrePropsType){
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
-    const {search} = props;
-
+    const {search, isOpen} = props;
 
     const renderItem = ({item, index}:{item:any, index:number}) => {
         const search = true;
         return(
-            <Pressable onPress={()=> {setGenreList(genreList, index); setGenreValue(genreListName, index)}}>
+            <Pressable onPress={()=>
+                {setGenreList(genreList, index);
+                setGenreValue(genreListName, index);
+                isOpen();
+                }}>
                 <Text style={styles(genreList[index],search).text}>{item}</Text>
             </Pressable>
 

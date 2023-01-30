@@ -6,6 +6,11 @@ import ArrowUpSVG from '../../assets/iconArrowUp'
 import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
 
+import rigionStore from "../../store/rigionStore";
+import dateStore from "../../store/dateStore";
+import timeStore from "../../store/timeStore";
+import genreStore from "../../store/genreStore";
+
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
@@ -20,7 +25,6 @@ export default function Label(props) {
   const [active, setActive] = useState(false);
 
   const style = styles(active, width, height, fontSize, marginRight, icon);
-
 
   return (
     <Fragment>
