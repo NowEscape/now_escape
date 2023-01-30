@@ -7,6 +7,7 @@ import Date from "../../components/setting/Date/date";
 import dateStore from "../../store/dateStore";
 import rigionStore from "../../store/rigionStore";
 import Rigion from "../../components/setting/Rigion/rigion";
+import 'react-native-gesture-handler'
 import {useState} from "react";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
@@ -17,14 +18,14 @@ const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
-export default function Index(){
+export default function Index({navigation}){
     const {date, setDateVisible, dateVisible} = dateStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
                 <View style={styles.filterBar}>
                     <View style={styles.filterLabel}>
@@ -52,7 +53,9 @@ export default function Index(){
                     />
                     </View>
                     <View style={styles.filterIcon}>
-                        <SearchSvg height={iosHeightRatio*21.1}/>
+                        <Pressable onPress={()=>{navigation.navigate('Search')}}>
+                            <SearchSvg height={iosHeightRatio*21.1}/>
+                        </Pressable>
                     </View>
                 </View>
                 <View style={styles.banner}>{""}</View>

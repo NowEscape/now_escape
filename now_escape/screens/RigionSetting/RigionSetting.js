@@ -5,9 +5,10 @@ import Label from "../../components/Label/label";
 import Rigion from "../../components/setting/Rigion/rigion";
 import rigionStore from "../../store/rigionStore";
 import { useFonts } from 'expo-font'
+import 'react-native-gesture-handler'
 
 
-export default function RegionSetting() {
+export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
 
@@ -22,7 +23,7 @@ export default function RegionSetting() {
   })
 
   return (
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={styles.container}>
           <View style={styles.textBox}>
             <Text style={styles.text_1}
@@ -52,6 +53,7 @@ export default function RegionSetting() {
                     height={74}
                     width={375}
                     active={true}
+                    onPress={()=>{navigation.navigate('Index')}}
                 />
                 :<Button
                     text="시작하기"
