@@ -2,6 +2,15 @@ import React from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView} from "react-native";
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
+import LocationSVG from '../../assets/iconLocation'
+
+import {iosWidth, iosHeight} from '../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../globalStyles_aos'
+
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
 
 const renderItem = ({item}) => {
     return(
@@ -20,11 +29,16 @@ export default function ListItemDetail(props){
                     <View style={styles.textBox}>
                         <Text style={styles.title}>{escapeList[escapeID].theme.themeName}</Text>
                         <View style={styles.locationBox}>
-                            <Image style={styles.locationIcon} source={require('../../assets/icon_location.png')}/>
+                            <LocationSVG/>
                             <Text style={styles.location}>{escapeList[escapeID].cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
-                            <FlatList data={escapeList[escapeID].themeDateList} renderItem={renderItem} keyExtractor={(item) => String(item.index)} numColumns={1} contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'space-between'}}/>
+                            <FlatList data={escapeList[escapeID].themeDateList} 
+                            renderItem={renderItem} 
+                            keyExtractor={(item) => String(item.index)} 
+                            numColumns={1} 
+                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
+                        />
                         </View>
                     </View>
                 </View>
@@ -33,7 +47,13 @@ export default function ListItemDetail(props){
                         {escapeList[escapeID].theme.themeDescription}
                     </Text>
                 </ScrollView>
-                <Button onPress={()=>{}} text={'예약하기'} active={true} rounded={true} canceled={false} height={63} width={331}/>
+                <Button 
+                    onPress={()=>{}} text={'예약하기'} 
+                    active={true} 
+                    rounded={true} 
+                    canceled={false} 
+                    height={Platform.OS==='ios'?iosHeightRatio*63:aosHeightRatio*60} 
+                    width={Platform.OS==='ios'?iosWidthRatio*331:aosWidthRatio*318}/>
         </View>
     );
 }
@@ -45,17 +65,23 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         backgroundColor:'white',
+        overflow: 'hidden',
         ...Platform.select({
             android:{
+                height: aosHeightRatio*469,
+                width: aosWidthRatio*360,
+                paddingTop: aosHeightRatio*39,
+                paddingLeft: aosWidthRatio*21,
+                paddingRight: aosWidthRatio*21,
+                paddingBottom: aosHeightRatio*17
             },
             ios:{
-                height: 488,
-                width: 375,
-                overflow: 'hidden',
-                paddingTop: 41,
-                paddingLeft: 22,
-                paddingRight: 22,
-                paddingBottom: 17
+                height: iosHeightRatio*488,
+                width: iosWidthRatio*375,
+                paddingTop: iosHeightRatio*41,
+                paddingLeft: iosWidthRatio*22,
+                paddingRight: iosWidthRatio*22,
+                paddingBottom: iosHeightRatio*17
             }
         })
     },
@@ -65,114 +91,157 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         ...Platform.select({
             android: {},
-            ios: {
-                height: 128,
-                width: 331
-            }
+            ios: {}
         })
     },
     poster:{
+        borderRadius:6,
+        backgroundColor: 'rgb(216,216,216)',
         ...Platform.select({
-            android:{},
+            android:{
+                height: aosHeightRatio*123,
+                width: aosWidthRatio*96,        
+            },
             ios:{
-                height:128,
-                width:100,
-                borderRadius:6,
-                backgroundColor: 'rgb(216,216,216)'
+                height: iosHeightRatio*128,
+                width: iosWidthRatio*100,
             }
         })
     },
     textBox:{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
         ...Platform.select({
-            android:{},
+            android:{
+                paddingTop: aosHeightRatio*9,
+                paddingBottom: aosHeightRatio*4.3,
+                marginLeft: aosWidthRatio*14.1     
+            },
             ios:{
-                height: 114.3,
-                width: 216.5,
-                paddingTop: 8.9,
-                paddingBottom: 4.8,
-                marginLeft: 14.5
+                paddingTop: iosHeightRatio*8.9,
+                paddingBottom: iosHeightRatio*4.8,
+                marginLeft: iosWidthRatio*14.5
             }
         })
     },
     locationBox: {
         flexDirection: 'row',
         ...Platform.select({
-            android:{},
+            android:{
+                marginTop: aosHeightRatio*9.5
+            },
             ios:{
-                marginTop: 8.7
-            }
-        })
-    },
-    locationIcon:{
-        color:'rgb(234,75,155)',
-        ...Platform.select({
-            android:{},
-            ios:{
-                height:13.3,
-                width:9.3
+                marginTop: iosHeightRatio*8.7
             }
         })
     },
     timeList:{
         display:'flex',
-        flexDirection: 'column',
+        flexDirection: 'row',
         flexWrap:'wrap',
         ...Platform.select({
-            android:{},
+            android:{
+                marginTop: aosHeightRatio*19.4,
+                height: aosHeightRatio*45.7,
+                width: aosWidthRatio*210
+            },
             ios:{
-                marginTop: 18.8,
-                height: 45.7,
-                width: 216.5
+                marginTop: iosHeightRatio*18.8,
+                height: iosHeightRatio*45.7,
+                width: iosWidthRatio*220
             }
         })
     },
     title:{
-        fontSize:21,
         fontWeight: 'bold',
         textAlign:'left',
-        color:'black'
+        color:'black',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*21:20,
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*22:21,
+            }
+        })
     },
     location:{
-        fontSize: 14,
         textAlign:'left',
-        letterSpacing: 0.28,
-        marginLeft: 4.3
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*14:13,
+                letterSpacing: 0.26,
+                marginLeft: aosWidthRatio*4.1,
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*15:14,
+                letterSpacing: 0.28,
+                marginLeft: iosWidthRatio*4.3,
+            }
+        })
     },
     timeListItem: {
-        height: 18.1,
-        width: 48.1,
-        borderRadius: 9,
         backgroundColor: 'rgba(234, 75, 155, 0.13)',
-        fontSize: 13,
         textAlign: 'center',
-        paddingTop: 1.8,
-        letterSpacing: 0.26,
         color:'black',
         overflow:'hidden',
-        marginBottom: 9.6
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio*12,
+                marginBottom: aosHeightRatio*9.2,
+                marginRight: aosWidthRatio*7,
+                paddingTop: aosHeightRatio*1.3,
+                letterSpacing: 0.26,
+                height: aosHeightRatio*17.4,
+                width: aosWidthRatio*46.2,
+                borderRadius: 8.7,
+            },
+            ios:{
+                fontSize: iosWidthRatio*13,
+                marginBottom: iosHeightRatio*9.6,
+                marginRight: iosWidthRatio*6,
+                paddingTop: iosHeightRatio*1.8,
+                letterSpacing: 0.26,
+                height: iosHeightRatio*18.1,
+                width: iosWidthRatio*48.1,
+                borderRadius: 9,
+            }
+        })
     },
     synopsis:{
-        fontSize: 14,
         textAlign: 'left',
-        lineHeight: 21,
-        letterSpacing: 0.28,
-        color:'black'
+        color:'black',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio*13,
+                lineHeight: 21,
+                letterSpacing: 0.26,
+            },
+            ios:{
+                fontSize: iosWidthRatio*16,
+                lineHeight: 21,
+                letterSpacing: 0.28,
+            }
+        })
     },
     scrollBox:{
         backgroundColor: 'rgb(255,232,242)',
         borderRadius: 6,
+        overflow:'hidden',
         ...Platform.select({
-            android:{},
+            android:{
+                height: aosHeightRatio*204,
+                width: aosWidthRatio*318,
+                padding: aosWidthRatio*14,
+                marginTop: aosHeightRatio*15,
+                marginBottom: aosHeightRatio*11
+            },
             ios:{
-                overflow:'hidden',
-                height: 213,
-                width: 331,
-                padding: 14,
-                marginTop: 15,
-                marginBottom:11
+                height: iosHeightRatio*213,
+                width: iosWidthRatio*331,
+                padding: iosWidthRatio*14,
+                marginTop: iosHeightRatio*15,
+                marginBottom: iosHeightRatio*11
             }
         })
     }
