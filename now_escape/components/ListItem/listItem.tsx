@@ -82,11 +82,11 @@ export default function ListItem() {
                 onRequestClose={()=>{
                     setModal(false)
                 }}
-                style={{
-                    display:'flex',
-                    flexDirection:'column-reverse'
-                }}
             >
+                <Pressable 
+                    style={{flex:1}}
+                    onPress={()=>setModal(false)}
+                />                
                 <ListItemDetail escapeID={escapeID}/>
             </Modal>
         </View>
