@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import { Image, View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform} from 'react-native'
+import { Image, View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable} from 'react-native'
 import Button from '../../components/Button/button'
 import Label from "../../components/Label/label";
 import Rigion from "../../components/setting/Rigion/rigion";
@@ -19,6 +19,8 @@ const aosHeightRatio = aosHeight as unknown as number;
 export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+  const [modal, setModal] = useState(false);
+
 
   // const [fontsLoaded] = useFonts({
   //   'Pretendard' : require('now_escape/assets/fonts/Pretendard-Bold.otf'),
@@ -48,12 +50,15 @@ export default function RegionSetting({navigation}) {
               width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
               type={'mainLabel'}
               text={rigion}
-              open={()=>setIsRigionSettingOpen((prevState => !prevState))}
+              open={()=>{
+                setIsRigionSettingOpen((prevState => !prevState))
+                setModal(true)
+            }}
               arrow={true}
             />
-            {isRigionSettingOpen === true
+            {/* {isRigionSettingOpen === true
                 ? <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-                : null}
+                : null} */}
           </View>
           <View style={styles.confirmButton}>
             {rigion !== ""
@@ -71,6 +76,23 @@ export default function RegionSetting({navigation}) {
                 />
             }
           </View>
+          {isRigionSettingOpen === true ? 
+            <Modal 
+                visible={modal} 
+                transparent={true}
+                animationType={'slide'}
+                presentationStyle={'pageSheet'}
+                onRequestClose={()=>{
+                  setModal(false)
+                  setIsRigionSettingOpen((prevState => !prevState))
+                }}
+            >
+                <Pressable 
+                    style={{flex:1}}
+                    onPress={()=>setModal(false)}
+                />
+                <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+            </Modal> : null}
         </View>
       </SafeAreaView>
   )
