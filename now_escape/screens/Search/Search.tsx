@@ -14,13 +14,16 @@ import rigionStore from "../../store/rigionStore";
 import Rigion from "../../components/setting/Rigion/rigion";
 import 'react-native-gesture-handler'
 
-import {fonts, iosWidth, iosHeight} from '../../globalStyles_ios'
-
 import ArrowBackSVG from '../../assets/iconArrowBack'
 import SearchSVG from '../../assets/iconSearchPink'
 
-const currentWidth = iosWidth as unknown as number;
-const currentHeight = iosHeight as unknown as number;
+import {iosWidth, iosHeight} from '../../globalStyles_ios'
+import {aosWidth, aosHeight} from '../../globalStyles_aos'
+
+const iosWidthRatio = iosWidth as unknown as number;
+const iosHeightRatio = iosHeight as unknown as number;
+const aosWidthRatio = aosWidth as unknown as number;
+const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Search({navigation}){
     const {searchText, setSearchText} = searchStore();
@@ -36,29 +39,23 @@ export default function Search({navigation}){
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
             <View style={styles.container}>
-                <View style={styles.rowContainer}>
+                <View style={styles.searchContainer}>
                     <Pressable onPress={()=>{navigation.navigate('Index')}}>
-                        <View style={{marginTop: currentHeight*4.5}}><ArrowBackSVG/></View>
+                        <View style={{marginTop: iosHeightRatio*4.5}}><ArrowBackSVG/></View>
                     </Pressable>
                     <TextInput
                         style={styles.searchInput}
                         value={searchText}
                         onChangeText={(text)=>{setSearchText(text)}}
                     />
-                    <SearchSVG/>
+                    <SearchSVG height={Platform.OS=='ios'?iosHeightRatio*21.1:aosHeightRatio*100000}/>
                 </View>
-                <View style={{
-                    width: currentWidth*300,
-                    height: 1,
-                    marginTop: 8,
-                    marginLeft: 25,
-                    backgroundColor: "#000000",
-                }}></View>
+                <View style={styles.sectionBar}></View>
 
-                <View style={{marginTop: currentHeight*20}}>
+                <View style={{marginTop: iosHeightRatio*20}}>
                     <Label
-                        height={currentHeight*49}
-                        width={currentWidth*341}
+                        height={iosHeightRatio*49}
+                        width={iosWidthRatio*341}
                         borderRadius={10}
                         type={"searchLabel"}
                         icon={'date'}
@@ -68,10 +65,10 @@ export default function Search({navigation}){
                 </View>
                 <Date/>
 
-                <View style={{marginTop: currentHeight*14}}>
+                <View style={{marginTop: iosHeightRatio*14}}>
                     <Label
-                        height={currentHeight*49}
-                        width={currentWidth*341}
+                        height={iosHeightRatio*49}
+                        width={iosWidthRatio*341}
                         borderRadius={10}
                         type={"searchLabel"}
                         icon={'time'}
@@ -83,8 +80,8 @@ export default function Search({navigation}){
 
                 <View style={styles.thirdContainer}>
                     <Label
-                        height={currentHeight*49}
-                        width={currentWidth*165}
+                        height={iosHeightRatio*49}
+                        width={iosWidthRatio*165}
                         borderRadius={10}
                         type={"searchLabel"}
                         text={genre}
@@ -95,8 +92,8 @@ export default function Search({navigation}){
                         arrow='true'
                     />
                     <Label
-                        height={currentHeight*49}
-                        width={currentWidth*165}
+                        height={iosHeightRatio*49}
+                        width={iosWidthRatio*165}
                         borderRadius={10}
                         type={"searchLabel"}
                         text={rigion}
@@ -108,11 +105,11 @@ export default function Search({navigation}){
                         arrow='true'
                     />
                 </View>
-                <View style={{height: currentHeight*70}}>
-                    {isGenreSettingOpen === true
-                        ?<Genre
-                            search={true}
-                            isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}
+                <View style={{marginTop: 11, height: iosHeightRatio*50}}>
+                    {isGenreSettingOpen === true?
+                    <Genre
+                        search={true}
+                        isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}
                         />
                         : null
                     }
@@ -141,15 +138,15 @@ export default function Search({navigation}){
                 <View
                     style={{
                         position: 'absolute',
-                        bottom: currentHeight*17
+                        bottom: 0
                     }}>
                     <Button
                         text={'검색'}
                         active={true}
                         rounded={true}
                         canceled={false}
-                        height={currentHeight*63}
-                        width={currentHeight*341}
+                        height={iosHeightRatio*63}
+                        width={iosHeightRatio*341}
                         onPress={()=>{navigation.navigate('SearchResult')}}
                     />
                 </View>
@@ -167,37 +164,54 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         alignContent: 'center',
+        backgroundColor: 'white',
         ...Platform.select({
             android:{},
             ios:{
-                marginTop: currentHeight*59,
+                paddingTop: iosHeightRatio*10,
             }
         })
     },
     searchInput:{
         display:'flex',
-        width: currentWidth*250,
-        height: currentHeight*30,
-        marginLeft: currentWidth*20,
-        marginRight: currentWidth*20,
         ...Platform.select({
-            android:{},
-            ios:{}
+            android:{
+                
+            },
+            ios:{
+                width: iosWidthRatio*250,
+                height: iosHeightRatio*30,
+                marginLeft: iosWidthRatio*20,
+                marginRight: iosWidthRatio*20,
+            }
         })
     },
-    rowContainer:{
-        width: '100%',
+    searchContainer:{
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    sectionBar: {
+        backgroundColor: "#000000",
+        alignSelf: 'flex-start',
         ...Platform.select({
             android:{},
-            ios:{}
+            ios:{
+                width: iosWidthRatio*300,
+                height: 1,
+                marginTop: iosHeightRatio*9.1,
+                marginLeft: iosWidthRatio*57.7,
+            }
         })
     },
     thirdContainer: {
         flexDirection: 'row',
-        width: currentWidth*341,
         justifyContent: 'space-between',
-        marginTop: currentHeight*17      
-    }
+        ...Platform.select({
+            android:{},
+            ios:{
+                width: iosWidthRatio*341,
+                marginTop: iosHeightRatio*17
+            }
+        }),    
+    },
 })

@@ -1,8 +1,9 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Platform, Modal} from "react-native";
+import {Text, View, StyleSheet, Platform} from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import Button from "../../Button/button";
 import timeStore from "../../../store/timeStore";
+import Modal from "react-native-modal";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -24,7 +25,17 @@ export default function Time(){
             />));
 
     return(
-        <Modal animationType={'slide'} transparent={true} visible={timeVisible} onRequestClose={()=>setTimeVisible(timeVisible)}>
+        <Modal 
+            isVisible={timeVisible}
+            hasBackdrop={true}
+            backdropColor={'black'}
+            backdropOpacity={0.55}
+            onBackdropPress={()=>setTimeVisible(timeVisible)}
+            coverScreen={true}
+            deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
+            deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
+            style={styles.backContainer}
+            >
             <View style={styles.container}>
                 <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
                 <Picker
@@ -61,6 +72,20 @@ export default function Time(){
 }
 
 const styles = StyleSheet.create({
+    backContainer:{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        ...Platform.select({
+            android:{
+                marginTop: aosHeightRatio*169
+  
+            },
+            ios:{
+                marginTop: iosHeightRatio*249
+            }
+        })
+    },
     container:{
         display: 'flex',
         flexDirection: 'column',
@@ -73,16 +98,16 @@ const styles = StyleSheet.create({
             android:{
                 height:aosHeightRatio*302,
                 width:aosWidthRatio*312,
-                marginTop: aosHeightRatio*169,
-                marginLeft: aosWidthRatio*24,
+                // marginTop: aosHeightRatio*169,
+                // marginLeft: aosWidthRatio*24,
                 paddingTop: aosHeightRatio*25,
                 paddingBottom: aosHeightRatio*12,
             },
             ios:{
                 height:iosHeightRatio*285,
                 width:iosWidthRatio*325,
-                marginTop: iosHeightRatio*249,
-                marginLeft: iosWidthRatio*25,
+                // marginTop: iosHeightRatio*249,
+                // marginLeft: iosWidthRatio*25,
                 paddingTop: iosHeightRatio*26,
                 paddingBottom: iosHeightRatio*12,
             }

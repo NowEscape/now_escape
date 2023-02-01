@@ -48,7 +48,7 @@ export default function Label(props) {
         }}>
           <View style={style.search}>
             <View style={{flexDirection: 'row'}}>
-            {/* {icon=== 'date' && <CalenderSVG/>} */}
+            {icon=== 'date' && <CalenderSVG/>}
             {icon=== 'time' && <ClockSVG/>}
             <Text style={style.text}>{props.text}</Text>      
             </View>
