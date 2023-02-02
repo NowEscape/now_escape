@@ -1,5 +1,3 @@
-// import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen'
 import * as Font from 'expo-font'
@@ -32,7 +30,6 @@ export default function App() {
         setAppIsReady(true);
       }
     }
-    
     prepare();
   }, []);
 
@@ -47,7 +44,7 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
           initialRouteName={rigion==''?'RigionSetting':'Index'}
           screenOptions={{
