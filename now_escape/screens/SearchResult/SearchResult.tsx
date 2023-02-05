@@ -41,32 +41,27 @@ export default function SearchResult({navigation}){
             <View style={styles.container}>
                 <View style={styles.rowContainer}>
                     <Pressable onPress={()=>{navigation.navigate('Index')}}>
-                        <View style={{marginTop: iosHeightRatio*4.5}}><ArrowBackSVG/></View>
+                        <View style={{marginTop: Platform.OS==='ios'?iosHeightRatio*4.5:aosHeightRatio*4.4}}><ArrowBackSVG/></View>
                     </Pressable>
                     <TextInput
                         style={styles.searchInput}
                         value={searchText}
                         onChangeText={(text)=>{setSearchText(text)}}
                     />
-                    <SearchSVG/>
+                    <SearchSVG height={Platform.OS==='ios'?iosHeightRatio*21.1:aosHeightRatio*20.4}/>
                 </View>
-                <View style={{
-                    width: iosWidthRatio*300,
-                    height: 1,
-                    marginTop: 8,
-                    marginLeft: 25,
-                    backgroundColor: "#000000",
-                }}></View>
+                <View style={styles.sectionBar}></View>
 
+                <View style={styles.scrollLabelContainer}>
                 <ScrollView
                     horizontal={true}
-                    contentContainerStyle={styles.scrollLabelContainer}
                     showsHorizontalScrollIndicator={false}
-
+                    contentContainerStyle={styles.scrollViewStyle}
                 >
                     <Label
-                        height={iosHeightRatio*31}
-                        width={iosWidthRatio*124}
+                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
+                        width={Platform.OS==='ios'?iosWidthRatio*124:aosWidthRatio*120}
+                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={13}
                         type={"mainLabel"}
                         icon={'date'}
@@ -74,8 +69,9 @@ export default function SearchResult({navigation}){
                         open={()=>{setDateVisible(dateVisible)}}
                     /><Date/>
                     <Label
-                        height={iosHeightRatio*31}
-                        width={iosWidthRatio*107}
+                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
+                        width={Platform.OS==='ios'?iosWidthRatio*107:aosWidthRatio*103}
+                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={13}
                         type={"mainLabel"}
                         icon={'time'}
@@ -83,8 +79,9 @@ export default function SearchResult({navigation}){
                         open={()=>{setTimeVisible(timeVisible)}}
                     /><Time/>
                     <Label
-                        height={iosHeightRatio*31}
-                        width={iosWidthRatio*83}
+                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
+                        width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
+                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={13}
                         type={"mainLabel"}
                         text={genre}
@@ -94,8 +91,9 @@ export default function SearchResult({navigation}){
                         }}
                     />
                     <Label
-                        height={iosHeightRatio*31}
-                        width={iosWidthRatio*90}
+                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
+                        width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
+                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={13}
                         type={"mainLabel"}
                         text={rigion}
@@ -106,10 +104,12 @@ export default function SearchResult({navigation}){
                         }}
                     />
                 </ScrollView>
+                </View>
+
                 <View
                     style={{
-                        width:iosWidthRatio*375,
-                        height: iosHeightRatio*620
+                        width:Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360,
+                        height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
                     <ListItem/>
 
@@ -117,10 +117,11 @@ export default function SearchResult({navigation}){
                         <View
                             style={{
                                 position: 'absolute',
-                                top: iosHeightRatio*11
+                                top: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11
                             }}
                         >
-                            <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/></View> : null}
+                        <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
+                        </View> : null}
                 </View>
                 {isRigionSettingOpen === true ?
                     <Modal
@@ -130,10 +131,8 @@ export default function SearchResult({navigation}){
                         presentationStyle={'pageSheet'}
                         onRequestClose={()=>setModal(false)}
                     >
-                        <Pressable style={{
-                            flex:1,
-                        }}
-                                   onPress={()=>setModal(false)}
+                        <Pressable style={{flex:1}}
+                            onPress={()=>setModal(false)}
                         />
                         <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
                     </Modal> : null}
@@ -149,43 +148,83 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'center',
-        width: iosWidthRatio*375,
-        height: iosHeightRatio*812,
-        // paddingHorizontal:17,
+        // width: iosWidthRatio*375,
+        // height: iosHeightRatio*812,
     },
     rowContainer:{
-        display:"flex",
-        width:iosWidthRatio*375,
+        display:'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        // backgroundColor: 'gray',
         ...Platform.select({
-            android:{},
+            android:{
+                width:aosWidthRatio*360,
+                paddingHorizontal:aosWidthRatio*27.4,
+            },
             ios:{
-                marginTop: iosHeightRatio*18,
+                width:iosWidthRatio*375,
                 paddingHorizontal:iosWidthRatio*28,
-                // paddingVertical: iosHeightRatio*7
             }
         })
     },
     scrollLabelContainer:{
         display:'flex',
         justifyContent: 'flex-start',
-        width:iosWidthRatio*375,
-        height:iosHeightRatio*31,
-        marginTop: iosHeightRatio*16.7,
-        marginBottom: iosHeightRatio*17.3,
-        paddingLeft: 17
+        ...Platform.select({
+            android:{
+                width:aosWidthRatio*360,
+                height:aosHeightRatio*30,
+                marginTop:aosHeightRatio*15.8,
+                marginBottom: aosHeightRatio*2.3,
+            },
+            ios:{
+                width:iosWidthRatio*375,
+                height:iosHeightRatio*31,
+                marginTop: iosHeightRatio*15.8,
+                marginBottom: iosHeightRatio*2.3,
+            }
+        })
+    },
+    scrollViewStyle:{
+        ...Platform.select({
+            android:{
+                marginLeft: aosWidthRatio*17, 
+                paddingRight: aosWidthRatio*17,
+            },
+            ios:{
+                marginLeft: iosWidthRatio*16, 
+                paddingRight: iosWidthRatio*16,
+            }
+        }),
     },
     searchInput:{
         display:'flex',
-        width: iosWidthRatio*250,
-        height: iosHeightRatio*30,
-        marginLeft: iosWidthRatio*20,
-        marginRight: iosWidthRatio*20,
         ...Platform.select({
-            android:{},
-            ios:{}
+            android:{
+                width: aosWidthRatio*250,
+                height: aosHeightRatio*30,
+                marginLeft: aosWidthRatio*20.2,
+            },
+            ios:{
+                width: iosWidthRatio*252.5,
+                height: iosHeightRatio*30,
+                marginLeft: iosWidthRatio*20,
+            }
         })
     },
+    sectionBar:{
+        backgroundColor: "#000000",
+        height: 1,
+        ...Platform.select({
+            android:{
+                width: aosWidthRatio*289.5,
+                marginTop: aosHeightRatio*8.8,
+                marginLeft: aosWidthRatio*20.2,
+            },
+            ios:{
+                width: iosWidthRatio*300,
+                marginTop: iosHeightRatio*8,
+                marginLeft: iosWidthRatio*25,
+            }
+        })
+    }
 })
