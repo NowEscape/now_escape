@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal} from "react-native";
+import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated} from "react-native";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
@@ -7,8 +7,10 @@ import Date from "../../components/setting/Date/date";
 import dateStore from "../../store/dateStore";
 import rigionStore from "../../store/rigionStore";
 import Rigion from "../../components/setting/Rigion/rigion";
+import useInterval from './useInterval';
 import 'react-native-gesture-handler'
-import {useState} from "react";
+import {useState, useRef, useEffect, useMemo} from "react";
+
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -21,9 +23,56 @@ const aosHeightRatio = aosHeight as unknown as number;
 export default function Index({navigation}){
     const {date, setDateVisible, dateVisible} = dateStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const swiperRef = useRef<HTMLDivElement>(null);
+    const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
+    const [loop, setLoop] = useState<any>();
     const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
+    const scrollX = React.useRef(new Animated.Value(0)).current;
 
+    const data = [
+        {
+            key: '1',
+            image: require("../../assets/banner1.png"),
+        },
+        {
+            key: '2',
+            image: require("../../assets/banner2.png"),
+        },
+        {
+            key: '3',
+            image: require("../../assets/banner3.png"),
+        },         
+    ];
+
+    const renderItem = ({item}) => <Image source={item.image} style={{
+        height:iosWidthRatio*168,
+        width:iosWidthRatio*375
+    }}
+    />
+
+    const offset = (iosWidthRatio*375)
+    const snapToOffsets = useMemo(() => Array.from(Array(data.length)).map((_, index) => index * offset),
+    [data],
+    );
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const flatListRef = useRef<FlatList>(null);
+  
+    useEffect(() => {
+      if (currentIndex !== snapToOffsets.length) {
+        console.log(currentIndex)
+        flatListRef.current?.scrollToOffset({
+          animated: true,
+          offset: snapToOffsets[currentIndex],
+        });
+      }
+    }, [currentIndex, snapToOffsets]);
+    useInterval(() => {
+        setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
+      }, 2400);   
+
+
+      
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.container}>
@@ -58,7 +107,25 @@ export default function Index({navigation}){
                         </Pressable>
                     </View>
                 </View>
-                <View style={styles.banner}>{""}</View>
+
+                <View style={styles.banner}>
+                    
+                <Animated.FlatList
+                    ref={flatListRef}
+                    horizontal
+                    renderItem={renderItem}
+                    data={data}
+                    keyExtractor={item => item.key}
+                    snapToOffsets={snapToOffsets}
+                    decelerationRate={'fast'}
+                    scrollEnabled={true}
+                    contentContainerStyle={{width:(iosWidthRatio*375)*3, height:iosHeightRatio*168}}
+                    showsHorizontalScrollIndicator={false}
+                >
+                </Animated.FlatList>
+                </View>
+
+                
                 <ListItem/>
                 {isRigionSettingOpen === true ? 
                 <Modal 
@@ -135,13 +202,14 @@ const styles = StyleSheet.create({
     banner:{
         display:'flex',
         backgroundColor: 'rgb(255,223,232)',
+        // resizeMode: 'center',
         ...Platform.select({
             android:{
                 height:iosWidthRatio*162,
                 width:iosWidthRatio*360               
             },
             ios:{
-                height:iosWidthRatio*168,
+                height:iosHeightRatio*168,
                 width:iosWidthRatio*375
             }
         })
