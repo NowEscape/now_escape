@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, Text, StyleSheet, SafeAreaView, Platform, TextInput, ScrollView} from "react-native";
+import {Image, View, Text, StyleSheet, SafeAreaView, Platform, TextInput, ScrollView,Modal, Pressable} from "react-native";
 import Label from "../../components/Label/label";
 import ListItem from '../../components/ListItem/listItem';
 import 'react-native-gesture-handler'
@@ -15,8 +15,6 @@ import Date from "../../components/setting/Date/date";
 import Time from "../../components/setting/Time/time";
 import Genre from "../../components/setting/Genre/genre";
 import Rigion from "../../components/setting/Rigion/rigion";
-
-import { Modal, Pressable } from 'react-native';
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -85,6 +83,7 @@ export default function SearchResult({navigation}){
                         fontSize={13}
                         type={"mainLabel"}
                         text={genre}
+                        active={isGenreSettingOpen?true:false}
                         open={()=>{
                             setIsGenreSettingOpen((prevState => !prevState))
                             {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
@@ -97,6 +96,7 @@ export default function SearchResult({navigation}){
                         fontSize={13}
                         type={"mainLabel"}
                         text={rigion}
+                        active={isRigionSettingOpen?true:false}
                         open={()=>{
                             setIsRigionSettingOpen((prevState => !prevState))
                             setModal(true)
@@ -128,11 +128,17 @@ export default function SearchResult({navigation}){
                         visible={modal}
                         transparent={true}
                         animationType={'slide'}
-                        presentationStyle={'pageSheet'}
-                        onRequestClose={()=>setModal(false)}
+                        onRequestClose={()=>{
+                            setIsRigionSettingOpen(false)
+                            }
+                        }
                     >
                         <Pressable style={{flex:1}}
-                            onPress={()=>setModal(false)}
+                            onPress={()=>{
+                                setModal(false)
+                                setIsRigionSettingOpen(false)
+                            }
+                        }
                         />
                         <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
                     </Modal> : null}

@@ -82,7 +82,7 @@ export default function ListItem() {
                 visible={modal}
                 transparent={true}
                 animationType={'slide'}
-                presentationStyle={'pageSheet'}
+                // presentationStyle={'pageSheet'}
                 onRequestClose={()=>{
                     setModal(false)
                 }}
