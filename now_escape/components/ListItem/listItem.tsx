@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
@@ -60,6 +60,10 @@ export default function ListItem() {
     const {escapeList, getEscapeList} = escapeListStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
+
+    useEffect(()=>{
+        getEscapeList(escapeList);
+    }, escapeList);
 
     return(
         <View style={styles.container}>

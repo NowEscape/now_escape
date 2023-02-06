@@ -60,7 +60,6 @@ export default function Index({navigation}){
   
     useEffect(() => {
       if (currentIndex !== snapToOffsets.length) {
-        console.log(currentIndex)
         flatListRef.current?.scrollToOffset({
           animated: true,
           offset: snapToOffsets[currentIndex],
