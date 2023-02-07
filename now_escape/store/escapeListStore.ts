@@ -1,5 +1,4 @@
 import create from "zustand";
-import axios from "axios";
 
 interface escapeListContent{
     cafeName: string;
@@ -12,7 +11,11 @@ interface escapeListContent{
         updatedDate?: string,
         themeOpenDate?: string
     };
-    themeDateList: string[];
+    themeDateList: {
+        themeDateId: number,
+        themeTime: string,
+        isOpen: boolean
+    }[];
 }
 
 interface escapeListState{
@@ -20,22 +23,8 @@ interface escapeListState{
     getEscapeList:(escapeList:escapeListContent[])=>void;
 }
 
-function getEscapeListAxios(){
-    let resultData;
-    axios.get('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList')
-        .then((response)=>{
-            console.log(response.data);
-            console.log("getEscapeList success")
-        })
-        .catch((error)=>{
-            console.log('getEscapeList fail error : ', error)
-        })
-    resultData = resultData.map(data=>({
-        cafeName: data.cafeName,
-        theme: data.theme,
-        themeDateList: data.themeDateList
-    }));
-    return resultData;
+const setEscapeListAxios = (escapeList) => {
+    return escapeList;
 }
 
 const escapeListStore = create<escapeListState>((set, get)=>({
@@ -47,16 +36,18 @@ const escapeListStore = create<escapeListState>((set, get)=>({
             themeImageUrl: "",
             genre: {genreId : 0, genreName : "감성"},
         },
-        themeDateList: [
-            "09:00",
-            "10:00",
-            "11:00",
-            "12:00",
-            "13:00"
-        ]
+        themeDateList: [{
+            themeDateId: 1,
+            themeTime: "09:00",
+            isOpen: true
+        }]
     }],
     getEscapeList: (escapeList)=>set((state)=>({
-       escapeList: getEscapeListAxios()
+        escapeList: setEscapeListAxios(escapeList).map((data)=>({
+            cafeName : data.cafeName,
+            theme : data.theme,
+            themeDateList : data.themeDateList
+        }))
     }))
 }))
 

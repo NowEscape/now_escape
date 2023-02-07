@@ -110,6 +110,7 @@ export default function Index({navigation}){
                 <View style={styles.banner}>
                     
                 <Animated.FlatList
+                    key={4}
                     ref={flatListRef}
                     horizontal
                     renderItem={renderItem}
