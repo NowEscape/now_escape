@@ -1,4 +1,4 @@
-import React, {Fragment,useState} from 'react';
+import React, {Fragment,useState,forwardRef, useImperativeHandle,useRef, useEffect} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import CalenderSVG from '../../assets/iconCalendar'
 import ClockSVG from '../../assets/iconClock'
@@ -20,9 +20,16 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
-  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight} = props;
-  const [show, setShow] = useState(true);
-  const [active, setActive] = useState(false);
+  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight,active} = props;
+  // const [active, setActive] = useState(false);
+
+  // const log = () => {
+  //   active?setActive(false):setActive(true)
+  // }
+
+  // useEffect(() => {
+  //   log();
+  // }, [trigger]);
 
   const style = styles(active, width, height, fontSize, marginRight, icon);
 
@@ -31,9 +38,9 @@ export default function Label(props) {
       {type === 'mainLabel' && (
         <TouchableOpacity onPress={()=>{
           {open()}
-          active?setActive(false):setActive(true)
         }}>
-          <View style={style.main}>
+          <View 
+            style={style.main}>
             {icon=== 'date' && <CalenderSVG height={10.8}/>}
             {icon=== 'time' && <ClockSVG height={10.8}/>}
             <Text style={style.text}>{props.text}</Text>
@@ -44,7 +51,6 @@ export default function Label(props) {
       {type === 'searchLabel' && (
         <TouchableOpacity onPress={()=>{
           {open()}
-          active?setActive(false):setActive(true)
         }}>
           <View style={style.search}>
             <View style={{flexDirection: 'row'}}>
