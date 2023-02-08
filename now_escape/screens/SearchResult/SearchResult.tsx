@@ -112,16 +112,17 @@ export default function SearchResult({navigation}){
                         height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
                     <ListItem/>
-
+                    
                     {isGenreSettingOpen === true ?
                         <View
                             style={{
                                 position: 'absolute',
-                                top: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11
+                                top: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11,
                             }}
                         >
-                        <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
-                        </View> : null}
+                            <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
+                        </View>
+                        : null}
                 </View>
                 {isRigionSettingOpen === true ?
                     <Modal
@@ -194,11 +195,11 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{
                 marginLeft: aosWidthRatio*17, 
-                paddingRight: aosWidthRatio*17,
+                paddingRight: aosWidthRatio*23,
             },
             ios:{
                 marginLeft: iosWidthRatio*16, 
-                paddingRight: iosWidthRatio*16,
+                paddingRight: iosWidthRatio*25,
             }
         }),
     },

@@ -44,11 +44,16 @@ export default function ListItemDetail(props){
                         </View>
                     </View>
                 </View>
-                <ScrollView style={styles.scrollBox}>
-                    <Text style={styles.synopsis}>
-                        {escapeList[escapeID].theme.themeDescription}
-                    </Text>
-                </ScrollView>
+                <View style={styles.scrollContainer}>
+                    <ScrollView 
+                        contentContainerStyle={styles.scrollBox}
+                        showsVerticalScrollIndicator={false}
+                        >
+                        <Text style={styles.synopsis}>
+                            {escapeList[escapeID].theme.themeDescription}
+                        </Text>
+                    </ScrollView>
+                </View>
                 <Button 
                     onPress={()=>{}} text={'예약하기'} 
                     active={true} 
@@ -226,24 +231,36 @@ const styles = StyleSheet.create({
             }
         })
     },
-    scrollBox:{
+    scrollContainer:{
+        display:'flex',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
         backgroundColor: 'rgb(255,232,242)',
         borderRadius: 6,
-        overflow:'hidden',
         ...Platform.select({
             android:{
                 height: aosHeightRatio*204,
                 width: aosWidthRatio*318,
-                padding: aosWidthRatio*14,
                 marginTop: aosHeightRatio*15,
                 marginBottom: aosHeightRatio*11
             },
             ios:{
                 height: iosHeightRatio*213,
                 width: iosWidthRatio*331,
-                padding: iosWidthRatio*14,
                 marginTop: iosHeightRatio*15,
                 marginBottom: iosHeightRatio*11
+            }
+        })
+    },
+    scrollBox:{
+        ...Platform.select({
+            android:{
+                padding: aosWidthRatio*14,
+
+            },
+            ios:{
+                padding: iosWidthRatio*14,
+                
             }
         })
     }

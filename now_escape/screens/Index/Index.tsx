@@ -125,8 +125,10 @@ export default function Index({navigation}){
                 </Animated.FlatList>
                 </View>
 
-                
+                <View style={styles.listContainer}>
                 <ListItem/>
+                </View>
+                
                 {isRigionSettingOpen === true ? 
                 <Modal 
                     visible={modal} 
@@ -213,6 +215,19 @@ const styles = StyleSheet.create({
                 width:iosWidthRatio*375
             }
         })
+    },
+    listContainer: {
+        ...Platform.select({
+            android:{
+                height: aosHeightRatio*394,
+                width: aosWidthRatio*360,
+                paddingBottom: aosHeightRatio*15         
+            },
+            ios:{
+                height:iosHeightRatio*556,
+                width:iosWidthRatio*375,
+                paddingBottom: iosHeightRatio*15
+            }
+        })
     }
-
 })

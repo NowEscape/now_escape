@@ -89,7 +89,7 @@ export default function ListItem() {
         return()=>{
             completed = true;
         };
-    }, escapeList);
+    }, []);
 
     return(
         <View style={styles.container}>
