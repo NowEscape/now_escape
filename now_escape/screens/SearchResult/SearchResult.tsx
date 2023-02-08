@@ -25,7 +25,7 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function SearchResult({navigation}){
-    const {searchText, setSearchText} = searchStore();
+    const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
     const {rigion} = rigionStore();
@@ -111,7 +111,7 @@ export default function SearchResult({navigation}){
                         width:Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360,
                         height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
-                    <ListItem/>
+                    <ListItem page={'searchResult'}/>
                     
                     {isGenreSettingOpen === true ?
                         <View

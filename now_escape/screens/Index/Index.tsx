@@ -126,7 +126,7 @@ export default function Index({navigation}){
                 </View>
 
                 <View style={styles.listContainer}>
-                <ListItem/>
+                <ListItem page={'Index'}/>
                 </View>
                 
                 {isRigionSettingOpen === true ? 

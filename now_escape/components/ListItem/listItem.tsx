@@ -1,6 +1,7 @@
 import React, {Fragment, useState, useEffect} from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
+import _ from "lodash";
 import LocationSVG from '../../assets/iconLocation'
 
 import ListItemDetail from "../ListItemDetail/listItemDetail";
@@ -9,6 +10,7 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
 import axios from "axios";
+import searchStore from "../../store/searchStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -67,29 +69,48 @@ const RenderTimeList = ({themeDateListItem}) => {
         <View>
             {
                 themeDateListItem.isOpen ?
-                    <Text style={styles.timeListItem}>{themeDateListItem.themeTime}</Text>:
+                    <Text style={styles.timeListItem}>{_.split(themeDateListItem.themeTime, ' ', 2)[1]}</Text>:
                     null
             }
         </View>
     );
 }
 
-export default function ListItem() {
+export default function ListItem({page}) {
     const {escapeList, getEscapeList} = escapeListStore();
+    const {searchData} = searchStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
 
     useEffect(()=>{
         let completed = false;
-        async function get(){
-            const response = await axios.get('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList')
-            if(!completed) getEscapeList(response.data);
+        async function getList(){
+            if(page==='searchResult'){
+                const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+                    {
+                        region1: searchData.region1,
+                        region2: searchData.region2,
+                        searchWord: searchData.searchWord,
+                        genreName: searchData.genreName,
+                        themeTime: searchData.themeTime,
+                    })
+                if(!completed) getEscapeList(response.data);
+                console.log(searchData);
+            }else{
+                const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',{
+                    region1: searchData.region1,
+                    region2: searchData.region2,
+                    themeTime: searchData.themeTime,
+                })
+                if(!completed) getEscapeList(response.data);
+                console.log(searchData);
+            }
         }
-        get();
+        getList();
         return()=>{
             completed = true;
         };
-    }, []);
+    }, [searchData.searchWord, searchData.region1, searchData.region2, searchData.genreName, searchData.themeTime]);
 
     return(
         <View style={styles.container}>

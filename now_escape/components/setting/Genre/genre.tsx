@@ -4,6 +4,12 @@ import genreStore from "../../../store/genreStore";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+import dateStore from "../../../store/dateStore";
+import searchStore from "../../../store/searchStore";
+import timeStore from "../../../store/timeStore";
+import rigionStore from "../../../store/rigionStore";
+import _ from "lodash";
+import {format} from "date-fns";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -30,7 +36,6 @@ export default function Genre(props:genrePropsType){
                 }}>
                 <Text style={styles(genreList[index],search).text}>{item}</Text>
             </Pressable>
-
         );
     }
 

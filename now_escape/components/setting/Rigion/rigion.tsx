@@ -7,7 +7,7 @@ import { useFonts } from 'expo-font';
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
-
+import genreStore from "../../../store/genreStore";
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
@@ -17,6 +17,7 @@ export default function Rigion(props){
   const {rigion, rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
   const {isOpen} = props;
+  const {setGenreValue, genreListName} = genreStore();
 
   const renderRigionItem = ({item, index}:{item:any, index:number}) => {
       return(
@@ -24,6 +25,7 @@ export default function Rigion(props){
               onPress={()=>{
                 setRigionList(rigionList,currentRigionIdx,index);
                 setRigion(rigionName,rigionListString,currentRigionIdx,index);
+                  setGenreValue(genreListName, index);
                 isOpen();
               }}
           >

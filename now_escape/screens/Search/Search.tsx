@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal, Pressable} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import _ from "lodash";
+import {format} from 'date-fns';
 import Label from "../../components/Label/label";
 import Button from "../../components/Button/button";
 import searchStore from "../../store/searchStore";
@@ -19,6 +21,8 @@ import SearchSVG from '../../assets/iconSearchPink'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
+import axios from "axios";
+import escapeListStore from "../../store/escapeListStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -26,7 +30,8 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Search({navigation}){
-    const {searchText, setSearchText} = searchStore();
+    const {searchData, setSearchData, searchText, setSearchText} = searchStore();
+    const {getEscapeList} = escapeListStore();
     const {genre} = genreStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
@@ -34,7 +39,6 @@ export default function Search({navigation}){
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
-
 
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
@@ -64,7 +68,6 @@ export default function Search({navigation}){
                     />
                 </View>
                 <Date/>
-
                 <View style={{marginTop: iosHeightRatio*14}}>
                     <Label
                         height={iosHeightRatio*49}
@@ -77,7 +80,6 @@ export default function Search({navigation}){
                     />
                 </View>
                 <Time/>
-
                 <View style={styles.thirdContainer}>
                     <Label
                         height={iosHeightRatio*49}
@@ -147,7 +149,16 @@ export default function Search({navigation}){
                         canceled={false}
                         height={iosHeightRatio*63}
                         width={iosHeightRatio*341}
-                        onPress={()=>{navigation.navigate('SearchResult')}}
+                        onPress={()=>{
+                            navigation.navigate('SearchResult');
+                            setSearchData({
+                                region1: _.split(rigion, ' ', 2)[0],
+                                region2: _.split(rigion, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                            });
+                        }}
                     />
                 </View>
             </View>
