@@ -1,20 +1,35 @@
 import create from "zustand";
-import _ from "lodash";
+
+interface searchDataContent{
+    region1: string;
+    region2: string;
+    searchWord: string;
+    genreName: string;
+    themeTime: string;
+}
 
 interface searchState{
     searchText: string;
-    setSearchText: (searchInput:string) => void;
+    setSearchText: (searchText:string) => void;
+    searchData: searchDataContent;
+    setSearchData: (searchInput:searchDataContent) => void;
 }
 
 const searchStore = create<searchState>((set)=>({
     searchText: '',
-    setSearchText: (searchInput) => set((state)=>({
-        searchText: settingSearch(searchInput)
+    setSearchText: (searchText)=>set((state)=>({
+        searchText: searchText
+    })),
+    searchData: {
+        region1: '',
+        region2: '',
+        searchWord: '',
+        genreName: '',
+        themeTime: '',
+    },
+    setSearchData: (searchInput) => set((state)=>({
+        searchData: searchInput
     }))
 }))
-
-function settingSearch(searchInput:string){
-    return searchInput;
-}
 
 export default searchStore;

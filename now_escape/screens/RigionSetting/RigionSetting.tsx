@@ -10,6 +10,9 @@ import 'react-native-gesture-handler'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
+import _ from "lodash";
+import {format} from "date-fns";
+import searchStore from "../../store/searchStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -20,6 +23,7 @@ export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
   const [modal, setModal] = useState(false);
+  const {setSearchData} = searchStore();
 
 
   // const [fontsLoaded] = useFonts({
@@ -67,7 +71,16 @@ export default function RegionSetting({navigation}) {
                     height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
                     width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
                     active={true}
-                    onPress={()=>{navigation.navigate('Index')}}
+                    onPress={()=>{{
+                      navigation.navigate('Index');
+                      setSearchData({
+                        region1: _.split(rigion, ' ', 2)[0],
+                        region2: _.split(rigion, ' ', 2)[1],
+                        searchWord: '',
+                        genreName: '',
+                        themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + '09:00'
+                      });
+                    }}}
                 />
                 :<Button
                     text="시작하기"

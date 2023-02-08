@@ -7,6 +7,12 @@ import Modal from "react-native-modal";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+import _ from "lodash";
+import {format} from "date-fns";
+import genreStore from "../../../store/genreStore";
+import searchStore from "../../../store/searchStore";
+import timeStore from "../../../store/timeStore";
+import rigionStore from "../../../store/rigionStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -15,6 +21,11 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Date(){
     const {date, setDate, dateVisible, setDateVisible} = dateStore();
+    const {genre} = genreStore();
+    const {setSearchData, searchText} = searchStore();
+    const {time} = timeStore();
+    const {rigion} = rigionStore();
+
 
     return(
         <Modal 
@@ -52,7 +63,16 @@ export default function Date(){
                     canceled={false} 
                     height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
                     width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
-                    onPress={()=>setDateVisible(dateVisible)}/>
+                    onPress={()=>{
+                        setDateVisible(dateVisible);
+                        setSearchData({
+                            region1: _.split(rigion, ' ', 2)[0],
+                            region2: _.split(rigion, ' ', 2)[1],
+                            searchWord: searchText,
+                            genreName: genre,
+                            themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                        });
+                    }}/>
             </View>
         </View>
     </Modal>
