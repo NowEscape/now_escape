@@ -14,7 +14,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 const renderItem = ({item}) => {
     return(
-        <Text style={styles.timeListItem}>{item}</Text>
+        <Text style={styles.timeListItem}>{item.themeTime}</Text>
     );
 }
 
@@ -33,11 +33,13 @@ export default function ListItemDetail(props){
                             <Text style={styles.location}>{escapeList[escapeID].cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
-                            <FlatList data={escapeList[escapeID].themeDateList} 
-                            renderItem={renderItem} 
-                            keyExtractor={(item) => String(item.index)} 
-                            numColumns={1} 
-                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
+                            <FlatList
+                                key={2}
+                                data={escapeList[escapeID].themeDateList}
+                                renderItem={renderItem}
+                                keyExtractor={(item) => item.themeDateId}
+                                numColumns={1}
+                                contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
                         />
                         </View>
                     </View>

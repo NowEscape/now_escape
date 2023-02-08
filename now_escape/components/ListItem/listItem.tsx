@@ -8,6 +8,8 @@ import ListItemDetail from "../ListItemDetail/listItemDetail";
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
+import axios from "axios";
+
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
@@ -23,7 +25,7 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                 }}
             >
                 <View style={styles.itemContainer}>
-                    <Image style={styles.poster} source={theme.themeImageUrl}/>
+                    <Image style={styles.poster} source={{uri:theme.themeImageUrl}}/>
                     <View style={styles.textBox}>
                         <Text style={styles.textTitle}>{theme.themeName}</Text>
                         <View style={styles.locationBox}>
@@ -31,14 +33,26 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                             <Text style={styles.textLocation}>{cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
-                            <FlatList
-                                data={themeDateList}
-                                renderItem={({index})=><RenderTimeList
-                                    themeDateListItem = {themeDateList[index]}
-                                />}
-                                keyExtractor={(item) => String(item.index)}
-                                numColumns={Math.ceil(themeDateList.length / 2)}
-                            />
+                            {themeDateList.length == 2 ?
+                                <FlatList
+                                    key={0}
+                                    data={themeDateList}
+                                    renderItem={({index})=><RenderTimeList
+                                        themeDateListItem = {themeDateList[index]}
+                                    />}
+                                    keyExtractor={(item) => item.themeDateId}
+                                    numColumns={1}
+                                /> :
+                                <FlatList
+                                    key={1}
+                                    data={themeDateList}
+                                    renderItem={({index})=><RenderTimeList
+                                        themeDateListItem = {themeDateList[index]}
+                                    />}
+                                    keyExtractor={(item) => item.themeDateId}
+                                    numColumns={4}
+                                />
+                            }
                         </View>
                     </View>
                 </View>
@@ -51,7 +65,11 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
 const RenderTimeList = ({themeDateListItem}) => {
     return(
         <View>
-            <Text style={styles.timeListItem}>{themeDateListItem}</Text>
+            {
+                themeDateListItem.isOpen ?
+                    <Text style={styles.timeListItem}>{themeDateListItem.themeTime}</Text>:
+                    null
+            }
         </View>
     );
 }
@@ -62,7 +80,15 @@ export default function ListItem() {
     const [escapeID, setEscapeID] = useState(0);
 
     useEffect(()=>{
-        getEscapeList(escapeList);
+        let completed = false;
+        async function get(){
+            const response = await axios.get('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList')
+            if(!completed) getEscapeList(response.data);
+        }
+        get();
+        return()=>{
+            completed = true;
+        };
     }, escapeList);
 
     return(
@@ -222,6 +248,8 @@ const styles = StyleSheet.create({
         },
         timeListItem: {
             display:'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
             backgroundColor: 'rgba(234, 75, 155, 0.13)',
             textAlign: 'center',
             color: 'black',
