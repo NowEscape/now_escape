@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, StyleSheet, FlatList, Platform, Pressable} from "react-native";
+import {Text, StyleSheet, FlatList, Platform, Pressable, View} from "react-native";
 import genreStore from "../../../store/genreStore";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
@@ -35,33 +35,44 @@ export default function Genre(props:genrePropsType){
     }
 
     return(
-        <FlatList
-                style={styles(0, search).container}
+        <View style={styles(0, search).container}>
+            <FlatList
                 data={genreListName}
                 renderItem={renderItem}
                 keyExtractor={(item, index)=> String(index)}
                 horizontal={true}
-        />
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles(0, search).flatListStyle}
+            />
+        </View>
     );
 }
 
 const styles = (selected, search) => StyleSheet.create({
     container:{
         display:'flex',
-        flexDirection: 'row',
-        width: iosWidthRatio*375,
+        justifyContent: 'flex-start',
         zIndex:2,
         backgroundColor: search?'rgb(255,232,242)':'rgba(254,254,254,0.9)',
         ...Platform.select({
             android: {
-                height: 48,
-                paddingHorizontal: "40dp",
-                paddingVertical: "16dp",
+                height: aosHeightRatio*48,
             },
             ios: {
                 height: iosHeightRatio*50,
+            }
+        })
+    },
+    flatListStyle:{
+        ...Platform.select({
+            android: {
+                paddingTop: aosHeightRatio*16,
+                paddingHorizontal: aosWidthRatio*35,
+
+            },
+            ios: {
+                paddingTop: iosHeightRatio*17,
                 paddingHorizontal: iosWidthRatio*35,
-                paddingVertical: iosHeightRatio*17
             }
         })
     },
@@ -79,6 +90,6 @@ const styles = (selected, search) => StyleSheet.create({
                 fontSize: iosHeightRatio<1?iosHeightRatio*16:14,
                 fontWeight: 'normal'
             }
-})
-}
+        })
+    }
 })
