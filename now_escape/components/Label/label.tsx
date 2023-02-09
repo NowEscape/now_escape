@@ -24,11 +24,6 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
   const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight,active} = props;
-  const {date} = dateStore();
-  const {genre} = genreStore();
-  const {setSearchData, searchText} = searchStore();
-  const {time} = timeStore();
-  const {rigion} = rigionStore();
   // const [active, setActive] = useState(false);
 
   // const log = () => {
@@ -44,16 +39,7 @@ export default function Label(props) {
   return (
     <Fragment>
       {type === 'mainLabel' && (
-        <TouchableOpacity onPress={()=>{
-          setSearchData({
-            region1: _.split(rigion, ' ', 2)[0],
-            region2: _.split(rigion, ' ', 2)[1],
-            searchWord: searchText,
-            genreName: genre,
-            themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
-          });
-          {open()}
-        }}>
+        <TouchableOpacity onPress={()=>{{open()}}}>
           <View 
             style={style.main}>
             {icon=== 'date' && <CalenderSVG height={10.8}/>}

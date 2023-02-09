@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useCallback} from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
 import _ from "lodash";
@@ -95,7 +95,6 @@ export default function ListItem({page}) {
                         themeTime: searchData.themeTime,
                     })
                 if(!completed) getEscapeList(response.data);
-                console.log(searchData);
             }else{
                 const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',{
                     region1: searchData.region1,
@@ -103,14 +102,13 @@ export default function ListItem({page}) {
                     themeTime: searchData.themeTime,
                 })
                 if(!completed) getEscapeList(response.data);
-                console.log(searchData);
             }
         }
         getList();
         return()=>{
             completed = true;
         };
-    }, [searchData.searchWord, searchData.region1, searchData.region2, searchData.genreName, searchData.themeTime]);
+    },[JSON.stringify(searchData)])
 
     return(
         <View style={styles.container}>
