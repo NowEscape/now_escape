@@ -97,15 +97,18 @@ const styles = (selected, search) => StyleSheet.create({
         display:'flex',
         color: selected? 'rgb(234,75,155)':'black',
         textAlign: 'center',
-        height: iosHeightRatio*50,
+        fontWeight: 'normal',
         marginHorizontal: 8,
         ...Platform.select({
             android:{
-                fontSize: 13
+                height: aosHeightRatio*48,
+                fontSize: aosHeightRatio<1?aosHeightRatio*15:13,
+                lineHeight: aosHeightRatio<1?aosHeightRatio*15:13,
              },
             ios:{
+                height: iosHeightRatio*50,
                 fontSize: iosHeightRatio<1?iosHeightRatio*16:14,
-                fontWeight: 'normal'
+                lineHeight: iosHeightRatio<1?iosHeightRatio*16:14,
             }
         })
     }
