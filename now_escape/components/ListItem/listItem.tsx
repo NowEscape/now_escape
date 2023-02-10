@@ -9,7 +9,6 @@ import ListItemDetail from "../ListItemDetail/listItemDetail";
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
-import axios from "axios";
 import searchStore from "../../store/searchStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
@@ -76,39 +75,11 @@ const RenderTimeList = ({themeDateListItem}) => {
     );
 }
 
-export default function ListItem({page}) {
+export default function ListItem() {
     const {escapeList, getEscapeList} = escapeListStore();
     const {searchData} = searchStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
-
-    useEffect(()=>{
-        let completed = false;
-        async function getList(){
-            if(page==='searchResult'){
-                const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
-                    {
-                        region1: searchData.region1,
-                        region2: searchData.region2,
-                        searchWord: searchData.searchWord,
-                        genreName: searchData.genreName,
-                        themeTime: searchData.themeTime,
-                    })
-                if(!completed) getEscapeList(response.data);
-            }else{
-                const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',{
-                    region1: searchData.region1,
-                    region2: searchData.region2,
-                    themeTime: searchData.themeTime,
-                })
-                if(!completed) getEscapeList(response.data);
-            }
-        }
-        getList();
-        return()=>{
-            completed = true;
-        };
-    },[JSON.stringify(searchData)])
 
     return(
         <View style={styles.container}>

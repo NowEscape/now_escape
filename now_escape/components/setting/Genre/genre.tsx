@@ -25,6 +25,11 @@ interface genrePropsType {
 export default function Genre(props:genrePropsType){
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search, isOpen} = props;
+    const {setSearchData, searchText} = searchStore();
+    const {date} = dateStore();
+    const {genre, } = genreStore();
+    const {time} = timeStore();
+    const {rigion} = rigionStore();
 
     const renderItem = ({item, index}:{item:any, index:number}) => {
         const search = true;
@@ -32,6 +37,13 @@ export default function Genre(props:genrePropsType){
             <Pressable onPress={()=>
                 {setGenreList(genreList, index);
                 setGenreValue(genreListName, index);
+                setSearchData({
+                    region1: _.split(rigion, ' ', 2)[0],
+                    region2: _.split(rigion, ' ', 2)[1],
+                    searchWord: searchText,
+                    genreName: genreListName[index],
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                });
                 isOpen();
                 }}>
                 <Text style={styles(genreList[index],search).text}>{item}</Text>
