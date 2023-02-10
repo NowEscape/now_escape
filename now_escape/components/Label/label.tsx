@@ -23,9 +23,9 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
-  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight, active} = props;
+  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight, active, bold} = props;
 
-  const style = styles(active, width, height, fontSize, marginRight, icon);
+  const style = styles(active, width, height, fontSize, marginRight, icon, bold);
 
   return (
     <Fragment>
@@ -65,7 +65,7 @@ export default function Label(props) {
   );
 }
 
-const styles = (active, width, height, fontSize, marginRight, icon) => StyleSheet.create({
+const styles = (active, width, height, fontSize, marginRight, icon, bold) => StyleSheet.create({
   region: {
     width: width,
     height: height,
@@ -124,7 +124,7 @@ const styles = (active, width, height, fontSize, marginRight, icon) => StyleShee
   },
   text: {
     fontSize: fontSize?iosWidthRatio*fontSize:17,
-    fontWeight: 'normal',
+    fontWeight: bold?'bold':'normal',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
