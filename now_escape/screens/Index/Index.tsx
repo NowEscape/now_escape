@@ -82,6 +82,7 @@ export default function Index({navigation}){
                         width={Platform.OS==='ios'?iosWidthRatio*130:aosWidthRatio*125}
                         type={'mainLabel'}
                         fontSize={15}
+                        bold={true}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
                         text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
                         open={()=>{setDateVisible(dateVisible)}}
@@ -92,6 +93,7 @@ export default function Index({navigation}){
                         width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
                         type={'mainLabel'}
                         fontSize={15}
+                        bold={true}
                         text={rigion}
                         open={()=>{
                             setIsRigionSettingOpen((prevState => !prevState))
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'flex-start',
+        backgroundColor: '#ffffff',
         ...Platform.select({
             android:{
                 width: aosWidthRatio*360,
