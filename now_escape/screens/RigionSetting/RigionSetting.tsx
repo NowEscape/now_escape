@@ -51,46 +51,43 @@ export default function RegionSetting({navigation}) {
             <Label
               height={Platform.OS==='ios'?iosHeightRatio*54:aosHeightRatio*51}
               width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
-              type={'mainLabel'}
-              text={rigion}
+              type={'regionSetting'}
+              text={rigion?rigion:'지역'}
               open={()=>{
                 setIsRigionSettingOpen((prevState => !prevState))
                 setModal(true)
             }}
               arrow={true}
             />
-            {/* {isRigionSettingOpen === true
-                ? <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-                : null} */}
           </View>
           <View style={styles.confirmButton}>
             {rigion !== ""
-                ?<Button
-                    text="시작하기"
-                    height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
-                    width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
-                    active={true}
-                    onPress={()=>{{
-                      navigation.navigate('Index');
-                    }}}
-                />
-                :<Button
-                    text="시작하기"
-                    height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
-                    width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
-                />
+              ?<Button
+                  text="시작하기"
+                  height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
+                  width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
+                  active={true}
+                  onPress={()=>{{
+                    navigation.navigate('Index');
+                  }}}
+              />
+              :<Button
+                  text="시작하기"
+                  height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
+                  width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
+              />
             }
           </View>
           {isRigionSettingOpen === true ? 
             <Modal 
-                visible={modal} 
-                transparent={true}
-                animationType={'slide'}
-                presentationStyle={'pageSheet'}
-                onRequestClose={()=>{
-                  setModal(false)
-                  setIsRigionSettingOpen((prevState => !prevState))
-                }}
+              visible={modal} 
+              transparent={true}
+              animationType={'slide'}
+              presentationStyle={'pageSheet'}
+              onRequestClose={()=>{
+                setModal(false)
+                setIsRigionSettingOpen((prevState => !prevState))
+              }}
             >
                 <Pressable 
                     style={{flex:1}}
@@ -116,7 +113,7 @@ const styles = StyleSheet.create({
       },
       ios:{
         width: iosWidthRatio*375,
-        height: iosHeightRatio*812
+        height: iosHeightRatio*812,
       }
   })
   },

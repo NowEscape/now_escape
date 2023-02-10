@@ -1,5 +1,5 @@
 import React, {Fragment,useState,forwardRef, useImperativeHandle,useRef, useEffect} from 'react';
-import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import CalenderSVG from '../../assets/iconCalendar'
 import ClockSVG from '../../assets/iconClock'
 import ArrowUpSVG from '../../assets/iconArrowUp'
@@ -23,29 +23,27 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
-  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight,active} = props;
-  // const [active, setActive] = useState(false);
-
-  // const log = () => {
-  //   active?setActive(false):setActive(true)
-  // }
-
-  // useEffect(() => {
-  //   log();
-  // }, [trigger]);
+  const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight, active} = props;
 
   const style = styles(active, width, height, fontSize, marginRight, icon);
 
   return (
     <Fragment>
+      {type === 'regionSetting' && (
+        <TouchableOpacity onPress={()=>{{open()}}}>
+          <View style={style.region}>
+            <Text style={style.text}>{props.text}</Text>
+            <TriangleDownSVG height={iosHeightRatio*13}/>
+          </View>
+        </TouchableOpacity>
+      )}      
       {type === 'mainLabel' && (
         <TouchableOpacity onPress={()=>{{open()}}}>
-          <View 
-            style={style.main}>
+          <View style={style.main}>
             {icon=== 'date' && <CalenderSVG height={10.8}/>}
             {icon=== 'time' && <ClockSVG height={10.8}/>}
             <Text style={style.text}>{props.text}</Text>
-            { arrow && <TriangleDownSVG /> }
+            { arrow && <TriangleDownSVG height={iosHeightRatio*9}/> }
           </View>
         </TouchableOpacity>
       )}
@@ -68,6 +66,26 @@ export default function Label(props) {
 }
 
 const styles = (active, width, height, fontSize, marginRight, icon) => StyleSheet.create({
+  region: {
+    width: width,
+    height: height,
+    borderRadius: 10,
+    backgroundColor: active?'#ffd2e6':'rgba(234, 75, 155, 0.13)',
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    ...Platform.select({
+      android:{
+        paddingLeft: aosWidthRatio*25.5,
+        paddingRight: aosWidthRatio*20,
+      },
+      ios:{
+        paddingLeft: iosWidthRatio*26.3,
+        paddingRight: iosWidthRatio*21,
+      }
+    }),
+  },
   main: {
     width: width,
     height: height,
@@ -77,8 +95,8 @@ const styles = (active, width, height, fontSize, marginRight, icon) => StyleShee
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: icon?'flex-start':'space-between',
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingLeft: iosWidthRatio*17,
+    paddingRight: iosWidthRatio*11,
     marginRight: marginRight?marginRight:0
   },
   search: {
@@ -111,6 +129,6 @@ const styles = (active, width, height, fontSize, marginRight, icon) => StyleShee
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    paddingLeft: icon?iosWidthRatio*10:2,
+    // paddingLeft: icon?iosWidthRatio*10:2,
   },
 })
