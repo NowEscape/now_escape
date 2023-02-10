@@ -63,7 +63,7 @@ export default function Search({navigation}){
                         borderRadius={10}
                         type={"searchLabel"}
                         icon={'date'}
-                        text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
+                        text={ String(format(date, 'yyyy.MM.dd'))}
                         open={()=>{setDateVisible(dateVisible)}}
                     />
                 </View>
@@ -151,13 +151,6 @@ export default function Search({navigation}){
                         width={iosHeightRatio*341}
                         onPress={()=>{
                             navigation.navigate('SearchResult');
-                            setSearchData({
-                                region1: _.split(rigion, ' ', 2)[0],
-                                region2: _.split(rigion, ' ', 2)[1],
-                                searchWord: searchText,
-                                genreName: genre,
-                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
-                            });
                         }}
                     />
                 </View>

@@ -10,7 +10,7 @@ interface genreState{
 }
 
 const genreStore = create<genreState>((set)=>({
-    genre: '전체 장르',
+    genre: '전체장르',
     genreList: [true, false, false, false, false, false, false, false, false],
     genreListName : ["전체장르","감성","로맨스","공포","SF","추리","19금","기타"],
     setGenreList: (genreList, genreIdx)=>set((state)=>({

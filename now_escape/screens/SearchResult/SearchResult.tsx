@@ -1,4 +1,6 @@
 import * as React from 'react';
+import axios from "axios";
+import {useState, useRef, useEffect, useMemo} from "react";
 import {Image, View, Text, StyleSheet, SafeAreaView, Platform, TextInput, ScrollView,Modal, Pressable} from "react-native";
 import Label from "../../components/Label/label";
 import ListItem from '../../components/ListItem/listItem';
@@ -10,7 +12,6 @@ import timeStore from "../../store/timeStore";
 import dateStore from "../../store/dateStore";
 import rigionStore from "../../store/rigionStore";
 import genreStore from "../../store/genreStore";
-import {useState} from "react";
 import Date from "../../components/setting/Date/date";
 import Time from "../../components/setting/Time/time";
 import Genre from "../../components/setting/Genre/genre";
@@ -18,6 +19,8 @@ import Rigion from "../../components/setting/Rigion/rigion";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
+import {format} from "date-fns";
+import escapeListStore from "../../store/escapeListStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -29,10 +32,30 @@ export default function SearchResult({navigation}){
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
     const {rigion} = rigionStore();
+    const {escapeList, getEscapeList} = escapeListStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
+
+    useEffect(()=>{
+        let completed = false;
+        async function getList(){
+            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+                {
+                    region1: searchData.region1,
+                    region2: searchData.region2,
+                    searchWord: searchData.searchWord,
+                    genreName: searchData.genreName,
+                    themeTime: searchData.themeTime,
+                })
+            if(!completed) getEscapeList(response.data);
+        }
+        getList();
+        return()=>{
+            completed = true;
+        };
+    },[JSON.stringify(searchData)])
 
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -63,7 +86,7 @@ export default function SearchResult({navigation}){
                         fontSize={13}
                         type={"mainLabel"}
                         icon={'date'}
-                        text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
+                        text={String(format(date, 'yyyy.MM.dd'))}
                         open={()=>{setDateVisible(dateVisible)}}
                     /><Date/>
                     <Label
@@ -111,7 +134,7 @@ export default function SearchResult({navigation}){
                         width:Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360,
                         height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
-                    <ListItem page={'searchResult'}/>
+                    <ListItem/>
                     
                     {isGenreSettingOpen === true ?
                         <View

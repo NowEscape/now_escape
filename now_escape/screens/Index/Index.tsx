@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated} from "react-native";
+import axios from "axios";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
@@ -14,6 +15,9 @@ import {useState, useRef, useEffect, useMemo} from "react";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
+import {format} from "date-fns";
+import searchStore from "../../store/searchStore";
+import escapeListStore from "../../store/escapeListStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -22,7 +26,9 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Index({navigation}){
     const {date, setDateVisible, dateVisible} = dateStore();
+    const {searchData} = searchStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const {escapeList, getEscapeList} = escapeListStore();
     const swiperRef = useRef<HTMLDivElement>(null);
     const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
     const [loop, setLoop] = useState<any>();
@@ -57,7 +63,7 @@ export default function Index({navigation}){
     );
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef<FlatList>(null);
-  
+
     useEffect(() => {
       if (currentIndex !== snapToOffsets.length) {
         flatListRef.current?.scrollToOffset({
@@ -65,10 +71,27 @@ export default function Index({navigation}){
           offset: snapToOffsets[currentIndex],
         });
       }
-    }, [currentIndex, snapToOffsets]);
+        let completed = false;
+        async function getList(){
+            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+                {
+                    region1: searchData.region1,
+                    region2: searchData.region2,
+                    searchWord: "",
+                    genreName: "",
+                    themeTime: searchData.themeTime,
+                })
+            if(!completed) getEscapeList(response.data);
+        }
+        getList();
+        return()=>{
+            completed = true;
+        };
+
+    }, [currentIndex, snapToOffsets, JSON.stringify(searchData)]);
     useInterval(() => {
         setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
-      }, 2400);   
+      }, 2400);
 
 
       
@@ -84,7 +107,7 @@ export default function Index({navigation}){
                         fontSize={15}
                         bold={true}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
-                        text={ String(date.getFullYear() + '.' + date.getMonth() + 1 + '.'+ date.getDate())}
+                        text={ String(format(date, 'yyyy.MM.dd'))}
                         open={()=>{setDateVisible(dateVisible)}}
                         arrow={true}
                     /><Date/>
@@ -128,7 +151,7 @@ export default function Index({navigation}){
                 </View>
 
                 <View style={styles.listContainer}>
-                <ListItem page={'Index'}/>
+                <ListItem/>
                 </View>
                 
                 {isRigionSettingOpen === true ? 

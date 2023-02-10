@@ -1,5 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Platform, Pressable} from "react-native";
+import {useState} from 'react';
+import {Text, View, StyleSheet, Platform} from "react-native";
 import dateStore from "../../../store/dateStore";
 import Button from "../../Button/button";
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -25,6 +26,7 @@ export default function Date(){
     const {setSearchData, searchText} = searchStore();
     const {time} = timeStore();
     const {rigion} = rigionStore();
+    const [currentDate, setCurrentDate] = useState(date);
 
 
     return(
@@ -44,8 +46,8 @@ export default function Date(){
             <DateTimePicker
                 style={styles.picker}
                 mode={'date'}
-                value={date}
-                onChange={(event, date)=>{setDate(date)}}
+                value={currentDate}
+                onChange={(event, date)=>setCurrentDate(date)}
             />
             <View style={styles.buttonBox}>
                 <Button 
@@ -64,14 +66,15 @@ export default function Date(){
                     height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
                     width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
                     onPress={()=>{
-                        setDateVisible(dateVisible);
+                        setDate(currentDate);
                         setSearchData({
                             region1: _.split(rigion, ' ', 2)[0],
                             region2: _.split(rigion, ' ', 2)[1],
                             searchWord: searchText,
                             genreName: genre,
-                            themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                            themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
                         });
+                        setDateVisible(dateVisible);
                     }}/>
             </View>
         </View>

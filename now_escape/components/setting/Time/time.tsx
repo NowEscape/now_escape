@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import {Text, View, StyleSheet, Platform} from "react-native";
 import {Picker} from '@react-native-picker/picker';
 import Button from "../../Button/button";
@@ -7,6 +8,12 @@ import Modal from "react-native-modal";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
+import _ from "lodash";
+import {format} from "date-fns";
+import dateStore from "../../../store/dateStore";
+import genreStore from "../../../store/genreStore";
+import searchStore from "../../../store/searchStore";
+import rigionStore from "../../../store/rigionStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -15,6 +22,11 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Time(){
     const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
+    const [currentTime, setCurrentTime] = useState(time);
+    const {date} = dateStore();
+    const {genre} = genreStore();
+    const {setSearchData, searchText} = searchStore();
+    const {rigion} = rigionStore();
     const timeListItem = timeList.map(
         (value, index)=>(
             <Picker.Item
@@ -40,10 +52,10 @@ export default function Time(){
                 <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
                 <Picker
                     style={styles.picker}
-                    selectedValue={time}
+                    selectedValue={currentTime}
                     numberOfLines={3}
                     onValueChange={(itemValue, itemIndex) =>
-                        setTime(itemValue)
+                        setCurrentTime(itemValue)
                     }>
                     {timeListItem}
                 </Picker>
@@ -64,7 +76,18 @@ export default function Time(){
                         canceled={false} 
                         height={iosHeightRatio*48} 
                         width={iosWidthRatio*145} 
-                        onPress={()=>setTimeVisible(timeVisible)}/>
+                        onPress={()=>{
+                            setTime(currentTime);
+                            setSearchData({
+                                region1: _.split(rigion, ' ', 2)[0],
+                                region2: _.split(rigion, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                            });
+                            setTimeVisible(timeVisible);
+                        }}
+                    />
                 </View>
             </View>
         </Modal>
