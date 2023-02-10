@@ -15,6 +15,10 @@ interface searchState{
     setSearchData: (searchInput:searchDataContent) => void;
 }
 
+function setSearchInput(searchInput:searchDataContent){
+    return searchInput;
+}
+
 const searchStore = create<searchState>((set)=>({
     searchText: '',
     setSearchText: (searchText)=>set((state)=>({
@@ -28,7 +32,7 @@ const searchStore = create<searchState>((set)=>({
         themeTime: '',
     },
     setSearchData: (searchInput) => set((state)=>({
-        searchData: searchInput
+        searchData: setSearchInput(searchInput)
     }))
 }))
 

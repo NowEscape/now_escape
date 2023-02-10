@@ -23,7 +23,6 @@ export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
   const [modal, setModal] = useState(false);
-  const {setSearchData} = searchStore();
 
 
   // const [fontsLoaded] = useFonts({
@@ -73,13 +72,6 @@ export default function RegionSetting({navigation}) {
                     active={true}
                     onPress={()=>{{
                       navigation.navigate('Index');
-                      setSearchData({
-                        region1: _.split(rigion, ' ', 2)[0],
-                        region2: _.split(rigion, ' ', 2)[1],
-                        searchWord: '',
-                        genreName: '',
-                        themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + '09:00'
-                      });
                     }}}
                 />
                 :<Button

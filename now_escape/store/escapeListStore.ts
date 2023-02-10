@@ -43,7 +43,7 @@ const escapeListStore = create<escapeListState>((set, get)=>({
         }]
     }],
     getEscapeList: (escapeList)=>set((state)=>({
-        escapeList: setEscapeListAxios(escapeList).map((data)=>({
+        escapeList: escapeList.map((data)=>({
             cafeName : data.cafeName,
             theme : data.theme,
             themeDateList : data.themeDateList
