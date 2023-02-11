@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal, Pressable} from "react-native";
+import {View, StyleSheet, SafeAreaView, Platform, TextInput, Text, Modal, Pressable, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {useEffect, useState} from "react";
 import _ from "lodash";
 import {format} from 'date-fns';
@@ -42,17 +42,29 @@ export default function Search({navigation}){
 
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <View style={styles.searchContainer}>
                     <Pressable onPress={()=>{navigation.navigate('Index')}}>
                         <View style={{marginTop: iosHeightRatio*4.5}}><ArrowBackSVG/></View>
                     </Pressable>
                     <TextInput
+                        placeholder='테마/지점명'
                         style={styles.searchInput}
                         value={searchText}
                         onChangeText={(text)=>{setSearchText(text)}}
+                        returnKeyType='search'
+                        onSubmitEditing={()=>{
+                            navigation.navigate('SearchResult');
+                        }}
                     />
-                    <SearchSVG height={Platform.OS=='ios'?iosHeightRatio*21.1:aosHeightRatio*100000}/>
+                    <Pressable
+                        onPress={()=>{
+                            navigation.navigate('SearchResult');
+                        }}                    
+                    >
+                        <SearchSVG height={Platform.OS=='ios'?iosHeightRatio*21.1:aosHeightRatio*100000}/>
+                    </Pressable>
                 </View>
                 <View style={styles.sectionBar}></View>
 
@@ -64,7 +76,10 @@ export default function Search({navigation}){
                         type={"searchLabel"}
                         icon={'date'}
                         text={ String(format(date, 'yyyy.MM.dd'))}
-                        open={()=>{setDateVisible(dateVisible)}}
+                        open={()=>{
+                            Keyboard.dismiss()
+                            setDateVisible(dateVisible)
+                        }}
                     />
                 </View>
                 <Date/>
@@ -76,7 +91,10 @@ export default function Search({navigation}){
                         type={"searchLabel"}
                         icon={'time'}
                         text={time + ' 이후'}
-                        open={()=>{setTimeVisible(timeVisible)}}
+                        open={()=>{
+                            Keyboard.dismiss()
+                            setTimeVisible(timeVisible)
+                        }}
                     />
                 </View>
                 <Time/>
@@ -87,7 +105,9 @@ export default function Search({navigation}){
                         borderRadius={10}
                         type={"searchLabel"}
                         text={genre}
+                        active={isGenreSettingOpen?true:false}
                         open={()=>{
+                            Keyboard.dismiss()
                             {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
                             setIsGenreSettingOpen((prevState => !prevState))
                         }}
@@ -99,7 +119,9 @@ export default function Search({navigation}){
                         borderRadius={10}
                         type={"searchLabel"}
                         text={rigion}
+                        active={isRigionSettingOpen?true:false}
                         open={()=>{
+                            Keyboard.dismiss()
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
                             setIsRigionSettingOpen((prevState => !prevState))
                             setModal(true)
@@ -123,12 +145,15 @@ export default function Search({navigation}){
                             presentationStyle={'pageSheet'}
                             onRequestClose={()=>{
                                 setModal(false)
-                                setIsRigionSettingOpen((prevState => !prevState))
+                                setIsRigionSettingOpen((false))
                             }}
                         >
                             <Pressable
                                 style={{flex:1}}
-                                onPress={()=>setModal(false)}
+                                onPress={()=> {
+                                    setModal(false)
+                                    setIsRigionSettingOpen(false)
+                                }}
                             />
                             <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
                         </Modal>
@@ -155,6 +180,7 @@ export default function Search({navigation}){
                     />
                 </View>
             </View>
+            </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 }
@@ -162,15 +188,17 @@ export default function Search({navigation}){
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        height: '100%',
         flexDirection:'column',
-        width:'100%',
         alignItems: 'center',
         justifyContent: 'center',
         alignContent: 'center',
         backgroundColor: 'white',
+        overflow: 'scroll',
         ...Platform.select({
-            android:{},
+            android:{
+                paddingTop: aosHeightRatio*10,
+
+            },
             ios:{
                 paddingTop: iosHeightRatio*10,
             }
@@ -180,13 +208,16 @@ const styles = StyleSheet.create({
         display:'flex',
         ...Platform.select({
             android:{
-                
+                width: aosWidthRatio*250,
+                height: aosHeightRatio*30,
+                marginLeft: aosWidthRatio*20,
+                marginRight: aosWidthRatio*20, 
             },
             ios:{
                 width: iosWidthRatio*250,
                 height: iosHeightRatio*30,
-                marginLeft: iosWidthRatio*20,
-                marginRight: iosWidthRatio*20,
+                marginLeft: iosWidthRatio*25,
+                marginRight: iosWidthRatio*15,
             }
         })
     },
@@ -198,7 +229,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#000000",
         alignSelf: 'flex-start',
         ...Platform.select({
-            android:{},
+            android:{
+                width: aosWidthRatio*288,
+                height: 1,
+                marginTop: aosHeightRatio*8.7,
+                marginLeft: aosWidthRatio*55.4,                
+            },
             ios:{
                 width: iosWidthRatio*300,
                 height: 1,
@@ -211,7 +247,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         ...Platform.select({
-            android:{},
+            android:{
+                width: aosWidthRatio*328,
+                marginTop: aosHeightRatio*17
+            },
             ios:{
                 width: iosWidthRatio*341,
                 marginTop: iosHeightRatio*17

@@ -110,9 +110,17 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold) => Sty
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingLeft: 20,
-    paddingRight: 10
+    justifyContent: icon?'flex-start':'space-between',
+    ...Platform.select({
+      android:{
+        paddingLeft: aosWidthRatio*21,
+        paddingRight: aosWidthRatio*20,
+      },
+      ios:{
+        paddingLeft: iosWidthRatio*22,
+        paddingRight: iosWidthRatio*21,
+      }
+    }),
   },
   textBox: {
     width: width,
@@ -129,6 +137,6 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold) => Sty
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    // paddingLeft: icon?iosWidthRatio*10:2,
+    paddingLeft: icon?iosWidthRatio*10:2,
   },
 })
