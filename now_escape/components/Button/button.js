@@ -28,10 +28,10 @@ const styles = (active, height, width) => StyleSheet.create({
         color: 'white'
     },
     rounded: {
-        borderRadius: '10pt'
+        borderRadius: 10
     },
     canceled: {
-        borderRadius: '10pt',
+        borderRadius: 10,
         backgroundColor: 'rgb(230, 230, 230)'
     },
     canceledText: {

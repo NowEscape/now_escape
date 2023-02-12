@@ -10,11 +10,11 @@ export const basicDimensions = { // 현재 작업하고 있는 XD파일 스크�
 };
 
 export const aosHeight = (
-  Dimensions.get('screen').height *
+  Dimensions.get('window').height *
   (1 / basicDimensions.height)
 ).toFixed(2);
 
 export const aosWidth = (
-  Dimensions.get('screen').width *
+  Dimensions.get('window').width *
   (1 / basicDimensions.width)
 ).toFixed(2);
