@@ -3,9 +3,6 @@ import {View, Text, StyleSheet, FlatList, Platform, Pressable, ActivityIndicator
 import {useState, useCallback} from "react";
 import _ from "lodash";
 import regionStore from "../../../store/rigionStore";
-import { useFonts } from 'expo-font';
-import {Dimensions} from 'react-native';
-
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -14,20 +11,36 @@ import {format} from "date-fns";
 import dateStore from "../../../store/dateStore";
 import searchStore from "../../../store/searchStore";
 import timeStore from "../../../store/timeStore";
-import rigionStore from "../../../store/rigionStore";
+import axios from "axios";
+import escapeListStore from "../../../store/escapeListStore";
+import currentPageStore from "../../../store/currentPageStore";
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Rigion(props){
-  const {rigion, rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
+    const {currentPage} = currentPageStore();
+  const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
+  const {getEscapeList} = escapeListStore();
   const {isOpen} = props;
     const {date} = dateStore();
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
     const {time} = timeStore();
+
+    async function getList(searchData){
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+    }
 
   const renderRigionItem = ({item, index}:{item:any, index:number}) => {
       return(
@@ -36,6 +49,13 @@ export default function Rigion(props){
                 setRigionList(rigionList,currentRigionIdx,index);
                 setRigion(rigionName,rigionListString,currentRigionIdx,index);
                 setSearchData({
+                    region1: String(rigionName[currentRigionIdx]),
+                    region2: String(rigionListString[currentRigionIdx][index]),
+                    searchWord: searchText,
+                    genreName: genre,
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                });
+                getList({
                     region1: String(rigionName[currentRigionIdx]),
                     region2: String(rigionListString[currentRigionIdx][index]),
                     searchWord: searchText,
@@ -119,11 +139,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         textAlign: 'center',
         fontWeight:'bold',
-        // fontFamily: "Pretendard",
         letterSpacing:0.34,
-        // alignContent: 'center',
-        // justifyContent: 'center',
-        // alignSelf: 'center',
         ...Platform.select({
             android:{
                 fontSize: aosWidthRatio<1 ? iosWidthRatio*19:17,

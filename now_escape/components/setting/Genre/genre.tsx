@@ -10,6 +10,9 @@ import timeStore from "../../../store/timeStore";
 import rigionStore from "../../../store/rigionStore";
 import _ from "lodash";
 import {format} from "date-fns";
+import escapeListStore from "../../../store/escapeListStore";
+import axios from "axios";
+import currentPageStore from "../../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -23,13 +26,26 @@ interface genrePropsType {
 
 
 export default function Genre(props:genrePropsType){
+    const {currentPage} = currentPageStore();
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search, isOpen} = props;
     const {setSearchData, searchText} = searchStore();
+    const {getEscapeList} = escapeListStore();
     const {date} = dateStore();
-    const {genre, } = genreStore();
     const {time} = timeStore();
     const {rigion} = rigionStore();
+
+    async function getList(searchData){
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+    }
 
     const renderItem = ({item, index}:{item:any, index:number}) => {
         const search = true;
@@ -38,6 +54,13 @@ export default function Genre(props:genrePropsType){
                 {setGenreList(genreList, index);
                 setGenreValue(genreListName, index);
                 setSearchData({
+                    region1: _.split(rigion, ' ', 2)[0],
+                    region2: _.split(rigion, ' ', 2)[1],
+                    searchWord: searchText,
+                    genreName: genreListName[index],
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                });
+                getList({
                     region1: _.split(rigion, ' ', 2)[0],
                     region2: _.split(rigion, ' ', 2)[1],
                     searchWord: searchText,

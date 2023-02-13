@@ -19,6 +19,7 @@ import {format} from "date-fns";
 import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
 import { ScrollView } from 'react-native-gesture-handler';
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -27,16 +28,17 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {date, setDateVisible, dateVisible} = dateStore();
-    const {searchData} = searchStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
-    const {escapeList, getEscapeList} = escapeListStore();
     const swiperRef = useRef<HTMLDivElement>(null);
     const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
     const [loop, setLoop] = useState<any>();
     const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
     const scrollX = React.useRef(new Animated.Value(0)).current;
+
+    setCurrentPage("Index");
 
     const data = [
         {
@@ -73,24 +75,8 @@ export default function Index({navigation}){
           offset: snapToOffsets[currentIndex],
         });
       }
-        let completed = false;
-        async function getList(){
-            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
-                {
-                    region1: searchData.region1,
-                    region2: searchData.region2,
-                    searchWord: "",
-                    genreName: "",
-                    themeTime: searchData.themeTime,
-                })
-            if(!completed) getEscapeList(response.data);
-        }
-        getList();
-        return()=>{
-            completed = true;
-        };
 
-    }, [currentIndex, snapToOffsets, JSON.stringify(searchData)]);
+    }, [currentIndex, snapToOffsets]);
     useInterval(() => {
         setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
       }, 5000);

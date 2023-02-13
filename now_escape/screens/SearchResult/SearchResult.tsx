@@ -21,6 +21,7 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import {format} from "date-fns";
 import escapeListStore from "../../store/escapeListStore";
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -30,6 +31,7 @@ const statusBarHeight = StatusBar.currentHeight
 
 
 export default function SearchResult({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
@@ -40,24 +42,7 @@ export default function SearchResult({navigation}){
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
-    useEffect(()=>{
-        let completed = false;
-        async function getList(){
-            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
-                {
-                    region1: searchData.region1,
-                    region2: searchData.region2,
-                    searchWord: searchData.searchWord,
-                    genreName: searchData.genreName,
-                    themeTime: searchData.themeTime,
-                })
-            if(!completed) getEscapeList(response.data);
-        }
-        getList();
-        return()=>{
-            completed = true;
-        };
-    },[JSON.stringify(searchData)])
+    setCurrentPage("search");
 
     return(
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

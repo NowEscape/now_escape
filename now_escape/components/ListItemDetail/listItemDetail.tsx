@@ -1,8 +1,9 @@
 import React from 'react';
-import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView} from "react-native";
+import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView, Linking} from "react-native";
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
+import _ from "lodash";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -14,7 +15,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 const renderItem = ({item}) => {
     return(
-        <Text style={styles.timeListItem}>{item.themeTime}</Text>
+        <Text style={styles.timeListItem}>{_.split(item.themeTime, ' ', 2)[1]}</Text>
     );
 }
 
@@ -55,7 +56,8 @@ export default function ListItemDetail(props){
                     </ScrollView>
                 </View>
                 <Button 
-                    onPress={()=>{}} text={'예약하기'} 
+                    onPress={()=>{Linking.openURL(escapeList[escapeID].theme.themeURL)}}
+                    text={'예약하기'}
                     active={true} 
                     rounded={true} 
                     canceled={false} 
