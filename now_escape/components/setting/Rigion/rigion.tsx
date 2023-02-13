@@ -4,6 +4,8 @@ import {useState, useCallback} from "react";
 import _ from "lodash";
 import regionStore from "../../../store/rigionStore";
 import { useFonts } from 'expo-font';
+import {Dimensions} from 'react-native';
+
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -94,13 +96,14 @@ const styles = StyleSheet.create({
     container:{
         display:'flex',
         flexDirection: 'column',
-        borderRadius: 25,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         backgroundColor: '#ffffff',
         zIndex:2,
         ...Platform.select({
             android:{
                 width: aosWidthRatio*360,
-                height:aosHeightRatio*593,
+                height: aosHeightRatio*550,
                 paddingLeft: aosWidthRatio*16,
                 paddingRight: aosHeightRatio*16,            
             },

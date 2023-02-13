@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import { Image, View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable} from 'react-native'
+import { Image, View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable, StatusBar} from 'react-native'
 import Button from '../../components/Button/button'
 import Label from "../../components/Label/label";
 import Rigion from "../../components/setting/Rigion/rigion";
@@ -18,6 +18,7 @@ const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
+const statusBarHeight = StatusBar.currentHeight
 
 export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
@@ -51,11 +52,11 @@ export default function RegionSetting({navigation}) {
             <Label
               height={Platform.OS==='ios'?iosHeightRatio*54:aosHeightRatio*51}
               width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
+              fontSize={16}
               type={'regionSetting'}
               text={rigion?rigion:'지역'}
               open={()=>{
                 setIsRigionSettingOpen((prevState => !prevState))
-                setModal(true)
             }}
               arrow={true}
             />
@@ -65,7 +66,7 @@ export default function RegionSetting({navigation}) {
               ?<Button
                   text="시작하기"
                   height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
-                  width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
+                  width={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
                   active={true}
                   onPress={()=>{{
                     navigation.navigate('Index');
@@ -74,27 +75,34 @@ export default function RegionSetting({navigation}) {
               :<Button
                   text="시작하기"
                   height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
-                  width={Platform.OS==='ios'?iosWidthRatio*375:aosHeightRatio*360}
+                  width={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
               />
             }
           </View>
           {isRigionSettingOpen === true ? 
             <Modal 
-              visible={modal} 
-              transparent={true}
+              visible={isRigionSettingOpen} 
+              transparent
               animationType={'slide'}
-              presentationStyle={'pageSheet'}
               onRequestClose={()=>{
-                setModal(false)
-                setIsRigionSettingOpen((prevState => !prevState))
+                  setIsRigionSettingOpen((prevState => !prevState))
               }}
             >
+              <View style={{
+                  flex: 1,
+                  display: 'flex',
+                  backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+              >
                 <Pressable 
                     style={{flex:1}}
-                    onPress={()=>setModal(false)}
+                    onPress={()=>
+                      setIsRigionSettingOpen((prevState => !prevState))
+                    }
                 />
                 <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-            </Modal> : null}
+              </View>
+            </Modal>
+          : null}
         </View>
       </SafeAreaView>
   )
@@ -108,6 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     ...Platform.select({
       android:{
+        paddingTop:  statusBarHeight,
         width: aosWidthRatio*360,
         height: aosHeightRatio*640
       },
@@ -151,7 +160,7 @@ const styles = StyleSheet.create({
   })
   },
   text_2: {        
-    fontFamily: 'Pretendard',
+    // fontFamily: 'Pretendard',
     fontStyle: 'normal',
     textAlign: 'left',
     color: '#535353',
@@ -176,13 +185,13 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     display: 'flex',
-    alignItems: 'flex-end',
     ...Platform.select({
       android:{
-        width: aosWidthRatio*360,
+        alignSelf: 'flex-end',        
         marginRight: aosWidthRatio*16.6,
       },
       ios:{
+        alignItems: 'flex-end',
         width: iosWidthRatio*375,
         marginRight: iosWidthRatio*25,
       }
@@ -196,7 +205,7 @@ const styles = StyleSheet.create({
         width: aosWidthRatio*326.8,
         height: aosHeightRatio*3,
         marginBottom: aosHeightRatio*38.9,
-        marginTop: aosHeightRatio*-3
+        marginTop: aosHeightRatio*-3.5
       },
       ios:{
         width: iosWidthRatio*340.4,
@@ -207,8 +216,15 @@ const styles = StyleSheet.create({
   })
   },
   confirmButton: {
-    width: '100%',
     flex: 1,
     flexDirection: 'column-reverse',
+    ...Platform.select({
+      android:{
+        width: aosWidthRatio*360,
+      },
+      ios:{
+        width: iosWidthRatio*375,
+      }
+  })
   }
 })

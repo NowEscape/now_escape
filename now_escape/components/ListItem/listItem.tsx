@@ -30,7 +30,7 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                     <View style={styles.textBox}>
                         <Text style={styles.textTitle}>{theme.themeName}</Text>
                         <View style={styles.locationBox}>
-                            <LocationSVG/>
+                            <LocationSVG height={aosHeightRatio*12.1}/>
                             <Text style={styles.textLocation}>{cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
@@ -75,7 +75,8 @@ const RenderTimeList = ({themeDateListItem}) => {
     );
 }
 
-export default function ListItem() {
+export default function ListItem(props) {
+    const {scrollEnabled} = props;
     const {escapeList, getEscapeList} = escapeListStore();
     const {searchData} = searchStore();
     const [modal, setModal] = useState(false);
@@ -93,21 +94,28 @@ export default function ListItem() {
                     setModal={()=>setModal(true)}
                     onPress={()=>setEscapeID(index)}
                 />}
+                scrollEnabled={scrollEnabled}
             />
             <Modal
                 visible={modal}
                 transparent={true}
-                animationType={'slide'}
-                // presentationStyle={'pageSheet'}
+                animationType={'fade'}
                 onRequestClose={()=>{
                     setModal(false)
                 }}
             >
+                <View style={{
+                    flex: 1,
+                    display: 'flex',
+                    backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+                >
+                
                 <Pressable 
                     style={{flex:1}}
                     onPress={()=>setModal(false)}
                 />                
                 <ListItemDetail escapeID={escapeID}/>
+                </View>
             </Modal>
         </View>
     );
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{
                 width: aosWidthRatio*326.8,
-                height: aosHeightRatio*147.1,
+                height: aosHeightRatio*147,
                 paddingLeft: aosWidthRatio*4.4,
                 paddingTop: aosHeightRatio*14.6,
                 paddingBottom: aosHeightRatio*15.3,
@@ -184,19 +192,36 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{
                 marginTop: aosHeightRatio*6.8,
+                height: aosWidthRatio<1?aosWidthRatio*14:13,
+
             },
             ios:{
                 marginTop: iosHeightRatio*5.8,
             }
         }),
     },
+    textLocation:{
+        textAlign: 'left',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*14:13,
+                lineHeight: aosWidthRatio<1?aosWidthRatio*14:13,                
+                letterSpacing: aosWidthRatio*0.26,
+                marginLeft: aosWidthRatio*5.1,
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*15:14,
+                letterSpacing: iosWidthRatio*0.28,
+                marginLeft: iosWidthRatio*5.3,
+            }
+        }),
+    },
     timeList: {
         display: 'flex',
         flexDirection: 'column',
-        // flexWrap: 'wrap',
         ...Platform.select({
             android:{
-                marginTop: aosHeightRatio*16.4,
+                marginTop: aosHeightRatio*12.8,
             },
             ios:{
                 marginTop: iosHeightRatio*17.1,
@@ -221,25 +246,9 @@ const styles = StyleSheet.create({
                 }
             }),
         },
-        textLocation:{
-            textAlign: 'left',
-            ...Platform.select({
-                android:{
-                    fontSize: aosWidthRatio<1?aosWidthRatio*14:13,
-                    letterSpacing: 0.26,
-                    marginLeft: aosWidthRatio*5.1,
-                },
-                ios:{
-                    fontSize: iosWidthRatio<1?iosWidthRatio*15:14,
-                    letterSpacing: 0.28,
-                    marginLeft: iosWidthRatio*5.3,
-                }
-            }),
-        },
         timeListItem: {
             display:'flex',
             flexDirection: 'row',
-            flexWrap: 'wrap',
             backgroundColor: 'rgba(234, 75, 155, 0.13)',
             textAlign: 'center',
             color: 'black',
@@ -248,7 +257,7 @@ const styles = StyleSheet.create({
                 android:{
                     width: aosWidthRatio*40.7,
                     height: aosHeightRatio*17.3,
-                    borderRadius: 8.7,
+                    borderRadius: aosWidthRatio*8.7,
                     fontSize: aosWidthRatio*11,
                     paddingTop: aosHeightRatio*1.7,
                     letterSpacing: 0.22,

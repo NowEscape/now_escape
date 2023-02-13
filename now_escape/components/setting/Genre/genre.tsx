@@ -68,7 +68,7 @@ export default function Genre(props:genrePropsType){
 const styles = (selected, search) => StyleSheet.create({
     container:{
         display:'flex',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         zIndex:2,
         backgroundColor: search?'rgb(255,232,242)':'rgba(254,254,254,0.9)',
         ...Platform.select({
@@ -81,9 +81,9 @@ const styles = (selected, search) => StyleSheet.create({
         })
     },
     flatListStyle:{
+        alignItems: 'center',
         ...Platform.select({
             android: {
-                paddingTop: aosHeightRatio*16,
                 paddingHorizontal: aosWidthRatio*35,
 
             },
@@ -101,7 +101,6 @@ const styles = (selected, search) => StyleSheet.create({
         marginHorizontal: 8,
         ...Platform.select({
             android:{
-                height: aosHeightRatio*48,
                 fontSize: aosHeightRatio<1?aosHeightRatio*15:13,
                 lineHeight: aosHeightRatio<1?aosHeightRatio*15:13,
              },

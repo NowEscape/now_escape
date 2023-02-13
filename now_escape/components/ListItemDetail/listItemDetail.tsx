@@ -29,16 +29,16 @@ export default function ListItemDetail(props){
                     <View style={styles.textBox}>
                         <Text style={styles.title}>{escapeList[escapeID].theme.themeName}</Text>
                         <View style={styles.locationBox}>
-                            <LocationSVG/>
-                            <Text style={styles.location}>{escapeList[escapeID].cafeName}</Text>
-                        </View>
+                            <LocationSVG height={aosHeightRatio*12.1}/>
+                            <Text style={styles.textLocation}>{escapeList[escapeID].cafeName}</Text>
+                        </View>                        
                         <View style={styles.timeList}>
                             <FlatList
                                 key={2}
                                 data={escapeList[escapeID].themeDateList}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.themeDateId}
-                                numColumns={1}
+                                numColumns={3}
                                 contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
                         />
                         </View>
@@ -133,14 +133,33 @@ const styles = StyleSheet.create({
     },
     locationBox: {
         flexDirection: 'row',
+        alignItems: 'flex-end',
         ...Platform.select({
             android:{
-                marginTop: aosHeightRatio*9.5
+                marginTop: aosHeightRatio*8.3,
+                height: aosWidthRatio<1?aosWidthRatio*14:13,
+
             },
             ios:{
-                marginTop: iosHeightRatio*8.7
+                marginTop: iosHeightRatio*5.8,
             }
-        })
+        }),
+    },
+    textLocation:{
+        textAlign: 'left',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*14:13,
+                lineHeight: aosWidthRatio<1?aosWidthRatio*14:13,                
+                letterSpacing: aosWidthRatio*0.26,
+                marginLeft: aosWidthRatio*5.1,
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*15:14,
+                letterSpacing: iosWidthRatio*0.28,
+                marginLeft: iosWidthRatio*5.3,
+            }
+        }),
     },
     timeList:{
         display:'flex',
@@ -148,7 +167,7 @@ const styles = StyleSheet.create({
         flexWrap:'wrap',
         ...Platform.select({
             android:{
-                marginTop: aosHeightRatio*19.4,
+                marginTop: aosHeightRatio*18.4,
                 height: aosHeightRatio*45.7,
                 width: aosWidthRatio*210
             },
@@ -169,21 +188,6 @@ const styles = StyleSheet.create({
             },
             ios:{
                 fontSize: iosWidthRatio<1?iosWidthRatio*22:21,
-            }
-        })
-    },
-    location:{
-        textAlign:'left',
-        ...Platform.select({
-            android:{
-                fontSize: aosWidthRatio<1?aosWidthRatio*14:13,
-                letterSpacing: 0.26,
-                marginLeft: aosWidthRatio*4.1,
-            },
-            ios:{
-                fontSize: iosWidthRatio<1?iosWidthRatio*15:14,
-                letterSpacing: 0.28,
-                marginLeft: iosWidthRatio*4.3,
             }
         })
     },

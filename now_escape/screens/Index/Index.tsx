@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated} from "react-native";
+import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated, StatusBar} from "react-native";
 import axios from "axios";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
@@ -18,11 +18,13 @@ import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import {format} from "date-fns";
 import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
+import { ScrollView } from 'react-native-gesture-handler';
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
+const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
     const {date, setDateVisible, dateVisible} = dateStore();
@@ -91,7 +93,7 @@ export default function Index({navigation}){
     }, [currentIndex, snapToOffsets, JSON.stringify(searchData)]);
     useInterval(() => {
         setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
-      }, 2400);
+      }, 5000);
 
 
       
@@ -104,7 +106,6 @@ export default function Index({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*130:aosWidthRatio*125}
                         type={'mainLabel'}
-                        fontSize={15}
                         bold={true}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
                         text={ String(format(date, 'yyyy.MM.dd'))}
@@ -115,7 +116,6 @@ export default function Index({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
                         type={'mainLabel'}
-                        fontSize={15}
                         bold={true}
                         text={rigion}
                         open={()=>{
@@ -125,52 +125,60 @@ export default function Index({navigation}){
                         arrow={true}
                     />
                     </View>
-                    <View style={styles.filterIcon}>
-                        <Pressable onPress={()=>{navigation.navigate('Search')}}>
-                            <SearchSvg height={iosHeightRatio*21.1}/>
-                        </Pressable>
-                    </View>
-                </View>
-
-                <View style={styles.banner}>
-                    
-                <Animated.FlatList
-                    key={4}
-                    ref={flatListRef}
-                    horizontal
-                    renderItem={renderItem}
-                    data={data}
-                    keyExtractor={item => item.key}
-                    snapToOffsets={snapToOffsets}
-                    decelerationRate={'fast'}
-                    scrollEnabled={true}
-                    contentContainerStyle={{width:(iosWidthRatio*375)*3, height:iosHeightRatio*168}}
-                    showsHorizontalScrollIndicator={false}
-                >
-                </Animated.FlatList>
-                </View>
-
-                <View style={styles.listContainer}>
-                <ListItem/>
-                </View>
-                
-                {isRigionSettingOpen === true ? 
-                <Modal 
-                    visible={modal} 
-                    transparent={true}
-                    animationType={'slide'}
-                    presentationStyle={'pageSheet'}
-                    onRequestClose={()=>{
-                        setModal(false)
-                        setIsRigionSettingOpen((prevState => !prevState))
-                    }}
-                >
                     <Pressable 
-                        style={{flex:1}}
-                        onPress={()=>setModal(false)}
-                    />
-                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-                </Modal> : null}
+                        onPress={()=>{navigation.navigate('Search')}}
+                        style={styles.filterIcon}
+                    >
+                        <SearchSvg
+                            onPress={()=>{navigation.navigate('Search')}}
+                            height={Platform.OS==='ios'?iosHeightRatio*21.1:aosHeightRatio*20.2}/>
+                    </Pressable>
+                </View>
+
+                <ScrollView style={styles.listContainer}>
+                    <View style={styles.banner}>         
+                        <Animated.FlatList
+                            key={4}
+                            ref={flatListRef}
+                            horizontal
+                            renderItem={renderItem}
+                            data={data}
+                            keyExtractor={item => item.key}
+                            snapToOffsets={snapToOffsets}
+                            decelerationRate={'fast'}
+                            scrollEnabled={true}
+                            contentContainerStyle={{width:(iosWidthRatio*375)*3, height:iosHeightRatio*168}}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                        </Animated.FlatList>
+                    </View>
+                    <ListItem/>
+                </ScrollView>
+                
+        {isRigionSettingOpen === true ? 
+            <Modal 
+              visible={isRigionSettingOpen} 
+              transparent
+              animationType={'slide'}
+              onRequestClose={()=>{
+                  setIsRigionSettingOpen((prevState => !prevState))
+              }}
+            >
+              <View style={{
+                  flex: 1,
+                  display: 'flex',
+                  backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+              >
+                <Pressable 
+                    style={{flex:1}}
+                    onPress={()=>
+                      setIsRigionSettingOpen((prevState => !prevState))
+                    }
+                />
+                <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+              </View>
+            </Modal>
+          : null}
             </View>
         </SafeAreaView>
     );
@@ -182,12 +190,13 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'column',
         alignItems:'center',
-        justifyContent:'flex-start',
         backgroundColor: '#ffffff',
         ...Platform.select({
             android:{
+                paddingTop: statusBarHeight,
                 width: aosWidthRatio*360,
-                paddingTop: aosHeightRatio*7,
+                height: aosHeightRatio*640
+        
             },
             ios:{
                 width: iosWidthRatio*375,
@@ -198,9 +207,10 @@ const styles = StyleSheet.create({
     filterBar:{
         display:'flex',
         flexDirection:'row',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         ...Platform.select({
             android:{
+                marginTop: aosHeightRatio*7,
                 paddingBottom: aosHeightRatio*12,
                 paddingLeft: aosWidthRatio*16
             },
@@ -220,10 +230,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         ...Platform.select({
             android:{
-                paddingRight: aosWidthRatio*20.2, 
+                paddingRight: aosWidthRatio*22.2, 
+                paddingBottom: aosHeightRatio*3.6,
+                paddingTop: aosHeightRatio*7.1,
+                paddingLeft: aosWidthRatio*56.6,
             },
             ios:{
                 paddingRight: iosWidthRatio*21, 
+                paddingBottom: iosHeightRatio*3.8,
+                paddingTop: iosHeightRatio*7.1,
+                paddingLeft: iosWidthRatio*58,
             }
         })
     },
@@ -233,8 +249,8 @@ const styles = StyleSheet.create({
         // resizeMode: 'center',
         ...Platform.select({
             android:{
-                height:iosWidthRatio*162,
-                width:iosWidthRatio*360               
+                height:aosWidthRatio*162,
+                width:aosWidthRatio*360               
             },
             ios:{
                 height:iosHeightRatio*168,
@@ -243,11 +259,11 @@ const styles = StyleSheet.create({
         })
     },
     listContainer: {
+        alignContent: 'stretch',
         ...Platform.select({
             android:{
-                height: aosHeightRatio*394,
+                height: aosHeightRatio*556,
                 width: aosWidthRatio*360,
-                paddingBottom: aosHeightRatio*15         
             },
             ios:{
                 height:iosHeightRatio*556,

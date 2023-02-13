@@ -25,7 +25,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 export default function Label(props) {
   const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight, active, bold} = props;
 
-  const style = styles(active, width, height, fontSize, marginRight, icon, bold);
+  const style = styles(active, width, height, fontSize, marginRight, icon, bold, arrow);
 
   return (
     <Fragment>
@@ -65,7 +65,7 @@ export default function Label(props) {
   );
 }
 
-const styles = (active, width, height, fontSize, marginRight, icon, bold) => StyleSheet.create({
+const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow) => StyleSheet.create({
   region: {
     width: width,
     height: height,
@@ -89,15 +89,24 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold) => Sty
   main: {
     width: width,
     height: height,
-    borderRadius: 16,
     backgroundColor: active?'#ffd2e6':'rgba(234, 75, 155, 0.13)',
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: icon?'flex-start':'space-between',
-    paddingLeft: iosWidthRatio*17,
-    paddingRight: iosWidthRatio*11,
-    marginRight: marginRight?marginRight:0
+    justifyContent: icon?'flex-start':(arrow?'space-between':'center'),
+    marginRight: marginRight?marginRight:0,
+    ...Platform.select({
+      android:{
+        borderRadius: aosWidthRatio*16,
+        paddingLeft: icon?aosWidthRatio*15:(arrow?aosWidthRatio*11:0),
+        paddingRight: arrow?aosWidthRatio*8:0,
+      },
+      ios:{
+        borderRadius: iosWidthRatio*16,
+        paddingLeft: icon?iosWidthRatio*15:(arrow?iosWidthRatio*13:0),
+        paddingRight: arrow?iosWidthRatio*8:0,
+      }
+    }),
   },
   search: {
     width: width,
@@ -131,12 +140,20 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold) => Sty
     justifyContent: 'center'
   },
   text: {
-    fontSize: fontSize?iosWidthRatio*fontSize:17,
     fontWeight: bold?'bold':'normal',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
     color: '#000000',
-    paddingLeft: icon?iosWidthRatio*10:2,
+    ...Platform.select({
+      android:{
+        fontSize: fontSize?fontSize:aosWidthRatio*14,
+        paddingLeft: icon?aosWidthRatio*6:0,        
+      },
+      ios:{
+        fontSize: fontSize?fontSize:iosWidthRatio*15,
+        paddingLeft: icon?iosWidthRatio*5:0,        
+      }
+    }),
   },
 })

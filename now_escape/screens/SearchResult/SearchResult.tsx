@@ -1,7 +1,7 @@
 import * as React from 'react';
 import axios from "axios";
 import {useState, useRef, useEffect, useMemo} from "react";
-import {Image, View, Text, StyleSheet, SafeAreaView, Platform, TextInput, ScrollView,Modal, Pressable} from "react-native";
+import {StatusBar, Image, View, Text, StyleSheet, SafeAreaView, Platform, TextInput, ScrollView,Modal, Pressable} from "react-native";
 import Label from "../../components/Label/label";
 import ListItem from '../../components/ListItem/listItem';
 import 'react-native-gesture-handler'
@@ -26,6 +26,8 @@ const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
+const statusBarHeight = StatusBar.currentHeight
+
 
 export default function SearchResult({navigation}){
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
@@ -58,19 +60,34 @@ export default function SearchResult({navigation}){
     },[JSON.stringify(searchData)])
 
     return(
-        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={styles.container}>
-                <View style={styles.rowContainer}>
-                    <Pressable onPress={()=>{navigation.navigate('Index')}}>
-                        <View style={{marginTop: Platform.OS==='ios'?iosHeightRatio*4.5:aosHeightRatio*4.4}}><ArrowBackSVG/></View>
-                    </Pressable>
-                    <TextInput
-                        style={styles.searchInput}
-                        value={searchText}
-                        onChangeText={(text)=>{setSearchText(text)}}
-                    />
-                    <SearchSVG height={Platform.OS==='ios'?iosHeightRatio*21.1:aosHeightRatio*20.4}/>
-                </View>
+    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={styles.container}>
+        <View style={styles.searchContainer}>
+            <Pressable 
+                onPress={()=>{navigation.navigate('Index')}}
+                style={styles.arrowBackIcon}
+            >
+                <ArrowBackSVG height={aosHeightRatio*14}/>
+            </Pressable>
+            <TextInput
+                placeholder='테마/지점명'
+                style={styles.searchInput}
+                value={searchText}
+                onChangeText={(text)=>{setSearchText(text)}}
+                returnKeyType='search'
+                onSubmitEditing={()=>{
+                    navigation.navigate('SearchResult');
+                }}
+            />
+            <Pressable
+                onPress={()=>{
+                    navigation.navigate('SearchResult');
+                }}
+                style={styles.searchIcon}
+            >
+                <SearchSVG height={Platform.OS=='ios'?iosHeightRatio*21.1:aosHeightRatio*20.2}/>
+            </Pressable>
+        </View>
                 <View style={styles.sectionBar}></View>
 
                 <View style={styles.scrollLabelContainer}>
@@ -83,7 +100,7 @@ export default function SearchResult({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
                         width={Platform.OS==='ios'?iosWidthRatio*124:aosWidthRatio*120}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
-                        fontSize={13}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
                         icon={'date'}
                         text={String(format(date, 'yyyy.MM.dd'))}
@@ -91,9 +108,9 @@ export default function SearchResult({navigation}){
                     /><Date/>
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
-                        width={Platform.OS==='ios'?iosWidthRatio*107:aosWidthRatio*103}
+                        width={Platform.OS==='ios'?iosWidthRatio*107:aosWidthRatio*100}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
-                        fontSize={13}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
                         icon={'time'}
                         text={time + ' ~'}
@@ -103,7 +120,7 @@ export default function SearchResult({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
                         width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
-                        fontSize={13}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
                         text={genre}
                         active={isGenreSettingOpen?true:false}
@@ -116,7 +133,7 @@ export default function SearchResult({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
                         width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
-                        fontSize={13}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
                         text={rigion}
                         active={isRigionSettingOpen?true:false}
@@ -134,7 +151,7 @@ export default function SearchResult({navigation}){
                         width:Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360,
                         height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
-                    <ListItem/>
+                    <ListItem scrollEnabled/>
                     
                     {isGenreSettingOpen === true ?
                         <View
@@ -173,26 +190,92 @@ export default function SearchResult({navigation}){
 
 const styles = StyleSheet.create({
     container:{
-        display:'flex',
-        flex:1,
+        flex: 1,
         flexDirection:'column',
-        alignItems:'center',
-        justifyContent:'center',
-        // width: iosWidthRatio*375,
-        // height: iosHeightRatio*812,
-    },
-    rowContainer:{
-        display:'flex',
-        flexDirection: 'row',
         alignItems: 'center',
+        alignContent: 'center',
+        backgroundColor: 'white',
         ...Platform.select({
             android:{
-                width:aosWidthRatio*360,
-                paddingHorizontal:aosWidthRatio*27.4,
+                paddingTop: statusBarHeight,
+
             },
             ios:{
-                width:iosWidthRatio*375,
-                paddingHorizontal:iosWidthRatio*28,
+
+            }
+        })
+    },
+    searchInput:{
+        display:'flex',
+        ...Platform.select({
+            android:{
+                width: aosWidthRatio*250,
+                height: aosHeightRatio*30,
+                paddingLeft: aosWidthRatio*5,
+                paddingBottom: aosWidthRatio*5,
+            },
+            ios:{
+                width: iosWidthRatio*250,
+                height: iosHeightRatio*30,
+                paddingLeft: iosWidthRatio*5
+            }
+        })
+    },
+    searchContainer:{
+        display: 'flex',
+        flexDirection: 'row',
+        ...Platform.select({
+            android:{
+                alignItems: 'flex-start',                
+                marginTop: aosHeightRatio*20
+            },
+            ios:{
+                alignItems: 'center'
+            }
+        })
+    },
+    arrowBackIcon: {
+        ...Platform.select({
+            android:{
+                paddingRight: aosWidthRatio*20,
+                paddingLeft: aosWidthRatio*20,
+                paddingVertical: aosHeightRatio*4.5,         
+            },
+            ios:{
+                paddingRight: aosWidthRatio*20,
+                paddingLeft: aosWidthRatio*20,
+                paddingVertical: aosHeightRatio*4.5,
+            }
+        })
+    },
+    searchIcon: {
+        ...Platform.select({
+            android:{
+                paddingRight: aosWidthRatio*30,
+                paddingLeft: aosWidthRatio*5,
+                paddingBottom: aosHeightRatio*4.5,         
+            },
+            ios:{
+                paddingRight: aosWidthRatio*25,
+                paddingLeft: aosWidthRatio*10,
+                paddingBottom: aosHeightRatio*4.5,   
+            }
+        })
+    },
+    sectionBar: {
+        backgroundColor: "#000000",
+        alignSelf: 'flex-start',
+        ...Platform.select({
+            android:{
+                width: aosWidthRatio*288,
+                height: 1,
+                marginLeft: aosWidthRatio*41,                
+            },
+            ios:{
+                width: iosWidthRatio*300,
+                height: 1,
+                marginTop: iosHeightRatio*5,
+                marginLeft: iosWidthRatio*46,
             }
         })
     },
@@ -226,35 +309,5 @@ const styles = StyleSheet.create({
             }
         }),
     },
-    searchInput:{
-        display:'flex',
-        ...Platform.select({
-            android:{
-                width: aosWidthRatio*250,
-                height: aosHeightRatio*30,
-                marginLeft: aosWidthRatio*20.2,
-            },
-            ios:{
-                width: iosWidthRatio*252.5,
-                height: iosHeightRatio*30,
-                marginLeft: iosWidthRatio*20,
-            }
-        })
-    },
-    sectionBar:{
-        backgroundColor: "#000000",
-        height: 1,
-        ...Platform.select({
-            android:{
-                width: aosWidthRatio*289.5,
-                marginTop: aosHeightRatio*8.8,
-                marginLeft: aosWidthRatio*20.2,
-            },
-            ios:{
-                width: iosWidthRatio*300,
-                marginTop: iosHeightRatio*8,
-                marginLeft: iosWidthRatio*25,
-            }
-        })
-    }
+
 })
