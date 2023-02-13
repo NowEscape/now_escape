@@ -3,6 +3,7 @@ import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView} from "rea
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
+import _ from "lodash";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -14,7 +15,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 const renderItem = ({item}) => {
     return(
-        <Text style={styles.timeListItem}>{item.themeTime}</Text>
+        <Text style={styles.timeListItem}>{_.split(item.themeTime, ' ', 2)[1]}</Text>
     );
 }
 

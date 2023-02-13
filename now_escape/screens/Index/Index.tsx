@@ -73,24 +73,8 @@ export default function Index({navigation}){
           offset: snapToOffsets[currentIndex],
         });
       }
-        let completed = false;
-        async function getList(){
-            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
-                {
-                    region1: searchData.region1,
-                    region2: searchData.region2,
-                    searchWord: "",
-                    genreName: "",
-                    themeTime: searchData.themeTime,
-                })
-            if(!completed) getEscapeList(response.data);
-        }
-        getList();
-        return()=>{
-            completed = true;
-        };
 
-    }, [currentIndex, snapToOffsets, JSON.stringify(searchData)]);
+    }, [currentIndex, snapToOffsets]);
     useInterval(() => {
         setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
       }, 5000);

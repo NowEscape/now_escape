@@ -40,25 +40,6 @@ export default function SearchResult({navigation}){
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
-    useEffect(()=>{
-        let completed = false;
-        async function getList(){
-            const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
-                {
-                    region1: searchData.region1,
-                    region2: searchData.region2,
-                    searchWord: searchData.searchWord,
-                    genreName: searchData.genreName,
-                    themeTime: searchData.themeTime,
-                })
-            if(!completed) getEscapeList(response.data);
-        }
-        getList();
-        return()=>{
-            completed = true;
-        };
-    },[JSON.stringify(searchData)])
-
     return(
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={styles.container}>

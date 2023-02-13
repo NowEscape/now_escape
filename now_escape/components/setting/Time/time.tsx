@@ -14,6 +14,8 @@ import dateStore from "../../../store/dateStore";
 import genreStore from "../../../store/genreStore";
 import searchStore from "../../../store/searchStore";
 import rigionStore from "../../../store/rigionStore";
+import escapeListStore from "../../../store/escapeListStore";
+import axios from "axios";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -23,6 +25,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 export default function Time(){
     const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
     const [currentTime, setCurrentTime] = useState(time);
+    const {getEscapeList} = escapeListStore();
     const {date} = dateStore();
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
@@ -35,6 +38,18 @@ export default function Time(){
                 label={value}
                 value={value}
             />));
+
+    async function getList(searchData){
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2,
+                searchWord: searchData.searchWord,
+                genreName: searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+    }
 
     return(
         <Modal 
@@ -79,6 +94,13 @@ export default function Time(){
                         onPress={()=>{
                             setTime(currentTime);
                             setSearchData({
+                                region1: _.split(rigion, ' ', 2)[0],
+                                region2: _.split(rigion, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                            });
+                            getList({
                                 region1: _.split(rigion, ' ', 2)[0],
                                 region2: _.split(rigion, ' ', 2)[1],
                                 searchWord: searchText,

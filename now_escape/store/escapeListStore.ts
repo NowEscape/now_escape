@@ -23,10 +23,6 @@ interface escapeListState{
     getEscapeList:(escapeList:escapeListContent[])=>void;
 }
 
-const setEscapeListAxios = (escapeList) => {
-    return escapeList;
-}
-
 const escapeListStore = create<escapeListState>((set, get)=>({
     escapeList: [{
         cafeName : "강남키이스케이프",

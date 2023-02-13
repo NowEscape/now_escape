@@ -14,6 +14,8 @@ import genreStore from "../../../store/genreStore";
 import searchStore from "../../../store/searchStore";
 import timeStore from "../../../store/timeStore";
 import rigionStore from "../../../store/rigionStore";
+import axios from "axios";
+import escapeListStore from "../../../store/escapeListStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -27,7 +29,19 @@ export default function Date(){
     const {time} = timeStore();
     const {rigion} = rigionStore();
     const [currentDate, setCurrentDate] = useState(date);
+    const {getEscapeList} = escapeListStore();
 
+    async function getList(searchData){
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2,
+                searchWord: searchData.searchWord,
+                genreName: searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+    }
 
     return(
         <Modal 
@@ -73,6 +87,15 @@ export default function Date(){
                             searchWord: searchText,
                             genreName: genre,
                             themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+
+                        });
+                        getList({
+                            region1: _.split(rigion, ' ', 2)[0],
+                            region2: _.split(rigion, ' ', 2)[1],
+                            searchWord: searchText,
+                            genreName: genre,
+                            themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+
                         });
                         setDateVisible(dateVisible);
                     }}/>
