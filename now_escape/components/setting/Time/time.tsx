@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   
             },
             ios:{
-                marginTop: iosHeightRatio*249
+                marginTop: iosHeightRatio*200
             }
         })
     },
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'white',
         borderRadius: 8,
         overflow:'hidden',
@@ -121,17 +120,12 @@ const styles = StyleSheet.create({
             android:{
                 height:aosHeightRatio*302,
                 width:aosWidthRatio*312,
-                // marginTop: aosHeightRatio*169,
-                // marginLeft: aosWidthRatio*24,
                 paddingTop: aosHeightRatio*25,
                 paddingBottom: aosHeightRatio*12,
             },
             ios:{
-                height:iosHeightRatio*285,
+                height:iosHeightRatio*360,
                 width:iosWidthRatio*325,
-                // marginTop: iosHeightRatio*249,
-                // marginLeft: iosWidthRatio*25,
-                paddingTop: iosHeightRatio*26,
                 paddingBottom: iosHeightRatio*12,
             }
         })
@@ -148,6 +142,7 @@ const styles = StyleSheet.create({
             ios:{
                 fontSize: 17,
                 letterSpacing:0.34,
+                marginTop: iosHeightRatio*26,
             }
         })
     },
@@ -156,6 +151,8 @@ const styles = StyleSheet.create({
             android:{},
             ios:{
                 width:iosWidthRatio*300,
+                // marginTop: iosHeightRatio*10,
+                // marginBottom: iosHeightRatio*10,
             }
         })
     },

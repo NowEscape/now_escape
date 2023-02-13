@@ -135,14 +135,14 @@ export default function Search({navigation}){
                     />
                 </View>
                 {isGenreSettingOpen === true ?
-                        <View
-                            style={{
-                                marginTop: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11,
-                            }}
-                        >
-                            <Genre search={true} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
-                        </View>
-                        : null}
+                    <View
+                        style={{
+                            marginTop: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11,
+                        }}
+                    >
+                        <Genre search={true} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
+                    </View>
+                    : null}
                 {isRigionSettingOpen === true ? 
                     <Modal 
                     visible={isRigionSettingOpen} 

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Text, View, StyleSheet, Platform} from "react-native";
+import {Text, View, StyleSheet, Platform, Pressable} from "react-native";
 import dateStore from "../../../store/dateStore";
 import Button from "../../Button/button";
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import Modal from "react-native-modal";
+// import Modal from "react-native"
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -30,17 +31,17 @@ export default function Date(){
 
 
     return(
-        <Modal 
-            isVisible={dateVisible}
-            hasBackdrop={true}
-            backdropColor={'black'}
-            backdropOpacity={0.55}
-            onBackdropPress={()=>setDateVisible(dateVisible)}
-            coverScreen={true}
-            deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
-            deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
-            style={styles.backContainer}
-            >
+     <Modal 
+        isVisible={dateVisible}
+        hasBackdrop={true}
+        backdropColor={'black'}
+        backdropOpacity={0.55}
+        onBackdropPress={()=>setDateVisible(dateVisible)}
+        coverScreen={true}
+        deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
+        deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
+        style={styles.backContainer}
+        >
         <View style={styles.container}>
             <Text style={styles.text}>{'테마 날짜 설정'}</Text>
             <DateTimePicker
@@ -78,7 +79,7 @@ export default function Date(){
                     }}/>
             </View>
         </View>
-    </Modal>
+     </Modal>
     );
 }
 
@@ -101,7 +102,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
         backgroundColor: 'white',
         borderRadius: 8,
         overflow:'hidden',
@@ -109,17 +109,10 @@ const styles = StyleSheet.create({
             android:{
                 height:aosHeightRatio*302,
                 width:aosWidthRatio*312,
-                // marginTop: aosHeightRatio*169,
-                // marginLeft: aosWidthRatio*24,
-                // paddingTop: aosHeightRatio*25,
-                // paddingBottom: aosHeightRatio*12,
             },
             ios:{
                 height:iosHeightRatio*285,
                 width:iosWidthRatio*325,
-                // marginTop: iosHeightRatio*249,
-                // paddingTop: iosHeightRatio*26,
-                // paddingBottom: iosHeightRatio*12,
             }
         })
     },
@@ -131,7 +124,7 @@ const styles = StyleSheet.create({
             },
             ios:{
                 marginTop: iosHeightRatio*60,
-                marginBottom: iosHeightRatio*60,
+                marginBottom: iosHeightRatio*80,
             }
         })
     },
@@ -142,11 +135,14 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{
                 fontSize: 16,
-                letterSpacing:0.32,
+                letterSpacing: 0.32,
+                marginTop: aosHeightRatio*26,
+
             },
             ios:{
                 fontSize: 17,
                 letterSpacing:0.34,
+                marginTop: iosHeightRatio*26,
             }
         })
     },

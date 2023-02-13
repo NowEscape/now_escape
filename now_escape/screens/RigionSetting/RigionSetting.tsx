@@ -37,7 +37,7 @@ export default function RegionSetting({navigation}) {
   // })
 
   return (
-      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
         <View style={styles.container}>
           <View style={styles.textBox}>
             <Text style={styles.text_1}
