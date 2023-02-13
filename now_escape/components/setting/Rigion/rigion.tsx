@@ -13,12 +13,14 @@ import searchStore from "../../../store/searchStore";
 import timeStore from "../../../store/timeStore";
 import axios from "axios";
 import escapeListStore from "../../../store/escapeListStore";
+import currentPageStore from "../../../store/currentPageStore";
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Rigion(props){
+    const {currentPage} = currentPageStore();
   const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
   const {getEscapeList} = escapeListStore();
@@ -33,8 +35,8 @@ export default function Rigion(props){
             {
                 region1: searchData.region1,
                 region2: searchData.region2,
-                searchWord: searchData.searchWord,
-                genreName: searchData.genreName,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);

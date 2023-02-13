@@ -23,6 +23,7 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import axios from "axios";
 import escapeListStore from "../../store/escapeListStore";
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -31,6 +32,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Search({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {getEscapeList} = escapeListStore();
     const {genre} = genreStore();
@@ -40,6 +42,8 @@ export default function Search({navigation}){
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
+
+    setCurrentPage("search");
 
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>

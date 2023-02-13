@@ -16,6 +16,7 @@ import searchStore from "../../../store/searchStore";
 import rigionStore from "../../../store/rigionStore";
 import escapeListStore from "../../../store/escapeListStore";
 import axios from "axios";
+import currentPageStore from "../../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -23,6 +24,7 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Time(){
+    const {currentPage} = currentPageStore();
     const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
     const [currentTime, setCurrentTime] = useState(time);
     const {getEscapeList} = escapeListStore();
@@ -44,8 +46,8 @@ export default function Time(){
             {
                 region1: searchData.region1,
                 region2: searchData.region2,
-                searchWord: searchData.searchWord,
-                genreName: searchData.genreName,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);

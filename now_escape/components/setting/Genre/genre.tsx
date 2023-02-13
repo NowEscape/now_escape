@@ -12,6 +12,7 @@ import _ from "lodash";
 import {format} from "date-fns";
 import escapeListStore from "../../../store/escapeListStore";
 import axios from "axios";
+import currentPageStore from "../../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -25,6 +26,7 @@ interface genrePropsType {
 
 
 export default function Genre(props:genrePropsType){
+    const {currentPage} = currentPageStore();
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search, isOpen} = props;
     const {setSearchData, searchText} = searchStore();
@@ -38,8 +40,8 @@ export default function Genre(props:genrePropsType){
             {
                 region1: searchData.region1,
                 region2: searchData.region2,
-                searchWord: searchData.searchWord,
-                genreName: searchData.genreName,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);

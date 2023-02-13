@@ -6,6 +6,7 @@ interface escapeListContent{
         themeName: string,
         themeDescription: string,
         themeImageUrl: string,
+        themeURL: string,
         genre: {genreId: number, genreName: string},
         createdDate?: string,
         updatedDate?: string,
@@ -30,6 +31,7 @@ const escapeListStore = create<escapeListState>((set, get)=>({
             themeName: "메모리컴퍼니",
             themeDescription: "메모리 컴퍼니 : 1921년 10월 1일에 설립된 회사로, 첫 창업자는 김예은, 김다은, 이하은, 이유진, 박준찬 5명이서 시작했다.",
             themeImageUrl: "",
+            themeURL: "",
             genre: {genreId : 0, genreName : "감성"},
         },
         themeDateList: [{

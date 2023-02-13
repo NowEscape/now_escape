@@ -19,6 +19,7 @@ import {format} from "date-fns";
 import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
 import { ScrollView } from 'react-native-gesture-handler';
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -27,16 +28,17 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {date, setDateVisible, dateVisible} = dateStore();
-    const {searchData} = searchStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
-    const {escapeList, getEscapeList} = escapeListStore();
     const swiperRef = useRef<HTMLDivElement>(null);
     const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
     const [loop, setLoop] = useState<any>();
     const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
     const scrollX = React.useRef(new Animated.Value(0)).current;
+
+    setCurrentPage("Index");
 
     const data = [
         {

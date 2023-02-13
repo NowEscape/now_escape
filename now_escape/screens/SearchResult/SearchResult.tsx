@@ -21,6 +21,7 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import {format} from "date-fns";
 import escapeListStore from "../../store/escapeListStore";
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -30,6 +31,7 @@ const statusBarHeight = StatusBar.currentHeight
 
 
 export default function SearchResult({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible} = dateStore();
@@ -39,6 +41,8 @@ export default function SearchResult({navigation}){
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
+
+    setCurrentPage("search");
 
     return(
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

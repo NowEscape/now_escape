@@ -16,6 +16,7 @@ import timeStore from "../../../store/timeStore";
 import rigionStore from "../../../store/rigionStore";
 import axios from "axios";
 import escapeListStore from "../../../store/escapeListStore";
+import currentPageStore from "../../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -23,6 +24,7 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Date(){
+    const {currentPage} = currentPageStore();
     const {date, setDate, dateVisible, setDateVisible} = dateStore();
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
@@ -36,8 +38,8 @@ export default function Date(){
             {
                 region1: searchData.region1,
                 region2: searchData.region2,
-                searchWord: searchData.searchWord,
-                genreName: searchData.genreName,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);
