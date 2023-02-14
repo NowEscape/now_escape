@@ -56,8 +56,16 @@ export default function Index({navigation}){
     ];
 
     const renderItem = ({item}) => <Image source={item.image} style={{
-        height:iosWidthRatio*168,
-        width:iosWidthRatio*375
+        ...Platform.select({
+            android:{
+                height:aosWidthRatio*162,
+                width:aosWidthRatio*360
+            },
+            ios:{
+                height:iosWidthRatio*168,
+                width:iosWidthRatio*375
+            }
+        })
     }}
     />
 
@@ -84,7 +92,7 @@ export default function Index({navigation}){
 
       
     return(
-        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
             <View style={styles.container}>
                 <View style={styles.filterBar}>
                     <View style={styles.filterLabel}>

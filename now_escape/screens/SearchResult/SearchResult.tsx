@@ -45,7 +45,7 @@ export default function SearchResult({navigation}){
     setCurrentPage("search");
 
     return(
-    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
         <View style={styles.container}>
         <View style={styles.searchContainer}>
             <Pressable 
@@ -107,25 +107,25 @@ export default function SearchResult({navigation}){
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
-                        text={genre}
-                        active={isGenreSettingOpen?true:false}
-                        open={()=>{
-                            setIsGenreSettingOpen((prevState => !prevState))
-                            {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
-                        }}
-                    />
-                    <Label
-                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
-                        width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
-                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
-                        type={"mainLabel"}
                         text={rigion}
                         active={isRigionSettingOpen?true:false}
                         open={()=>{
                             setIsRigionSettingOpen((prevState => !prevState))
                             setModal(true)
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
+                        }}
+                    />                    
+                    <Label
+                        height={Platform.OS==='ios'?iosHeightRatio*31:aosHeightRatio*30}
+                        width={Platform.OS==='ios'?iosWidthRatio*84:aosWidthRatio*81}
+                        marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
+                        type={"mainLabel"}
+                        text={genre}
+                        active={isGenreSettingOpen?true:false}
+                        open={()=>{
+                            setIsGenreSettingOpen((prevState => !prevState))
+                            {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
                         }}
                     />
                 </ScrollView>
@@ -149,25 +149,30 @@ export default function SearchResult({navigation}){
                         </View>
                         : null}
                 </View>
-                {isRigionSettingOpen === true ?
-                    <Modal
-                        visible={modal}
-                        transparent={true}
-                        animationType={'slide'}
-                        onRequestClose={()=>{
-                            setIsRigionSettingOpen(false)
-                            }
-                        }
+                {isRigionSettingOpen === true ? 
+                    <Modal 
+                    visible={isRigionSettingOpen} 
+                    transparent
+                    animationType={'slide'}
+                    onRequestClose={()=>{
+                        setIsRigionSettingOpen((prevState => !prevState))
+                    }}
                     >
-                        <Pressable style={{flex:1}}
-                            onPress={()=>{
-                                setModal(false)
-                                setIsRigionSettingOpen(false)
+                    <View style={{
+                        flex: 1,
+                        display: 'flex',
+                        backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+                    >
+                        <Pressable 
+                            style={{flex:1}}
+                            onPress={()=>
+                            setIsRigionSettingOpen((prevState => !prevState))
                             }
-                        }
                         />
                         <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-                    </Modal> : null}
+                    </View>
+                    </Modal>
+                : null}
             </View>
         </SafeAreaView>
     );

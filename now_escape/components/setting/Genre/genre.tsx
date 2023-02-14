@@ -99,7 +99,7 @@ const styles = (selected, search) => StyleSheet.create({
                 height: aosHeightRatio*48,
             },
             ios: {
-                height: iosHeightRatio*50,
+                height: iosHeightRatio*51,
             }
         })
     },
@@ -111,7 +111,6 @@ const styles = (selected, search) => StyleSheet.create({
 
             },
             ios: {
-                paddingTop: iosHeightRatio*17,
                 paddingHorizontal: iosWidthRatio*35,
             }
         })
@@ -128,7 +127,6 @@ const styles = (selected, search) => StyleSheet.create({
                 lineHeight: aosHeightRatio<1?aosHeightRatio*15:13,
              },
             ios:{
-                height: iosHeightRatio*50,
                 fontSize: iosHeightRatio<1?iosHeightRatio*16:14,
                 lineHeight: iosHeightRatio<1?iosHeightRatio*16:14,
             }

@@ -48,14 +48,12 @@ export default function Label(props) {
         </TouchableOpacity>
       )}
       {type === 'searchLabel' && (
-        <TouchableOpacity onPress={()=>{
-          {open()}
-        }}>
+        <TouchableOpacity onPress={()=>{{open()}}}>
           <View style={style.search}>
             <View style={{flexDirection: 'row'}}>
             {icon=== 'date' && <CalenderSVG/>}
             {icon=== 'time' && <ClockSVG/>}
-            <Text style={style.text}>{props.text}</Text>      
+            <Text style={style.searchText}>{props.text}</Text>      
             </View>
             { arrow && (active?<ArrowUpSVG/>:<ArrowDownSVG/>) }
           </View>
@@ -98,7 +96,7 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow)
     ...Platform.select({
       android:{
         borderRadius: aosWidthRatio*16,
-        paddingLeft: icon?aosWidthRatio*15:(arrow?aosWidthRatio*11:0),
+        paddingLeft: icon?aosWidthRatio*15:(arrow?aosWidthRatio*12:0),
         paddingRight: arrow?aosWidthRatio*8:0,
       },
       ios:{
@@ -153,6 +151,23 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow)
       ios:{
         fontSize: fontSize?fontSize:iosWidthRatio*15,
         paddingLeft: icon?iosWidthRatio*5:0,        
+      }
+    }),
+  },
+  searchText: {
+    fontWeight: 'normal',
+    fontStyle: 'normal',
+    letterSpacing: 0.3,
+    textAlign: 'center',
+    color: '#000000',
+    ...Platform.select({
+      android:{
+        fontSize: fontSize,
+        paddingLeft: icon?aosWidthRatio*16:0,        
+      },
+      ios:{
+        fontSize: fontSize,
+        paddingLeft: icon?iosWidthRatio*16.7:0,        
       }
     }),
   },
