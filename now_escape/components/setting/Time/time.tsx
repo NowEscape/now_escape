@@ -172,7 +172,9 @@ const styles = StyleSheet.create({
     },
     picker:{
         ...Platform.select({
-            android:{},
+            android:{
+                width:aosWidthRatio*290
+            },
             ios:{
                 width:iosWidthRatio*300,
                 // marginTop: iosHeightRatio*10,
