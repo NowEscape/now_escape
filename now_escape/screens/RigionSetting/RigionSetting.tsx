@@ -13,6 +13,7 @@ import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import _ from "lodash";
 import {format} from "date-fns";
 import searchStore from "../../store/searchStore";
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
