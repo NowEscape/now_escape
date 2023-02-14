@@ -157,7 +157,7 @@ export default function SearchResult({navigation}){
                         <View
                             style={{
                                 position: 'absolute',
-                                top: Platform.OS==='ios'?iosHeightRatio*11:aosHeightRatio*11,
+                                top: 0,
                             }}
                         >
                             <Genre search={false} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>

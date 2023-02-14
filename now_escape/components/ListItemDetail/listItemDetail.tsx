@@ -33,14 +33,25 @@ export default function ListItemDetail(props){
                             <Text style={styles.textLocation}>{escapeList[escapeID].cafeName}</Text>
                         </View>                        
                         <View style={styles.timeList}>
+                            {renderItem.length == 2 ?
+                            <FlatList
+                            key={2}
+                            data={escapeList[escapeID].themeDateList}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.themeDateId}
+                            numColumns={1}
+                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
+                            /> :
                             <FlatList
                                 key={2}
                                 data={escapeList[escapeID].themeDateList}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.themeDateId}
-                                numColumns={3}
+                                numColumns={4}
                                 contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
-                        />
+                        />                                            
+                            }
+
                         </View>
                     </View>
                 </View>

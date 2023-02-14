@@ -51,6 +51,8 @@ export default function Time(){
             <View style={styles.container}>
                 <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
                 <Picker
+                    mode='dropdown'
+                    prompt='원하는 시간대를 선택해주세요.'
                     style={styles.picker}
                     selectedValue={currentTime}
                     numberOfLines={3}
@@ -68,6 +70,7 @@ export default function Time(){
                         canceled={true} 
                         height={iosHeightRatio*48} 
                         width={iosWidthRatio*145} 
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
                         onPress={()=>setTimeVisible(timeVisible)}/>
                     <Button 
                         text={'적용'} 
@@ -76,6 +79,7 @@ export default function Time(){
                         canceled={false} 
                         height={iosHeightRatio*48} 
                         width={iosWidthRatio*145} 
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
                         onPress={()=>{
                             setTime(currentTime);
                             setSearchData({
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         ...Platform.select({
             android:{
-                marginTop: aosHeightRatio*169
+                marginTop: aosHeightRatio*180
   
             },
             ios:{
@@ -118,10 +122,9 @@ const styles = StyleSheet.create({
         overflow:'hidden',
         ...Platform.select({
             android:{
-                height:aosHeightRatio*302,
+                height:aosHeightRatio*190,
                 width:aosWidthRatio*312,
-                paddingTop: aosHeightRatio*25,
-                paddingBottom: aosHeightRatio*12,
+                paddingTop: aosHeightRatio*20,
             },
             ios:{
                 height:iosHeightRatio*360,
@@ -148,11 +151,13 @@ const styles = StyleSheet.create({
     },
     picker:{
         ...Platform.select({
-            android:{},
+            android:{
+                marginTop: aosHeightRatio*30,
+                marginBottom: aosHeightRatio*30,                
+                width: aosWidthRatio*100, 
+            },
             ios:{
                 width:iosWidthRatio*300,
-                // marginTop: iosHeightRatio*10,
-                // marginBottom: iosHeightRatio*10,
             }
         })
     },
