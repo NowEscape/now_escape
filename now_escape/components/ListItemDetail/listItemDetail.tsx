@@ -39,7 +39,7 @@ export default function ListItemDetail(props){
                                 data={escapeList[escapeID].themeDateList}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.themeDateId}
-                                numColumns={3}
+                                numColumns={4}
                                 contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
                         />
                         </View>

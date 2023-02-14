@@ -28,7 +28,6 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
-    const {setCurrentPage} = currentPageStore();
     const {date, setDateVisible, dateVisible} = dateStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const swiperRef = useRef<HTMLDivElement>(null);
@@ -37,8 +36,6 @@ export default function Index({navigation}){
     const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
     const scrollX = React.useRef(new Animated.Value(0)).current;
-
-    setCurrentPage("Index");
 
     const data = [
         {

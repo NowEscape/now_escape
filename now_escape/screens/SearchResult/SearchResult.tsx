@@ -42,14 +42,15 @@ export default function SearchResult({navigation}){
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
-    setCurrentPage("search");
-
     return(
     <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' }}>
         <View style={styles.container}>
         <View style={styles.searchContainer}>
             <Pressable 
-                onPress={()=>{navigation.navigate('Index')}}
+                onPress={()=>{
+                    setCurrentPage("Index");
+                    navigation.navigate('Index')
+                }}
                 style={styles.arrowBackIcon}
             >
                 <ArrowBackSVG height={aosHeightRatio*14}/>

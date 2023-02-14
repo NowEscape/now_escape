@@ -43,15 +43,16 @@ export default function Search({navigation}){
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
-    setCurrentPage("search");
-
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <View style={styles.searchContainer}>
                     <Pressable 
-                        onPress={()=>{navigation.navigate('Index')}}
+                        onPress={()=>{
+                            setCurrentPage("Index");
+                            navigation.navigate('Index')
+                        }}
                         style={styles.arrowBackIcon}
                     >
                         <ArrowBackSVG height={aosHeightRatio*14}/>
@@ -186,6 +187,7 @@ export default function Search({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*63:aosHeightRatio*60}
                         width={Platform.OS==='ios'?iosHeightRatio*341:aosWidthRatio*323}
                         onPress={()=>{
+                            setCurrentPage("Index");
                             navigation.navigate('SearchResult');
                         }}
                     />
