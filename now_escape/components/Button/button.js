@@ -2,15 +2,19 @@ import React from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
 
 export default function Button(props){
-    const {onPress, text = '', active, rounded, canceled, height, width} = props;
+    const {onPress, text = '', active, rounded, canceled, height, width, fontSize} = props;
+    const style = styles(active, width, height, fontSize);
+
     return(
-        <Pressable style={[styles(active, height, width).button, rounded && styles(active, height, width).rounded, canceled && styles(active, height, width).canceled]} onPress={onPress}>
-            <Text style={[styles(active, height, width).text, canceled && styles(active, height, width).canceledText]}>{text}</Text>
+        <Pressable style={[style.button, rounded && style.rounded, canceled && style.canceled]} 
+            onPress={onPress}
+            ><Text style={[style.text, canceled && style.canceledText]}
+            >{text}</Text>
         </Pressable>
     );
 }
 
-const styles = (active, height, width) => StyleSheet.create({
+const styles = (active, width, height, fontSize) => StyleSheet.create({
     button: {
         display: 'flex',
         alignItems: 'center',
@@ -23,7 +27,7 @@ const styles = (active, height, width) => StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'Pretendard',
         fontWeight: 'bold',
-        fontSize: 18,
+        fontSize: fontSize?fontSize:18,
         letterSpacing: 1.62,
         color: 'white'
     },

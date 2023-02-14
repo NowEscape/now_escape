@@ -5,7 +5,7 @@ import dateStore from "../../../store/dateStore";
 import Button from "../../Button/button";
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import Modal from "react-native-modal";
-// import Modal from "react-native"
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -46,66 +46,92 @@ export default function Date(){
         getEscapeList(response.data);
     }
 
-    return(
-     <Modal 
-        isVisible={dateVisible}
-        hasBackdrop={true}
-        backdropColor={'black'}
-        backdropOpacity={0.55}
-        onBackdropPress={()=>setDateVisible(dateVisible)}
-        coverScreen={true}
-        deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
-        deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
-        style={styles.backContainer}
-        >
-        <View style={styles.container}>
-            <Text style={styles.text}>{'테마 날짜 설정'}</Text>
-            <DateTimePicker
-                style={styles.picker}
-                mode={'date'}
-                value={currentDate}
-                onChange={(event, date)=>setCurrentDate(date)}
-            />
-            <View style={styles.buttonBox}>
-                <Button 
-                    text={'취소'} 
-                    active={true} 
-                    rounded={true} 
-                    canceled={true} 
-                    height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
-                    width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
-                    onPress={()=>setDateVisible(dateVisible)}/>
-                <Button 
-                    text={'적용'} 
-                    active={true} 
-                    rounded={true} 
-                    canceled={false} 
-                    height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
-                    width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
-                    onPress={()=>{
-                        setDate(currentDate);
-                        setSearchData({
-                            region1: _.split(rigion, ' ', 2)[0],
-                            region2: _.split(rigion, ' ', 2)[1],
-                            searchWord: searchText,
-                            genreName: genre,
-                            themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+    if (Platform.OS === 'ios') {
+        return(
+            <Modal 
+               isVisible={dateVisible}
+               hasBackdrop={true}
+               backdropColor={'black'}
+               backdropOpacity={0.55}
+               onBackdropPress={()=>setDateVisible(dateVisible)}
+               coverScreen={true}
+               deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
+               deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
+               style={styles.backContainer}
+               >
+               <View style={styles.container}>
+                   <Text style={styles.text}>{'테마 날짜 설정'}</Text>
+                   <DateTimePicker
+                       style={styles.picker}
+                       mode={'date'}
+                       value={currentDate}
+                       onChange={(event, date)=>setCurrentDate(date)}
+                   />
+                   <View style={styles.buttonBox}>
+                       <Button 
+                           text={'취소'} 
+                           active={true} 
+                           rounded={true} 
+                           canceled={true} 
+                           height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
+                           width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
+                           onPress={()=>setDateVisible(dateVisible)}/>
+                       <Button 
+                           text={'적용'} 
+                           active={true} 
+                           rounded={true} 
+                           canceled={false} 
+                           height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
+                           width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
+                           onPress={()=>{
+                               setDate(currentDate);
+                               setSearchData({
+                                   region1: _.split(rigion, ' ', 2)[0],
+                                   region2: _.split(rigion, ' ', 2)[1],
+                                   searchWord: searchText,
+                                   genreName: genre,
+                                   themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+       
+                               });
+                               getList({
+                                   region1: _.split(rigion, ' ', 2)[0],
+                                   region2: _.split(rigion, ' ', 2)[1],
+                                   searchWord: searchText,
+                                   genreName: genre,
+                                   themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+       
+                               });
+                               setDateVisible(dateVisible);
+                           }}/>
+                   </View>
+               </View>
+            </Modal>
+           );        
+    }
 
-                        });
-                        getList({
-                            region1: _.split(rigion, ' ', 2)[0],
-                            region2: _.split(rigion, ' ', 2)[1],
-                            searchWord: searchText,
-                            genreName: genre,
-                            themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
-
-                        });
-                        setDateVisible(dateVisible);
-                    }}/>
-            </View>
-        </View>
-     </Modal>
-    );
+    else {
+        return (
+            <DateTimePickerModal
+            isVisible={dateVisible}
+            mode={'date'}
+            date={currentDate}
+            onChange={(date)=>
+                setCurrentDate(date)
+            }
+            onConfirm={()=>{
+                setSearchData({
+                    region1: _.split(rigion, ' ', 2)[0],
+                    region2: _.split(rigion, ' ', 2)[1],
+                    searchWord: searchText,
+                    genreName: genre,
+                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+                });
+                setDateVisible(dateVisible);
+            }}
+            onCancel={()=>setDateVisible(dateVisible)}
+    />
+        )
+    }
 }
 
 const styles = StyleSheet.create({
