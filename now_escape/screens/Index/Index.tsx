@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, Text, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated, StatusBar} from "react-native";
+import {Image, View, RefreshControl, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated, StatusBar} from "react-native";
 import axios from "axios";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
@@ -32,7 +32,7 @@ const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {setSearchText} = searchStore();
+    const {setSearchText, searchData} = searchStore();
     const {setGenreValue, setGenreList, genreList, genreListName, genre} = genreStore();
     const {setTime} = timeStore();
     const {rigion, setRigion, setRigionList, rigionList, rigionListString, rigionName} = rigionStore();
@@ -42,6 +42,23 @@ export default function Index({navigation}){
     const [loop, setLoop] = useState<any>();
     const [modal, setModal] = useState(false);
     const scrollX = React.useRef(new Animated.Value(0)).current;
+    const [isRefreshing,setIsRefreshing] = useState(false);
+    const {currentPage} = currentPageStore();
+    const {getEscapeList} = escapeListStore();
+
+    async function getList(searchData){
+        setIsRefreshing(true)
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2==="전체"?"":searchData.region2,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+        setIsRefreshing(false);
+    }
 
     const data = [
         {
@@ -128,9 +145,9 @@ export default function Index({navigation}){
                             setTime("09:00");
                             setRigion(rigionName, rigionListString, 0, 0);
                             setRigionList(rigionList, 0, 0);
+                            setDate(new Date());
                             setGenreList(genreList, 0);
                             setGenreValue(genreListName, 0);
-                            setDate(new Date());
                             navigation.navigate('Search');
                         }}
                         style={styles.filterIcon}>
@@ -139,7 +156,9 @@ export default function Index({navigation}){
                     </Pressable>
                 </View>
 
-                <ScrollView style={styles.listContainer}>
+                <ScrollView
+                    refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
+                    style={styles.listContainer}>
                     <View style={styles.banner}>         
                         <Animated.FlatList
                             key={4}

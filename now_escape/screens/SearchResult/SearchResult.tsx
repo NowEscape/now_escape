@@ -35,8 +35,8 @@ export default function SearchResult({navigation}){
     const {setCurrentPage, currentPage} = currentPageStore();
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
-    const {date, setDateVisible, dateVisible} = dateStore();
-    const {rigion} = rigionStore();
+    const {date, setDateVisible, dateVisible, setDate} = dateStore();
+    const {rigion, setRigionList, rigionListString, rigionList, rigionName, setRigion} = rigionStore();
     const {escapeList, getEscapeList} = escapeListStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
@@ -61,6 +61,17 @@ export default function SearchResult({navigation}){
         <View style={styles.searchContainer}>
             <Pressable 
                 onPress={()=>{
+                    getList({
+                        region1: "서울",
+                        region2: "",
+                        searchWord: "",
+                        genreName: "",
+                        themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
+
+                    });
+                    setRigion(rigionName, rigionListString, 0, 0);
+                    setRigionList(rigionList, 0, 0);
+                    setDate(new Date());
                     setCurrentPage("Index");
                     navigation.navigate('Index')
                 }}
