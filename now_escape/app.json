@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "now_escape",
+    "name": "지금 방탈출",
     "slug": "now_escape",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -34,9 +34,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "now_escape",
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "now_escape",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./asset/icon_app_1024.png",
         "backgroundColor": "#FFFFFF"

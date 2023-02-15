@@ -48,8 +48,8 @@ export default function Search({navigation}){
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
-                searchWord: currentPage==="Index"?"":searchData.searchWord,
-                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                searchWord: searchData.searchWord,
+                genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);
@@ -92,6 +92,15 @@ export default function Search({navigation}){
                     />
                     <Pressable
                         onPress={()=>{
+                            setCurrentPage("searchPage");
+                            getList({
+                                region1: _.split(rigion, ' ', 2)[0],
+                                region2: _.split(rigion, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+
+                            });
                             navigation.navigate('SearchResult');
                         }}
                         style={styles.searchIcon}

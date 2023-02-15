@@ -93,12 +93,20 @@ export default function Rigion(props){
                   data={rigionName}
                   renderItem={renderItem}
               />
-              {
+              <View style={{...Platform.select({
+                      android:{
+                          height:aosHeightRatio*500,
+                          paddingBottom: aosHeightRatio*20
+                      },
+                      ios:{
+                          height:iosHeightRatio*500
+                      }
+                  })}}>
                   <FlatList
                       data={rigionListString[currentRigionIdx]}
                       renderItem={renderRigionItem}
                   />
-              }
+              </View>
           </View>
       </View>
     );
