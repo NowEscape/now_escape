@@ -24,7 +24,7 @@ const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
-export default function Date(){
+export default function DateSetting(){
     const {currentPage} = currentPageStore();
     const {date, setDate, dateVisible, setDateVisible} = dateStore();
     const {genre} = genreStore();
