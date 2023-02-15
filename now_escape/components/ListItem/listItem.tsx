@@ -10,6 +10,8 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
 import searchStore from "../../store/searchStore";
+import axios from "axios";
+import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -76,17 +78,36 @@ const RenderTimeList = ({themeDateListItem}) => {
 }
 
 export default function ListItem(props) {
+    const {currentPage} = currentPageStore();
     const {scrollEnabled} = props;
     const {escapeList, getEscapeList} = escapeListStore();
     const {searchData} = searchStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
+    const [isRefreshing,setIsRefreshing] = useState(false);
+
+    async function getList(searchData){
+        setIsRefreshing(true)
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2==="전체"?"":searchData.region2,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+        setIsRefreshing(false);
+        console.log(searchData);
+    }
 
     return(
         <View style={styles.container}>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 data={escapeList}
+                refreshing={isRefreshing}
+                onRefresh={()=>getList(searchData)}
                 renderItem={({item, index})=><RenderEscapeListItem
                     cafeName={item.cafeName}
                     theme={item.theme}
