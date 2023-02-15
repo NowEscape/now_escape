@@ -1,9 +1,8 @@
 import React from 'react';
-import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView, Linking} from "react-native";
+import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView} from "react-native";
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
-import _ from "lodash";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -15,7 +14,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 const renderItem = ({item}) => {
     return(
-        <Text style={styles.timeListItem}>{_.split(item.themeTime, ' ', 2)[1]}</Text>
+        <Text style={styles.timeListItem}>{item.themeTime}</Text>
     );
 }
 
@@ -34,6 +33,15 @@ export default function ListItemDetail(props){
                             <Text style={styles.textLocation}>{escapeList[escapeID].cafeName}</Text>
                         </View>                        
                         <View style={styles.timeList}>
+                            {renderItem.length == 2 ?
+                            <FlatList
+                            key={2}
+                            data={escapeList[escapeID].themeDateList}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.themeDateId}
+                            numColumns={1}
+                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
+                            /> :
                             <FlatList
                                 key={2}
                                 data={escapeList[escapeID].themeDateList}
@@ -41,7 +49,9 @@ export default function ListItemDetail(props){
                                 keyExtractor={(item) => item.themeDateId}
                                 numColumns={4}
                                 contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
-                        />
+                        />                                            
+                            }
+
                         </View>
                     </View>
                 </View>
@@ -56,8 +66,7 @@ export default function ListItemDetail(props){
                     </ScrollView>
                 </View>
                 <Button 
-                    onPress={()=>{Linking.openURL(escapeList[escapeID].theme.themeURL)}}
-                    text={'예약하기'}
+                    onPress={()=>{}} text={'예약하기'} 
                     active={true} 
                     rounded={true} 
                     canceled={false} 
