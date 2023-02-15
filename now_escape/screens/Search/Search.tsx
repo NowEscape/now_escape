@@ -10,7 +10,7 @@ import Genre from "../../components/setting/Genre/genre";
 import genreStore from "../../store/genreStore";
 import timeStore from "../../store/timeStore";
 import dateStore from "../../store/dateStore";
-import Date from "../../components/setting/Date/date";
+import DateSetting from "../../components/setting/Date/dateSetting";
 import Time from "../../components/setting/Time/time";
 import rigionStore from "../../store/rigionStore";
 import Rigion from "../../components/setting/Rigion/rigion";
@@ -32,7 +32,7 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Search({navigation}){
-    const {setCurrentPage} = currentPageStore();
+    const {setCurrentPage, currentPage} = currentPageStore();
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {getEscapeList} = escapeListStore();
     const {genre} = genreStore();
@@ -42,6 +42,18 @@ export default function Search({navigation}){
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
+
+    async function getList(searchData){
+        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+            {
+                region1: searchData.region1,
+                region2: searchData.region2==="전체"?"":searchData.region2,
+                searchWord: currentPage==="Index"?"":searchData.searchWord,
+                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                themeTime: searchData.themeTime,
+            })
+        getEscapeList(response.data);
+    }
 
     return(
         <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'white'}}>
@@ -92,7 +104,7 @@ export default function Search({navigation}){
                         }}
                     />
                 </View>
-                <Date/>
+                <DateSetting/>
                 <View style={{marginTop: Platform.OS==='ios'?iosHeightRatio*14:aosHeightRatio*13}}>
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*49:aosHeightRatio*47}
@@ -187,7 +199,15 @@ export default function Search({navigation}){
                         height={Platform.OS==='ios'?iosHeightRatio*63:aosHeightRatio*60}
                         width={Platform.OS==='ios'?iosHeightRatio*341:aosWidthRatio*323}
                         onPress={()=>{
-                            setCurrentPage("Index");
+                            setCurrentPage("searchPage");
+                            getList({
+                                region1: _.split(rigion, ' ', 2)[0],
+                                region2: _.split(rigion, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+
+                            });
                             navigation.navigate('SearchResult');
                         }}
                     />

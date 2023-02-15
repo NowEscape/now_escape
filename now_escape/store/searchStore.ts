@@ -19,10 +19,15 @@ function setSearchInput(searchInput:searchDataContent){
     return searchInput;
 }
 
+function setSearchText(searchText:string){
+    console.log(searchText);
+    return searchText;
+}
+
 const searchStore = create<searchState>((set)=>({
-    searchText: '',
+    searchText: "",
     setSearchText: (searchText)=>set((state)=>({
-        searchText: searchText
+        searchText: setSearchText(searchText)
     })),
     searchData: {
         region1: '',

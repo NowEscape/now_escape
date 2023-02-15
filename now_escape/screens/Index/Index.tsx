@@ -4,9 +4,11 @@ import axios from "axios";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
-import Date from "../../components/setting/Date/date";
+import DateSetting from "../../components/setting/Date/dateSetting";
 import dateStore from "../../store/dateStore";
 import rigionStore from "../../store/rigionStore";
+import genreStore from "../../store/genreStore";
+import timeStore from "../../store/timeStore";
 import Rigion from "../../components/setting/Rigion/rigion";
 import useInterval from './useInterval';
 import 'react-native-gesture-handler'
@@ -20,6 +22,7 @@ import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
 import { ScrollView } from 'react-native-gesture-handler';
 import currentPageStore from "../../store/currentPageStore";
+import _ from "lodash";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -28,12 +31,15 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
-    const {date, setDateVisible, dateVisible} = dateStore();
+    const {date, setDateVisible, dateVisible, setDate} = dateStore();
+    const {setSearchText} = searchStore();
+    const {setGenreValue, setGenreList, genreList, genreListName, genre} = genreStore();
+    const {setTime} = timeStore();
+    const {rigion, setRigion, setRigionList, rigionList, rigionListString, rigionName} = rigionStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
     const swiperRef = useRef<HTMLDivElement>(null);
     const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
     const [loop, setLoop] = useState<any>();
-    const {rigion} = rigionStore();
     const [modal, setModal] = useState(false);
     const scrollX = React.useRef(new Animated.Value(0)).current;
 
@@ -102,7 +108,7 @@ export default function Index({navigation}){
                         text={ String(format(date, 'yyyy.MM.dd'))}
                         open={()=>{setDateVisible(dateVisible)}}
                         arrow={true}
-                    /><Date/>
+                    /><DateSetting/>
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
@@ -116,12 +122,19 @@ export default function Index({navigation}){
                         arrow={true}
                     />
                     </View>
-                    <Pressable 
-                        onPress={()=>{navigation.navigate('Search')}}
-                        style={styles.filterIcon}
-                    >
+                    <Pressable
+                        onPress={()=>{
+                            setSearchText("");
+                            setTime("09:00");
+                            setRigion(rigionName, rigionListString, 0, 0);
+                            setRigionList(rigionList, 0, 0);
+                            setGenreList(genreList, 0);
+                            setGenreValue(genreListName, 0);
+                            setDate(new Date());
+                            navigation.navigate('Search');
+                        }}
+                        style={styles.filterIcon}>
                         <SearchSvg
-                            onPress={()=>{navigation.navigate('Search')}}
                             height={Platform.OS==='ios'?iosHeightRatio*21.1:aosHeightRatio*20.2}/>
                     </Pressable>
                 </View>
