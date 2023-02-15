@@ -115,25 +115,25 @@ export default function DateSetting(){
             isVisible={dateVisible}
             mode={'date'}
             date={currentDate}
-            onConfirm={(date)=>{
-                setCurrentDate(date);
-                setDate(date);
+            onConfirm={(pickerDate)=>{
+                setDateVisible(dateVisible);
+                setCurrentDate(pickerDate);
+                setDate(pickerDate);
                 setSearchData({
                     region1: _.split(rigion, ' ', 2)[0],
                     region2: _.split(rigion, ' ', 2)[1],
                     searchWord: searchText,
                     genreName: genre,
-                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                    themeTime: format(pickerDate, 'yyyy-MM-dd')+ ' ' + time
                 });
                 getList({
                     region1: _.split(rigion, ' ', 2)[0],
                     region2: _.split(rigion, ' ', 2)[1],
                     searchWord: searchText,
                     genreName: genre,
-                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                    themeTime: format(pickerDate, 'yyyy-MM-dd')+ ' ' + time
 
                 });
-                setDateVisible(dateVisible);
             }}
             onCancel={()=>setDateVisible(dateVisible)}
     />

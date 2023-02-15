@@ -12,9 +12,21 @@ interface rigionState{
 
 const rigionStore = create<rigionState>((set)=>({
     rigion : "",
-    rigionName : ["서울", "경기", "충청"],
-    rigionListString : [["전체","강남","홍대"],["전체","수원","파주"],["전체","대전","세종"]],
-    rigionList: [[true, false, false],[false, false, false],[false, false, false],],
+    rigionName : ["서울", "경기/인천", "충청", "경상","전라"],
+    rigionListString : [
+        ["전체","강남","잠실","홍대","대학로","성신여대앞","노원","종로","신림","노량진"],
+        ["전체","안양","화성","평택","성남","구리","의정부","부천","인천"],
+        ["전체","아산","천안","대전","청주"],
+        ["전체","대구","부산"],
+        ["전체","전주","여수"]
+    ],
+    rigionList: [
+        [true, false, false,false,false,false,false,false,false,false,],
+        [false, false, false,false,false,false,false,false,false,],
+        [false, false, false,false,false,],
+        [false,false,false],
+        [false,false,false]
+    ],
     setRigionList: (rigionList, rigionIdx, rigionItemIdx)=>set((state)=>({
         rigionList: settingRigionList(rigionList, rigionIdx, rigionItemIdx),
     })),
