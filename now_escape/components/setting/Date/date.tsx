@@ -38,9 +38,9 @@ export default function Date(){
         const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
             {
                 region1: searchData.region1,
-                region2: searchData.region2,
+                region2: searchData.region2==="전체"?"":searchData.region2,
                 searchWord: currentPage==="Index"?"":searchData.searchWord,
-                genreName: currentPage==="Index"?"":searchData.genreName,
+                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);
@@ -115,16 +115,23 @@ export default function Date(){
             isVisible={dateVisible}
             mode={'date'}
             date={currentDate}
-            onChange={(date)=>
-                setCurrentDate(date)
-            }
-            onConfirm={()=>{
+            onConfirm={(date)=>{
+                setCurrentDate(date);
+                setDate(date);
                 setSearchData({
                     region1: _.split(rigion, ' ', 2)[0],
                     region2: _.split(rigion, ' ', 2)[1],
                     searchWord: searchText,
                     genreName: genre,
-                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                });
+                getList({
+                    region1: _.split(rigion, ' ', 2)[0],
+                    region2: _.split(rigion, ' ', 2)[1],
+                    searchWord: searchText,
+                    genreName: genre,
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+
                 });
                 setDateVisible(dateVisible);
             }}
