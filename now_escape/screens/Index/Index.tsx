@@ -52,8 +52,8 @@ export default function Index({navigation}){
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
-                searchWord: currentPage==="Index"?"":searchData.searchWord,
-                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                searchWord: "",
+                genreName: "",
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);

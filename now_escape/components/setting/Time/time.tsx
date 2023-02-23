@@ -42,12 +42,16 @@ export default function Time(){
             />));
 
     async function getList(searchData){
+        if(currentPage==="index"){
+            searchData.genreName="";
+            searchData.searchWord="";
+        }
         const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
-                searchWord: currentPage==="Index"?"":searchData.searchWord,
-                genreName: currentPage==="Index"||"전체장르"?"":searchData.genreName,
+                searchWord: searchData.searchWord,
+                genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
         getEscapeList(response.data);
