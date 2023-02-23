@@ -33,6 +33,8 @@ export default function DateSetting(){
     const {rigion} = rigionStore();
     const [currentDate, setCurrentDate] = useState(date);
     const {getEscapeList} = escapeListStore();
+    const [isVisible, setVisible] = useState(false);
+
 
     async function getList(searchData){
         const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
@@ -55,8 +57,8 @@ export default function DateSetting(){
                backdropOpacity={0.55}
                onBackdropPress={()=>setDateVisible(dateVisible)}
                coverScreen={true}
-               deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
-               deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
+               deviceWidth={iosWidthRatio*375}
+               deviceHeight={iosHeightRatio*812}
                style={styles.backContainer}
                >
                <View style={styles.container}>
@@ -65,6 +67,7 @@ export default function DateSetting(){
                        style={styles.picker}
                        mode={'date'}
                        value={currentDate}
+                       minimumDate={new Date()}
                        onChange={(event, date)=>setCurrentDate(date)}
                    />
                    <View style={styles.buttonBox}>
@@ -73,16 +76,99 @@ export default function DateSetting(){
                            active={true} 
                            rounded={true} 
                            canceled={true} 
-                           height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
-                           width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
+                           height={iosHeightRatio*48} 
+                           width={iosWidthRatio*145} 
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
                            active={true} 
                            rounded={true} 
                            canceled={false} 
-                           height={Platform.OS==='ios'?iosHeightRatio*48:aosHeightRatio*46} 
-                           width={Platform.OS==='ios'?iosWidthRatio*145:aosWidthRatio*139} 
+                           height={iosHeightRatio*48} 
+                           width={iosWidthRatio*145} 
+                           onPress={()=>{
+                               setDate(currentDate);
+                               setSearchData({
+                                   region1: _.split(rigion, ' ', 2)[0],
+                                   region2: _.split(rigion, ' ', 2)[1],
+                                   searchWord: searchText,
+                                   genreName: genre,
+                                   themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+                               });
+                               getList({
+                                   region1: _.split(rigion, ' ', 2)[0],
+                                   region2: _.split(rigion, ' ', 2)[1],
+                                   searchWord: searchText,
+                                   genreName: genre,
+                                   themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
+                               });
+                               setDateVisible(dateVisible);
+                           }}/>
+                   </View>
+               </View>
+            </Modal>
+           );        
+    }
+
+    else {
+        return (
+            <Modal 
+               isVisible={dateVisible}
+               hasBackdrop={true}
+               backdropColor={'black'}
+               backdropOpacity={0.55}
+               onBackdropPress={()=>setDateVisible(dateVisible)}
+               coverScreen={true}
+               deviceWidth={aosWidthRatio*360}
+               deviceHeight={aosHeightRatio*640}
+               style={styles.backContainer}
+               >
+               <View style={styles.container}>
+                    <Text style={styles.text}>{'테마 날짜 설정'}</Text>
+                    <Pressable
+                        onPress={() => setVisible(true)}>
+                    <View style={styles.aosDatePicker}>
+                        <Text style={styles.aosPickerText}>{String(
+                            currentDate.getFullYear() + '년 '
+                            + currentDate.getMonth() + '월 '
+                            + currentDate.getDate() + '일'
+                            )}
+                        </Text>
+                    </View>
+                    </Pressable>
+                    <DateTimePickerModal
+                    isVisible={isVisible}
+                    mode={'date'}
+                    date={currentDate}
+                    minimumDate={new Date()}
+                    onConfirm={(pickerDate)=>{
+                        setVisible(false)
+                        setCurrentDate(pickerDate);
+                        setDate(pickerDate);
+                    }}
+                    onCancel={()=>setVisible(false)}
+                    onChange={(pickerDate)=>{
+                        setVisible(false)
+                        setCurrentDate(pickerDate);
+                        setDate(pickerDate);
+                    }}
+                    />
+                   <View style={styles.buttonBox}>
+                       <Button 
+                           text={'취소'} 
+                           active={true} 
+                           rounded={true} 
+                           canceled={true} 
+                           height={aosHeightRatio*46} 
+                           width={aosWidthRatio*139} 
+                           onPress={()=>setDateVisible(dateVisible)}/>
+                       <Button 
+                           text={'적용'} 
+                           active={true} 
+                           rounded={true} 
+                           canceled={false} 
+                           height={aosHeightRatio*46} 
+                           width={aosWidthRatio*139} 
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
@@ -106,37 +192,6 @@ export default function DateSetting(){
                    </View>
                </View>
             </Modal>
-           );        
-    }
-
-    else {
-        return (
-            <DateTimePickerModal
-            isVisible={dateVisible}
-            mode={'date'}
-            date={currentDate}
-            onConfirm={(pickerDate)=>{
-                setDateVisible(dateVisible);
-                setCurrentDate(pickerDate);
-                setDate(pickerDate);
-                setSearchData({
-                    region1: _.split(rigion, ' ', 2)[0],
-                    region2: _.split(rigion, ' ', 2)[1],
-                    searchWord: searchText,
-                    genreName: genre,
-                    themeTime: format(pickerDate, 'yyyy-MM-dd')+ ' ' + time
-                });
-                getList({
-                    region1: _.split(rigion, ' ', 2)[0],
-                    region2: _.split(rigion, ' ', 2)[1],
-                    searchWord: searchText,
-                    genreName: genre,
-                    themeTime: format(pickerDate, 'yyyy-MM-dd')+ ' ' + time
-
-                });
-            }}
-            onCancel={()=>setDateVisible(dateVisible)}
-    />
         )
     }
 }
@@ -165,7 +220,7 @@ const styles = StyleSheet.create({
         overflow:'hidden',
         ...Platform.select({
             android:{
-                height:aosHeightRatio*302,
+                height:aosHeightRatio*240,
                 width:aosWidthRatio*312,
             },
             ios:{
@@ -194,7 +249,7 @@ const styles = StyleSheet.create({
             android:{
                 fontSize: 16,
                 letterSpacing: 0.32,
-                marginTop: aosHeightRatio*26,
+                marginTop: aosHeightRatio*20,
 
             },
             ios:{
@@ -216,6 +271,18 @@ const styles = StyleSheet.create({
                 width: iosWidthRatio*299,
             }
         })
+    },
+    aosDatePicker: {
+        height: aosHeightRatio*30,
+        width: aosWidthRatio*120,
+        marginTop: aosWidthRatio*65,
+        marginBottom: aosWidthRatio*70,
+        backgroundColor: '#e6e6e6',
+        borderRadius: 5,
+        justifyContent: 'center'
+    },
+    aosPickerText: {
+        textAlign: 'center',
+        fontWeight: 'bold'
     }
-
 })
