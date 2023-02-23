@@ -41,7 +41,7 @@ export default function ListItemDetail(props){
                             renderItem={renderItem}
                             keyExtractor={(item) => item.themeDateId}
                             numColumns={1}
-                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
+                            contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',}}
                             /> :
                             <FlatList
                                 key={2}
@@ -238,12 +238,12 @@ const styles = StyleSheet.create({
         ...Platform.select({
             android:{
                 fontSize: aosWidthRatio*13,
-                lineHeight: 21,
+                lineHeight: 24,
                 letterSpacing: 0.26,
             },
             ios:{
                 fontSize: iosWidthRatio*16,
-                lineHeight: 21,
+                lineHeight: 24,
                 letterSpacing: 0.28,
             }
         })
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
             android:{
                 height: aosHeightRatio*204,
                 width: aosWidthRatio*318,
-                marginTop: aosHeightRatio*15,
+                marginTop: aosHeightRatio*20,
                 marginBottom: aosHeightRatio*11
             },
             ios:{

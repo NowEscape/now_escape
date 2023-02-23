@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
             },
             ios:{
                 width: iosWidthRatio*340.4,
-                height: iosHeightRatio*153.3,
+                height: iosHeightRatio*160,
                 paddingLeft: iosWidthRatio*4.7,
                 paddingTop: iosHeightRatio*15.3,
                 paddingBottom: iosHeightRatio*15.9,

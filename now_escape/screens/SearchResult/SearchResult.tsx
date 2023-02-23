@@ -105,9 +105,9 @@ export default function SearchResult({navigation}){
                 <SearchSVG height={Platform.OS=='ios'?iosHeightRatio*21.1:aosHeightRatio*20.2}/>
             </Pressable>
         </View>
-                <View style={styles.sectionBar}></View>
+            <View style={styles.sectionBar}></View>
 
-                <View style={styles.scrollLabelContainer}>
+            <View style={styles.scrollLabelContainer}>
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
