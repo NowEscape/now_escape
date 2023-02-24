@@ -22,6 +22,12 @@ interface escapeListContent{
 interface escapeListState{
     escapeList:escapeListContent[];
     getEscapeList:(escapeList:escapeListContent[])=>void;
+    isEscapeListNull: boolean;
+    setIsEscapeListNull: (isNull:boolean)=>void;
+}
+
+const settingIsEscapeListNull = (isNull:boolean) => {
+    return isNull;
 }
 
 const escapeListStore = create<escapeListState>((set, get)=>({
@@ -47,6 +53,10 @@ const escapeListStore = create<escapeListState>((set, get)=>({
             theme : data.theme,
             themeDateList : data.themeDateList
         }))
+    })),
+    isEscapeListNull: false,
+    setIsEscapeListNull: (isNull)=>set((state)=>({
+        isEscapeListNull: settingIsEscapeListNull(isNull)
     }))
 }))
 

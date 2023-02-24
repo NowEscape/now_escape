@@ -30,7 +30,7 @@ export default function Genre(props:genrePropsType){
     const {genreList, setGenreList, genreListName, setGenreValue} = genreStore();
     const {search, isOpen} = props;
     const {setSearchData, searchText} = searchStore();
-    const {getEscapeList} = escapeListStore();
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {date} = dateStore();
     const {time} = timeStore();
     const {rigion} = rigionStore();
@@ -48,6 +48,11 @@ export default function Genre(props:genrePropsType){
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
     }
 
