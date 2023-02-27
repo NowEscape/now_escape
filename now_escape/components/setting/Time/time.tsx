@@ -62,73 +62,144 @@ export default function Time(){
         getEscapeList(response.data);
     }
 
-    return(
-        <Modal 
-            isVisible={timeVisible}
-            hasBackdrop={true}
-            backdropColor={'black'}
-            backdropOpacity={0.55}
-            onBackdropPress={()=>setTimeVisible(timeVisible)}
-            coverScreen={true}
-            deviceWidth={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
-            deviceHeight={Platform.OS==='ios'?iosHeightRatio*812:aosHeightRatio*640}
-            style={styles.backContainer}
-            >
-            <View style={styles.container}>
-                <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
-                <Picker
-                    mode='dropdown'
-                    prompt='원하는 시간대를 선택해주세요.'                
-                    style={styles.picker}
-                    selectedValue={currentTime}
-                    numberOfLines={3}
-                    onValueChange={(itemValue, itemIndex) =>
-                        setCurrentTime(itemValue)
-                    }>
-                    {timeListItem}
-                </Picker>
-
-                <View style={styles.buttonBox}>
-                    <Button 
-                        text={'취소'} 
-                        active={true} 
-                        rounded={true} 
-                        canceled={true} 
-                        height={iosHeightRatio*48} 
-                        width={iosWidthRatio*145}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*15:aosWidthRatio*14}
-                        onPress={()=>setTimeVisible(timeVisible)}/>
-                    <Button 
-                        text={'적용'} 
-                        active={true} 
-                        rounded={true} 
-                        canceled={false} 
-                        height={iosHeightRatio*48} 
-                        width={iosWidthRatio*145} 
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*15:aosWidthRatio*14}
-                        onPress={()=>{
-                            setTime(currentTime);
-                            setSearchData({
-                                region1: _.split(rigion, ' ', 2)[0],
-                                region2: _.split(rigion, ' ', 2)[1],
-                                searchWord: searchText,
-                                genreName: genre,
-                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
-                            });
-                            getList({
-                                region1: _.split(rigion, ' ', 2)[0],
-                                region2: _.split(rigion, ' ', 2)[1],
-                                searchWord: searchText,
-                                genreName: genre,
-                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
-                            });
-                            setTimeVisible(timeVisible);
-                        }}
-                    />
+    if (Platform.OS === 'ios') {
+        return(
+            <Modal 
+                isVisible={timeVisible}
+                hasBackdrop={true}
+                backdropColor={'black'}
+                backdropOpacity={0.55}
+                onBackdropPress={()=>setTimeVisible(timeVisible)}
+                coverScreen={true}
+                deviceWidth={iosWidthRatio*375}
+                deviceHeight={iosHeightRatio*812}
+                style={styles.backContainer}
+                >
+                <View style={styles.container}>
+                    <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
+                    <Picker
+                        mode='dropdown'
+                        prompt='원하는 시간대를 선택해주세요.'                
+                        style={styles.picker}
+                        selectedValue={currentTime}
+                        numberOfLines={3}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setCurrentTime(itemValue)
+                        }>
+                        {timeListItem}
+                    </Picker>
+    
+                    <View style={styles.buttonBox}>
+                        <Button 
+                            text={'취소'} 
+                            active={true} 
+                            rounded={true} 
+                            canceled={true} 
+                            height={iosHeightRatio*48} 
+                            width={iosWidthRatio*145}
+                            fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                            onPress={()=>setTimeVisible(timeVisible)}/>
+                        <Button 
+                            text={'적용'}
+                            active={true}
+                            rounded={true}
+                            canceled={false}
+                            height={iosHeightRatio*48}
+                            width={iosWidthRatio*145}
+                            fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                            onPress={()=>{
+                                setTime(currentTime);
+                                setSearchData({
+                                    region1: _.split(rigion, ' ', 2)[0],
+                                    region2: _.split(rigion, ' ', 2)[1],
+                                    searchWord: searchText,
+                                    genreName: genre,
+                                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                                });
+                                getList({
+                                    region1: _.split(rigion, ' ', 2)[0],
+                                    region2: _.split(rigion, ' ', 2)[1],
+                                    searchWord: searchText,
+                                    genreName: genre,
+                                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                                });
+                                setTimeVisible(timeVisible);
+                            }}
+                        />
+                    </View>
                 </View>
-            </View>
-        </Modal>
-    );
+            </Modal>
+        );
+    }
+    else {
+        return(
+            <Modal 
+                isVisible={timeVisible}
+                hasBackdrop={true}
+                backdropColor={'black'}
+                backdropOpacity={0.55}
+                onBackdropPress={()=>setTimeVisible(timeVisible)}
+                coverScreen={true}
+                deviceWidth={aosWidthRatio*360}
+                deviceHeight={aosHeightRatio*640}
+                style={styles.backContainer}
+                >
+                <View style={styles.container}>
+                    <Text style={styles.text}>{'테마 시작 시간 설정'}</Text>
+                    <Picker
+                        mode='dropdown'
+                        prompt='원하는 시간대를 선택해주세요.'                
+                        style={styles.picker}
+                        selectedValue={currentTime}
+                        numberOfLines={3}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setCurrentTime(itemValue)
+                        }>
+                        {timeListItem}
+                    </Picker>
+    
+                    <View style={styles.buttonBox}>
+                        <Button 
+                            text={'취소'} 
+                            active={true} 
+                            rounded={true} 
+                            canceled={true} 
+                            height={iosHeightRatio*48} 
+                            width={iosWidthRatio*145}
+                            fontSize={aosWidthRatio*14}
+                            onPress={()=>setTimeVisible(timeVisible)}/>
+                        <Button 
+                            text={'적용'} 
+                            active={true} 
+                            rounded={true} 
+                            canceled={false} 
+                            height={iosHeightRatio*48} 
+                            width={iosWidthRatio*145} 
+                            fontSize={aosWidthRatio*14}
+                            onPress={()=>{
+                                setTime(currentTime);
+                                setSearchData({
+                                    region1: _.split(rigion, ' ', 2)[0],
+                                    region2: _.split(rigion, ' ', 2)[1],
+                                    searchWord: searchText,
+                                    genreName: genre,
+                                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                                });
+                                getList({
+                                    region1: _.split(rigion, ' ', 2)[0],
+                                    region2: _.split(rigion, ' ', 2)[1],
+                                    searchWord: searchText,
+                                    genreName: genre,
+                                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + currentTime
+                                });
+                                setTimeVisible(timeVisible);
+                            }}
+                        />
+                    </View>
+                </View>
+            </Modal>
+        );        
+    }
 }
 
 const styles = StyleSheet.create({

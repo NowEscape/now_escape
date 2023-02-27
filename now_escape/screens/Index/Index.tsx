@@ -119,7 +119,7 @@ export default function Index({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*130:aosWidthRatio*125}
-                        fontSize={Platform.OS==='ios'?15:14}
+                        // fontSize={Platform.OS==='ios'?15:14}
                         type={'mainLabel'}
                         bold={true}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
@@ -130,7 +130,7 @@ export default function Index({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
-                        fontSize={Platform.OS==='ios'?15:14}
+                        // fontSize={Platform.OS==='ios'?15:14}
                         type={'mainLabel'}
                         bold={true}
                         text={rigion}

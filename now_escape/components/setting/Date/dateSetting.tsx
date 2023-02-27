@@ -92,7 +92,7 @@ export default function DateSetting(){
                            canceled={true} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
-                           fontSize={iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17}
+                           fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
@@ -101,7 +101,7 @@ export default function DateSetting(){
                            canceled={false} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
-                           fontSize={iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17}
+                           fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
