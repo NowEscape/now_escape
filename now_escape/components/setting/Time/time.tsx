@@ -27,7 +27,7 @@ export default function Time(){
     const {currentPage} = currentPageStore();
     const {time, setTime, timeList, timeVisible, setTimeVisible} = timeStore();
     const [currentTime, setCurrentTime] = useState(time);
-    const {getEscapeList} = escapeListStore();
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {date} = dateStore();
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
@@ -54,6 +54,11 @@ export default function Time(){
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
     }
 

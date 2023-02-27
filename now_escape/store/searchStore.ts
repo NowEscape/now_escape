@@ -20,7 +20,6 @@ function setSearchInput(searchInput:searchDataContent){
 }
 
 function setSearchText(searchText:string){
-    console.log(searchText);
     return searchText;
 }
 

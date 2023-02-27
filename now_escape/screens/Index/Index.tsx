@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Image, View, RefreshControl, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated, StatusBar} from "react-native";
+import {Image, View, Text,RefreshControl, StyleSheet, Pressable, SafeAreaView, Platform, FlatList, Modal, Animated, StatusBar} from "react-native";
 import axios from "axios";
 import Label from "../../components/Label/label";
 import ListItem from "../../components/ListItem/listItem";
@@ -22,7 +22,6 @@ import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
 import { ScrollView } from 'react-native-gesture-handler';
 import currentPageStore from "../../store/currentPageStore";
-import _ from "lodash";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -37,14 +36,9 @@ export default function Index({navigation}){
     const {setTime} = timeStore();
     const {rigion, setRigion, setRigionList, rigionList, rigionListString, rigionName} = rigionStore();
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
-    const swiperRef = useRef<HTMLDivElement>(null);
-    const [swiperCurrentPosition, setSwiperCurrentPosition] = useState(false);
-    const [loop, setLoop] = useState<any>();
     const [modal, setModal] = useState(false);
-    const scrollX = React.useRef(new Animated.Value(0)).current;
     const [isRefreshing,setIsRefreshing] = useState(false);
-    const {currentPage} = currentPageStore();
-    const {getEscapeList} = escapeListStore();
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
 
     async function getList(searchData){
         setIsRefreshing(true)
@@ -56,6 +50,11 @@ export default function Index({navigation}){
                 genreName: "",
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
         setIsRefreshing(false);
     }
@@ -175,7 +174,12 @@ export default function Index({navigation}){
                         >
                         </Animated.FlatList>
                     </View>
-                    <ListItem/>
+                    {
+                        isEscapeListNull?
+                            <Text style={styles.nullText}>검색결과가 없습니다.</Text>
+                            :
+                            <ListItem/>
+                    }
                 </ScrollView>
                 
         {isRigionSettingOpen === true ? 
@@ -294,5 +298,23 @@ const styles = StyleSheet.create({
                 paddingBottom: iosHeightRatio*15
             }
         })
+    },
+    nullText:{
+        textAlign: 'center',
+        color: 'rgb(147,147,147)',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:17,
+                lineHeight: 18,
+                letterSpacing: 0.68,
+                marginTop: aosWidthRatio*190
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:18,
+                lineHeight: 19,
+                letterSpacing: 0.72,
+                marginTop: iosWidthRatio*200
+            }
+        }),
     }
 })

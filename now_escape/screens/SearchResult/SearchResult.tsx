@@ -37,7 +37,7 @@ export default function SearchResult({navigation}){
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
     const {rigion, setRigionList, rigionListString, rigionList, rigionName, setRigion} = rigionStore();
-    const {escapeList, getEscapeList} = escapeListStore();
+    const {escapeList, getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
     const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
@@ -52,6 +52,11 @@ export default function SearchResult({navigation}){
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
     }
 
@@ -168,7 +173,12 @@ export default function SearchResult({navigation}){
                         width:Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360,
                         height: Platform.OS==='ios'?iosHeightRatio*620:aosHeightRatio*501
                     }}>
-                    <ListItem scrollEnabled/>
+                    {
+                        isEscapeListNull?
+                            <Text style={styles.nullText}>검색결과가 없습니다.</Text>
+                            :
+                            <ListItem scrollEnabled/>
+                    }
                     
                     {isGenreSettingOpen === true ?
                         <View
@@ -331,5 +341,25 @@ const styles = StyleSheet.create({
             }
         }),
     },
+    nullText:{
+        alignContent: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        color: 'rgb(147,147,147)',
+        ...Platform.select({
+            android:{
+                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:17,
+                lineHeight: 18,
+                letterSpacing: 0.68,
+                marginTop: aosWidthRatio*190
+            },
+            ios:{
+                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:18,
+                lineHeight: 19,
+                letterSpacing: 0.72,
+                marginTop: iosWidthRatio*200
+            }
+        }),
+    }
 
 })

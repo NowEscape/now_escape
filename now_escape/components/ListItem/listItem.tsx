@@ -80,7 +80,7 @@ const RenderTimeList = ({themeDateListItem}) => {
 export default function ListItem(props) {
     const {currentPage} = currentPageStore();
     const {scrollEnabled} = props;
-    const {escapeList, getEscapeList} = escapeListStore();
+    const {escapeList, getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {searchData} = searchStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
@@ -100,10 +100,13 @@ export default function ListItem(props) {
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
         setIsRefreshing(false);
-        console.log(searchData);
-        console.log(response.data);
     }
 
     return(

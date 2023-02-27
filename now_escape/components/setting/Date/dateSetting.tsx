@@ -32,7 +32,7 @@ export default function DateSetting(){
     const {time} = timeStore();
     const {rigion} = rigionStore();
     const [currentDate, setCurrentDate] = useState(date);
-    const {getEscapeList} = escapeListStore();
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const [isVisible, setVisible] = useState(false);
 
 
@@ -49,6 +49,11 @@ export default function DateSetting(){
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
     }
 

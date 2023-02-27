@@ -23,7 +23,7 @@ export default function Rigion(props){
     const {currentPage} = currentPageStore();
   const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
   const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
-  const {getEscapeList} = escapeListStore();
+  const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
   const {isOpen} = props;
     const {date} = dateStore();
     const {genre} = genreStore();
@@ -43,6 +43,11 @@ export default function Rigion(props){
                 genreName: searchData.genreName==="전체장르"?"":searchData.genreName,
                 themeTime: searchData.themeTime,
             })
+        if(response.data.length === 0){
+            setIsEscapeListNull(true);
+        }else{
+            setIsEscapeListNull(false);
+        }
         getEscapeList(response.data);
     }
 
