@@ -39,6 +39,7 @@ export default function Index({navigation}){
     const [modal, setModal] = useState(false);
     const [isRefreshing,setIsRefreshing] = useState(false);
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
+    const nullTextContent = "조건에 맞는 예약 가능한\n방탈출이 없습니다.";
 
     async function getList(searchData){
         setIsRefreshing(true)
@@ -118,6 +119,7 @@ export default function Index({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*130:aosWidthRatio*125}
+                        fontSize={Platform.OS==='ios'?15:14}
                         type={'mainLabel'}
                         bold={true}
                         marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
@@ -128,6 +130,7 @@ export default function Index({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
                         width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
+                        fontSize={Platform.OS==='ios'?15:14}
                         type={'mainLabel'}
                         bold={true}
                         text={rigion}
@@ -176,7 +179,7 @@ export default function Index({navigation}){
                     </View>
                     {
                         isEscapeListNull?
-                            <Text style={styles.nullText}>검색결과가 없습니다.</Text>
+                            <Text style={styles.nullText}>{nullTextContent}</Text>
                             :
                             <ListItem/>
                     }
@@ -304,16 +307,16 @@ const styles = StyleSheet.create({
         color: 'rgb(147,147,147)',
         ...Platform.select({
             android:{
-                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:17,
-                lineHeight: 18,
-                letterSpacing: 0.68,
-                marginTop: aosWidthRatio*190
+                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:aosWidthRatio*15,
+                lineHeight: aosHeightRatio*27,
+                letterSpacing: aosWidthRatio*0.3,
+                marginTop: aosHeightRatio*133
             },
             ios:{
-                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:18,
-                lineHeight: 19,
-                letterSpacing: 0.72,
-                marginTop: iosWidthRatio*200
+                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*18,
+                lineHeight: iosHeightRatio*27,
+                letterSpacing: iosWidthRatio*0.32,
+                marginTop: iosHeightRatio*190
             }
         }),
     }

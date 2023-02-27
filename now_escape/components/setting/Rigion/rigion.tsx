@@ -1,7 +1,8 @@
 import * as React from 'react';
 import {View, Text, StyleSheet, FlatList, Platform, Pressable, ActivityIndicator} from "react-native";
-import {useState, useCallback} from "react";
+import {useState, useEffect} from "react";
 import _ from "lodash";
+import * as Font from 'expo-font'
 import regionStore from "../../../store/rigionStore";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
@@ -21,10 +22,10 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Rigion(props){
     const {currentPage} = currentPageStore();
-  const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
-  const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
-  const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
-  const {isOpen} = props;
+    const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
+    const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
+    const {isOpen} = props;
     const {date} = dateStore();
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
@@ -152,10 +153,9 @@ const styles = StyleSheet.create({
             }
         })
     },
-    text:{
+    text:{       
         alignItems:'center',
         textAlign: 'center',
-        fontWeight:'bold',
         letterSpacing:0.34,
         ...Platform.select({
             android:{

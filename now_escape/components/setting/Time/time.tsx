@@ -96,7 +96,7 @@ export default function Time(){
                         canceled={true} 
                         height={iosHeightRatio*48} 
                         width={iosWidthRatio*145}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*15:aosWidthRatio*14}
                         onPress={()=>setTimeVisible(timeVisible)}/>
                     <Button 
                         text={'적용'} 
@@ -105,7 +105,7 @@ export default function Time(){
                         canceled={false} 
                         height={iosHeightRatio*48} 
                         width={iosWidthRatio*145} 
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*15:aosWidthRatio*14}
                         onPress={()=>{
                             setTime(currentTime);
                             setSearchData({
@@ -167,16 +167,15 @@ const styles = StyleSheet.create({
     },
     text:{
         textAlign: 'center',
-        fontFamily: 'Pretendard',
         fontWeight: 'bold',
         ...Platform.select({
             android:{
-                fontSize: 16,
-                letterSpacing:0.32,
+                fontSize: aosWidthRatio<1?aosWidthRatio*16:aosWidthRatio*15,
+                letterSpacing: aosWidthRatio*0.32,
             },
             ios:{
-                fontSize: 17,
-                letterSpacing:0.34,
+                fontSize: iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17,
+                letterSpacing: iosWidthRatio*0.34,
                 marginTop: iosHeightRatio*26,
             }
         })
@@ -195,7 +194,6 @@ const styles = StyleSheet.create({
     },
     pickerItem:{
         textAlign: 'center',
-        fontFamily: 'Pretendard',
         fontWeight: 'bold',
     },
     buttonBox:{

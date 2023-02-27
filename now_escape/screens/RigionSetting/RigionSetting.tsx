@@ -1,11 +1,11 @@
-import React, {useCallback, useState} from 'react'
-import { Image, View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable, StatusBar} from 'react-native'
+import React, {useCallback, useEffect, useState} from 'react'
+import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable, StatusBar} from 'react-native'
 import Button from '../../components/Button/button'
 import Label from "../../components/Label/label";
 import Rigion from "../../components/setting/Rigion/rigion";
 import rigionStore from "../../store/rigionStore";
 import DoorOpenSVG from "../../assets/iconDoorOpen"
-import { useFonts } from 'expo-font'
+import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
@@ -24,18 +24,14 @@ const statusBarHeight = StatusBar.currentHeight
 export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
-  const [modal, setModal] = useState(false);
+  // const [isFont, setIsFont] = useState(false);
 
-
-  // const [fontsLoaded] = useFonts({
-  //   'Pretendard' : require('now_escape/assets/fonts/Pretendard-Bold.otf'),
-  // });
-
-  // const onLayoutRootView = useCallback(async () => {
-  //   if (!fontsLoaded) {
-  //     return <ActivityIndicator/>;
-  //   }
-  // })
+  // useEffect(() => {
+  //   Font.loadAsync({
+  //     "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+  //     "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+  //   }).then(() => setIsFont(true));
+  // },[])
 
   return (
       <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
@@ -53,7 +49,7 @@ export default function RegionSetting({navigation}) {
             <Label
               height={Platform.OS==='ios'?iosHeightRatio*54:aosHeightRatio*51}
               width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
-              fontSize={16}
+              fontSize={Platform.OS==='ios'?16:15}
               type={'regionSetting'}
               text={rigion?rigion:'지역'}
               open={()=>{
@@ -160,7 +156,7 @@ const styles = StyleSheet.create({
       }
   })
   },
-  text_2: {        
+  text_2: {    
     // fontFamily: 'Pretendard',
     fontStyle: 'normal',
     textAlign: 'left',
@@ -170,7 +166,7 @@ const styles = StyleSheet.create({
         fontSize: aosWidthRatio<1?aosWidthRatio*15:14,
         lineHeight: aosHeightRatio*20,
         letterSpacing: 0.3,
-        marginTop: aosHeightRatio*19
+        marginTop: aosHeightRatio*8
       },
       ios:{
         fontSize: iosWidthRatio<1?iosWidthRatio*16:15,

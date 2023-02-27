@@ -1,9 +1,10 @@
 import React from 'react';
 import {Text, View, StyleSheet, Pressable} from 'react-native';
+import * as Font from 'expo-font'
 
 export default function Button(props){
     const {onPress, text = '', active, rounded, canceled, height, width, fontSize} = props;
-    const style = styles(active, width, height, fontSize);
+    const style = styles(active, width, height, fontSize);  
 
     return(
         <Pressable style={[style.button, rounded && style.rounded, canceled && style.canceled]} 
@@ -25,7 +26,6 @@ const styles = (active, width, height, fontSize) => StyleSheet.create({
     },
     text: {
         textAlign: 'center',
-        fontFamily: 'Pretendard',
         fontWeight: 'bold',
         fontSize: fontSize?fontSize:18,
         letterSpacing: 1.62,

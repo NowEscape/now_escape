@@ -348,16 +348,14 @@ const styles = StyleSheet.create({
         color: 'rgb(147,147,147)',
         ...Platform.select({
             android:{
-                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:17,
-                lineHeight: 18,
-                letterSpacing: 0.68,
-                marginTop: aosWidthRatio*190
+                fontSize: aosWidthRatio<1?aosWidthRatio*17.5:aosWidthRatio*15,
+                letterSpacing: aosWidthRatio*0.3,
+                marginTop: aosHeightRatio*185
             },
             ios:{
-                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:18,
-                lineHeight: 19,
-                letterSpacing: 0.72,
-                marginTop: iosWidthRatio*200
+                fontSize: iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*18,
+                letterSpacing: iosWidthRatio*0.32,
+                marginTop: iosHeightRatio*261
             }
         }),
     }

@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {Text, View, StyleSheet, Platform, Pressable} from "react-native";
 import dateStore from "../../../store/dateStore";
 import Button from "../../Button/button";
-import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from "react-native-modal";
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
@@ -77,6 +77,11 @@ export default function DateSetting(){
                        mode={'date'}
                        value={currentDate}
                        minimumDate={new Date()}
+                       maximumDate={new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        (new Date().getDate()+7)
+                       )}
                        onChange={(event, date)=>setCurrentDate(date)}
                    />
                    <View style={styles.buttonBox}>
@@ -87,6 +92,7 @@ export default function DateSetting(){
                            canceled={true} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
+                           fontSize={iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17}
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
@@ -95,6 +101,7 @@ export default function DateSetting(){
                            canceled={false} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
+                           fontSize={iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17}
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
@@ -139,7 +146,7 @@ export default function DateSetting(){
                     <View style={styles.aosDatePicker}>
                         <Text style={styles.aosPickerText}>{String(
                             currentDate.getFullYear() + '년 '
-                            + currentDate.getMonth() + '월 '
+                            + (currentDate.getMonth()+1) + '월 '
                             + currentDate.getDate() + '일'
                             )}
                         </Text>
@@ -150,6 +157,11 @@ export default function DateSetting(){
                     mode={'date'}
                     date={currentDate}
                     minimumDate={new Date()}
+                    maximumDate={new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        (new Date().getDate()+7)
+                       )}
                     onConfirm={(pickerDate)=>{
                         setVisible(false)
                         setCurrentDate(pickerDate);
@@ -170,6 +182,7 @@ export default function DateSetting(){
                            canceled={true} 
                            height={aosHeightRatio*46} 
                            width={aosWidthRatio*139} 
+                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*14}
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
@@ -177,7 +190,8 @@ export default function DateSetting(){
                            rounded={true} 
                            canceled={false} 
                            height={aosHeightRatio*46} 
-                           width={aosWidthRatio*139} 
+                           width={aosWidthRatio*139}
+                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*14}
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
@@ -252,18 +266,16 @@ const styles = StyleSheet.create({
     },
     text:{
         textAlign: 'center',
-        fontFamily: 'Pretendard',
         fontWeight: 'bold',
         ...Platform.select({
             android:{
-                fontSize: 16,
-                letterSpacing: 0.32,
+                fontSize: aosWidthRatio<1?aosWidthRatio*16:aosWidthRatio*15,
+                letterSpacing: aosWidthRatio*0.32,
                 marginTop: aosHeightRatio*20,
-
             },
             ios:{
-                fontSize: 17,
-                letterSpacing:0.34,
+                fontSize: iosWidthRatio<1?iosWidthRatio*20:iosWidthRatio*17,
+                letterSpacing: iosWidthRatio*0.34,
                 marginTop: iosHeightRatio*26,
             }
         })
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
     },
     aosDatePicker: {
         height: aosHeightRatio*30,
-        width: aosWidthRatio*120,
+        width: aosWidthRatio*125,
         marginTop: aosWidthRatio*65,
         marginBottom: aosWidthRatio*70,
         backgroundColor: '#e6e6e6',
