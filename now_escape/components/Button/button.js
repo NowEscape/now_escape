@@ -3,8 +3,16 @@ import {Text, View, StyleSheet, Pressable} from 'react-native';
 import * as Font from 'expo-font'
 
 export default function Button(props){
-    const {onPress, text = '', active, rounded, canceled, height, width, fontSize} = props;
-    const style = styles(active, width, height, fontSize);  
+    const {onPress, text = '', active, rounded, canceled, height, width, fontSize, bold} = props;
+    const style = styles(active, width, height, fontSize, bold);  
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+      }).then(() => setIsFont(true));
+    },[])
 
     return(
         <Pressable style={[style.button, rounded && style.rounded, canceled && style.canceled]} 
@@ -15,7 +23,7 @@ export default function Button(props){
     );
 }
 
-const styles = (active, width, height, fontSize) => StyleSheet.create({
+const styles = (active, width, height, fontSize, bold) => StyleSheet.create({
     button: {
         display: 'flex',
         alignItems: 'center',
@@ -25,8 +33,8 @@ const styles = (active, width, height, fontSize) => StyleSheet.create({
         backgroundColor: active?'rgb(234, 75, 155)':'rgb(218, 218, 218)'
     },
     text: {
+        fontFamily: bold?'Pretendard':'Pretendard-Medium',
         textAlign: 'center',
-        fontWeight: 'bold',
         fontSize: fontSize?fontSize:18,
         letterSpacing: 1.62,
         color: 'white'

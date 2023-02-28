@@ -114,7 +114,7 @@ export default function Search({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*49:aosHeightRatio*47}
                         width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
                         icon={'date'}
                         text={ String(format(date, 'yyyy.MM.dd'))}
@@ -129,7 +129,7 @@ export default function Search({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*49:aosHeightRatio*47}
                         width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
                         icon={'time'}
                         text={time + ' 이후'}
@@ -144,7 +144,7 @@ export default function Search({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*49:aosHeightRatio*47}
                         width={Platform.OS==='ios'?iosWidthRatio*165:aosWidthRatio*159}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
                         text={genre}
                         active={isGenreSettingOpen?true:false}
@@ -158,7 +158,7 @@ export default function Search({navigation}){
                     <Label
                         height={Platform.OS==='ios'?iosHeightRatio*49:aosHeightRatio*47}
                         width={Platform.OS==='ios'?iosWidthRatio*165:aosWidthRatio*159}
-                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*15}
+                        fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
                         text={rigion}
                         active={isRigionSettingOpen?true:false}
@@ -212,6 +212,7 @@ export default function Search({navigation}){
                         bottom: Platform.OS==='android'?aosHeightRatio*17:0
                     }}>
                     <Button
+                        bold
                         text={'검색'}
                         active={true}
                         rounded={true}

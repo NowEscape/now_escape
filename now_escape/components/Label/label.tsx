@@ -1,10 +1,11 @@
-import React, {Fragment,useState,forwardRef, useImperativeHandle,useRef, useEffect} from 'react';
+import React, {Fragment,useState, useEffect} from 'react';
 import {Text, View, StyleSheet, TouchableOpacity, Platform} from 'react-native';
 import CalenderSVG from '../../assets/iconCalendar'
 import ClockSVG from '../../assets/iconClock'
 import ArrowUpSVG from '../../assets/iconArrowUp'
 import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
+import * as Font from 'expo-font'
 
 import rigionStore from "../../store/rigionStore";
 import dateStore from "../../store/dateStore";
@@ -24,8 +25,15 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 export default function Label(props) {
   const {height, width, fontSize, type='', icon='', text='', open, arrow, marginRight, active, bold} = props;
-
   const style = styles(active, width, height, fontSize, marginRight, icon, bold, arrow);
+  const [isFont, setIsFont] = useState(false);
+
+  useEffect(() => {
+    Font.loadAsync({
+      "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+      "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+    }).then(() => setIsFont(true));
+  },[])
 
   return (
     <Fragment>
@@ -138,7 +146,7 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow)
     justifyContent: 'center'
   },
   text: {
-    fontWeight: bold?'bold':'normal',
+    fontFamily: bold?'Pretendard':'Pretendard-Medium',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',
@@ -155,7 +163,7 @@ const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow)
     }),
   },
   searchText: {
-    fontWeight: 'normal',
+    fontFamily: 'Pretendard-Medium',
     fontStyle: 'normal',
     letterSpacing: 0.3,
     textAlign: 'center',

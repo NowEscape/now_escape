@@ -6,6 +6,7 @@ import Button from "../../Button/button";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Modal from "react-native-modal";
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import * as Font from 'expo-font'
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -34,6 +35,14 @@ export default function DateSetting(){
     const [currentDate, setCurrentDate] = useState(date);
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const [isVisible, setVisible] = useState(false);
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../../assets/fonts/Pretendard-Medium.otf'),
+      }).then(() => setIsFont(true));
+    },[])    
 
 
     async function getList(searchData){
@@ -92,7 +101,7 @@ export default function DateSetting(){
                            canceled={true} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
-                           fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                           fontSize={iosWidthRatio<1?iosWidthRatio*17.5:iosWidthRatio*16.5}
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
@@ -101,7 +110,7 @@ export default function DateSetting(){
                            canceled={false} 
                            height={iosHeightRatio*48} 
                            width={iosWidthRatio*145} 
-                           fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                           fontSize={iosWidthRatio<1?iosWidthRatio*17.5:iosWidthRatio*16.5}
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
@@ -182,7 +191,7 @@ export default function DateSetting(){
                            canceled={true} 
                            height={aosHeightRatio*46} 
                            width={aosWidthRatio*139} 
-                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*14}
+                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*13.5}
                            onPress={()=>setDateVisible(dateVisible)}/>
                        <Button 
                            text={'적용'} 
@@ -191,7 +200,7 @@ export default function DateSetting(){
                            canceled={false} 
                            height={aosHeightRatio*46} 
                            width={aosWidthRatio*139}
-                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*14}
+                           fontSize={aosWidthRatio<1?aosWidthRatio*15:aosWidthRatio*13.5}
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
@@ -265,8 +274,8 @@ const styles = StyleSheet.create({
         })
     },
     text:{
+        fontFamily: 'Pretendard',
         textAlign: 'center',
-        fontWeight: 'bold',
         ...Platform.select({
             android:{
                 fontSize: aosWidthRatio<1?aosWidthRatio*16:aosWidthRatio*15,
@@ -303,6 +312,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     aosPickerText: {
+        fontFamily: 'Pretendard',
+        fontSize: aosWidthRatio*13,
         textAlign: 'center',
         fontWeight: 'bold'
     }

@@ -110,108 +110,209 @@ export default function Index({navigation}){
       }, 5000);
 
 
-      
-    return(
-        <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
-            <View style={styles.container}>
-                <View style={styles.filterBar}>
-                    <View style={styles.filterLabel}>
-                    <Label
-                        height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
-                        width={Platform.OS==='ios'?iosWidthRatio*130:aosWidthRatio*125}
-                        // fontSize={Platform.OS==='ios'?15:14}
-                        type={'mainLabel'}
-                        bold={true}
-                        marginRight={Platform.OS==='ios'?iosWidthRatio*10:aosWidthRatio*10}
-                        text={ String(format(date, 'yyyy.MM.dd'))}
-                        open={()=>{setDateVisible(dateVisible)}}
-                        arrow={true}
-                    /><DateSetting/>
-                    <Label
-                        height={Platform.OS==='ios'?iosHeightRatio*32:aosHeightRatio*31}
-                        width={Platform.OS==='ios'?iosWidthRatio*115:aosWidthRatio*110}                    
-                        // fontSize={Platform.OS==='ios'?15:14}
-                        type={'mainLabel'}
-                        bold={true}
-                        text={rigion}
-                        open={()=>{
-                            setIsRigionSettingOpen((prevState => !prevState))
-                            setModal(true)
-                        }}
-                        arrow={true}
-                    />
+    if (Platform.OS === 'ios') {
+        return(
+            <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+                <View style={styles.container}>
+                    <View style={styles.filterBar}>
+                        <View style={styles.filterLabel}>
+                        <Label
+                            height={iosHeightRatio*32}
+                            width={iosWidthRatio*130}
+                            type={'mainLabel'}
+                            bold={true}
+                            marginRight={iosWidthRatio*10}
+                            text={ String(format(date, 'yyyy.MM.dd'))}
+                            open={()=>{setDateVisible(dateVisible)}}
+                            arrow={true}
+                        /><DateSetting/>
+                        <Label
+                            height={iosHeightRatio*32}
+                            width={iosWidthRatio*115}                    
+                            type={'mainLabel'}
+                            bold={true}
+                            text={rigion}
+                            open={()=>{
+                                setIsRigionSettingOpen((prevState => !prevState))
+                                setModal(true)
+                            }}
+                            arrow={true}
+                        />
+                        </View>
+                        <Pressable
+                            onPress={()=>{
+                                setSearchText("");
+                                setTime("09:00");
+                                setRigion(rigionName, rigionListString, 0, 0);
+                                setRigionList(rigionList, 0, 0);
+                                setDate(new Date());
+                                setGenreList(genreList, 0);
+                                setGenreValue(genreListName, 0);
+                                navigation.navigate('Search');
+                            }}
+                            style={styles.filterIcon}>
+                            <SearchSvg height={iosHeightRatio*21.1}/>
+                        </Pressable>
                     </View>
-                    <Pressable
-                        onPress={()=>{
-                            setSearchText("");
-                            setTime("09:00");
-                            setRigion(rigionName, rigionListString, 0, 0);
-                            setRigionList(rigionList, 0, 0);
-                            setDate(new Date());
-                            setGenreList(genreList, 0);
-                            setGenreValue(genreListName, 0);
-                            navigation.navigate('Search');
-                        }}
-                        style={styles.filterIcon}>
-                        <SearchSvg
-                            height={Platform.OS==='ios'?iosHeightRatio*21.1:aosHeightRatio*20.2}/>
-                    </Pressable>
-                </View>
-
-                <ScrollView
-                    refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
-                    style={styles.listContainer}>
-                    <View style={styles.banner}>         
-                        <Animated.FlatList
-                            key={4}
-                            ref={flatListRef}
-                            horizontal
-                            renderItem={renderItem}
-                            data={data}
-                            keyExtractor={item => item.key}
-                            snapToOffsets={snapToOffsets}
-                            decelerationRate={'fast'}
-                            scrollEnabled={true}
-                            contentContainerStyle={{width:(iosWidthRatio*375)*3, height:iosHeightRatio*168}}
-                            showsHorizontalScrollIndicator={false}
-                        >
-                        </Animated.FlatList>
-                    </View>
-                    {
-                        isEscapeListNull?
-                            <Text style={styles.nullText}>{nullTextContent}</Text>
-                            :
-                            <ListItem/>
-                    }
-                </ScrollView>
-                
-        {isRigionSettingOpen === true ? 
-            <Modal 
-              visible={isRigionSettingOpen} 
-              transparent
-              animationType={'slide'}
-              onRequestClose={()=>{
-                  setIsRigionSettingOpen((prevState => !prevState))
-              }}
-            >
-              <View style={{
-                  flex: 1,
-                  display: 'flex',
-                  backgroundColor: "rgba(0, 0, 0, 0.55)"}}
-              >
-                <Pressable 
-                    style={{flex:1}}
-                    onPress={()=>
+    
+                    <ScrollView
+                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
+                        style={styles.listContainer}>
+                        <View style={styles.banner}>         
+                            <Animated.FlatList
+                                key={4}
+                                ref={flatListRef}
+                                horizontal
+                                renderItem={renderItem}
+                                data={data}
+                                keyExtractor={item => item.key}
+                                snapToOffsets={snapToOffsets}
+                                decelerationRate={'fast'}
+                                scrollEnabled={true}
+                                contentContainerStyle={{width:(iosWidthRatio*375)*3, height:iosHeightRatio*168}}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                            </Animated.FlatList>
+                        </View>
+                        {
+                            isEscapeListNull?
+                                <Text style={styles.nullText}>{nullTextContent}</Text>
+                                :
+                                <ListItem/>
+                        }
+                    </ScrollView>
+                    
+            {isRigionSettingOpen === true ? 
+                <Modal 
+                  visible={isRigionSettingOpen} 
+                  transparent
+                  animationType={'slide'}
+                  onRequestClose={()=>{
                       setIsRigionSettingOpen((prevState => !prevState))
-                    }
-                />
-                <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
-              </View>
-            </Modal>
-          : null}
-            </View>
-        </SafeAreaView>
-    );
+                  }}
+                >
+                  <View style={{
+                      flex: 1,
+                      display: 'flex',
+                      backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+                  >
+                    <Pressable 
+                        style={{flex:1}}
+                        onPress={()=>
+                          setIsRigionSettingOpen((prevState => !prevState))
+                        }
+                    />
+                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                  </View>
+                </Modal>
+              : null}
+                </View>
+            </SafeAreaView>
+        );
+    }
+    else {
+        return(
+            <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+                <View style={styles.container}>
+                    <View style={styles.filterBar}>
+                        <View style={styles.filterLabel}>
+                        <Label
+                            height={aosHeightRatio*31}
+                            width={aosWidthRatio*125}
+                            fontSize={aosWidthRatio<=1?aosWidthRatio*14:aosWidthRatio*12.5}
+                            type={'mainLabel'}
+                            bold={true}
+                            marginRight={aosWidthRatio*10}
+                            text={ String(format(date, 'yyyy.MM.dd'))}
+                            open={()=>{setDateVisible(dateVisible)}}
+                            arrow={true}
+                        /><DateSetting/>
+                        <Label
+                            height={aosHeightRatio*31}
+                            width={aosWidthRatio*110}       
+                            fontSize={aosWidthRatio<=1?aosWidthRatio*14:aosWidthRatio*12.5}
+                            type={'mainLabel'}
+                            bold={true}
+                            text={rigion}
+                            open={()=>{
+                                setIsRigionSettingOpen((prevState => !prevState))
+                                setModal(true)
+                            }}
+                            arrow={true}
+                        />
+                        </View>
+                        <Pressable
+                            onPress={()=>{
+                                setSearchText("");
+                                setTime("09:00");
+                                setRigion(rigionName, rigionListString, 0, 0);
+                                setRigionList(rigionList, 0, 0);
+                                setDate(new Date());
+                                setGenreList(genreList, 0);
+                                setGenreValue(genreListName, 0);
+                                navigation.navigate('Search');
+                            }}
+                            style={styles.filterIcon}>
+                            <SearchSvg height={aosHeightRatio*20.2}/>
+                        </Pressable>
+                    </View>
+    
+                    <ScrollView
+                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
+                        style={styles.listContainer}>
+                        <View style={styles.banner}>         
+                            <Animated.FlatList
+                                key={4}
+                                ref={flatListRef}
+                                horizontal
+                                renderItem={renderItem}
+                                data={data}
+                                keyExtractor={item => item.key}
+                                snapToOffsets={snapToOffsets}
+                                decelerationRate={'fast'}
+                                scrollEnabled={true}
+                                contentContainerStyle={{width:(aosWidthRatio*375)*3, height:aosHeightRatio*168}}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                            </Animated.FlatList>
+                        </View>
+                        {
+                            isEscapeListNull?
+                                <Text style={styles.nullText}>{nullTextContent}</Text>
+                                :
+                                <ListItem/>
+                        }
+                    </ScrollView>
+                    
+            {isRigionSettingOpen === true ? 
+                <Modal 
+                  visible={isRigionSettingOpen} 
+                  transparent
+                  animationType={'slide'}
+                  onRequestClose={()=>{
+                      setIsRigionSettingOpen((prevState => !prevState))
+                  }}
+                >
+                  <View style={{
+                      flex: 1,
+                      display: 'flex',
+                      backgroundColor: "rgba(0, 0, 0, 0.55)"}}
+                  >
+                    <Pressable 
+                        style={{flex:1}}
+                        onPress={()=>
+                          setIsRigionSettingOpen((prevState => !prevState))
+                        }
+                    />
+                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                  </View>
+                </Modal>
+              : null}
+                </View>
+            </SafeAreaView>
+        );
+    }
+
 }
 
 const styles = StyleSheet.create({

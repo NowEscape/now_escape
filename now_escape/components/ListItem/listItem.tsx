@@ -3,8 +3,8 @@ import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} fro
 import escapeListStore from "../../store/escapeListStore";
 import _ from "lodash";
 import LocationSVG from '../../assets/iconLocation'
-
 import ListItemDetail from "../ListItemDetail/listItemDetail";
+import * as Font from 'expo-font'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -85,6 +85,15 @@ export default function ListItem(props) {
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
     const [isRefreshing,setIsRefreshing] = useState(false);
+    const [isFont, setIsFont] = useState(false);
+
+    useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+        "Pretendard-Regular": require('../../assets/fonts/Pretendard-Regular.otf'),
+      }).then(() => setIsFont(true));
+    },[])
 
     async function getList(searchData){
         setIsRefreshing(true)
@@ -230,6 +239,7 @@ const styles = StyleSheet.create({
         }),
     },
     textLocation:{
+        fontFamily: 'Pretendard-Regular',
         textAlign: 'left',
         ...Platform.select({
             android:{
@@ -259,7 +269,7 @@ const styles = StyleSheet.create({
     },
     // text: {
         textTitle: {
-            fontWeight: 'bold',
+            fontFamily: 'Pretendard',
             textAlign: 'left',
             color: 'black',
             ...Platform.select({
@@ -276,6 +286,7 @@ const styles = StyleSheet.create({
             }),
         },
         timeListItem: {
+            fontFamily: 'Pretendard-Medium',
             display:'flex',
             flexDirection: 'row',
             backgroundColor: 'rgba(234, 75, 155, 0.13)',
