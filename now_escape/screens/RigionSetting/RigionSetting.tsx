@@ -24,14 +24,14 @@ const statusBarHeight = StatusBar.currentHeight
 export default function RegionSetting({navigation}) {
   const {rigion} = rigionStore();
   const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
-  // const [isFont, setIsFont] = useState(false);
+  const [isFont, setIsFont] = useState(false);
 
-  // useEffect(() => {
-  //   Font.loadAsync({
-  //     "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
-  //     "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
-  //   }).then(() => setIsFont(true));
-  // },[])
+  useEffect(() => {
+    Font.loadAsync({
+      "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+      "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+    }).then(() => setIsFont(true));
+  },[])
 
   return (
       <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
@@ -39,7 +39,8 @@ export default function RegionSetting({navigation}) {
           <View style={styles.textBox}>
             <Text style={styles.text_1}
             >방탈출 지역을{"\n"}설정해주세요</Text>
-            <Text style={styles.text_2}>선택한 지역의 방탈출을 모아 볼 수 있어요.</Text>
+            <Text style={styles.text_2}
+            >선택한 지역의 방탈출을 모아 볼 수 있어요.</Text>
           </View>
           <View style={styles.secondBox}>
             <View style={styles.iconContainer}>
@@ -62,6 +63,7 @@ export default function RegionSetting({navigation}) {
             {rigion !== ""
               ?<Button
                   text="시작하기"
+                  bold
                   height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
                   width={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
                   active={true}
@@ -71,6 +73,7 @@ export default function RegionSetting({navigation}) {
               />
               :<Button
                   text="시작하기"
+                  bold
                   height={Platform.OS==='ios'?iosHeightRatio*74:aosHeightRatio*71}
                   width={Platform.OS==='ios'?iosWidthRatio*375:aosWidthRatio*360}
               />
@@ -138,8 +141,7 @@ const styles = StyleSheet.create({
   })
   },
   text_1: {
-    // fontFamily: 'Pretendard',
-    fontWeight: 'bold',
+    fontFamily: 'Pretendard',
     fontStyle: 'normal',
     textAlign: 'left',
     color: '#000000',
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
       android:{
         fontSize: aosWidthRatio*23,
         lineHeight: aosHeightRatio*33,
-        letterSpacing: 0.46,
+        letterSpacing: aosWidthRatio*0.46,
       },
       ios:{
         fontSize: iosWidthRatio*24,
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
   })
   },
   text_2: {    
-    // fontFamily: 'Pretendard',
+    fontFamily: 'Pretendard-Medium',
     fontStyle: 'normal',
     textAlign: 'left',
     color: '#535353',

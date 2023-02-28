@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Text, StyleSheet, FlatList, Platform, Pressable, View} from "react-native";
 import genreStore from "../../../store/genreStore";
+import * as Font from 'expo-font'
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -34,6 +35,14 @@ export default function Genre(props:genrePropsType){
     const {date} = dateStore();
     const {time} = timeStore();
     const {rigion} = rigionStore();
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../../assets/fonts/Pretendard-Medium.otf'),
+      }).then(() => setIsFont(true));
+    },[]) 
 
     async function getList(searchData){
         if(currentPage==="index"){
@@ -125,6 +134,7 @@ const styles = (selected, search) => StyleSheet.create({
         })
     },
     text:{
+        fontFamily: 'Pretendard-Medium',
         display:'flex',
         color: selected? 'rgb(234,75,155)':'black',
         textAlign: 'center',

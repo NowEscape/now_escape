@@ -30,6 +30,14 @@ export default function Rigion(props){
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
     const {time} = timeStore();
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../../assets/fonts/Pretendard-Medium.otf'),
+      }).then(() => setIsFont(true));
+    },[])
 
     async function getList(searchData){
         if(currentPage==="index"){
@@ -157,6 +165,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         textAlign: 'center',
         letterSpacing:0.34,
+        fontFamily: 'Pretendard',
         ...Platform.select({
             android:{
                 fontSize: aosWidthRatio<1 ? iosWidthRatio*19:17,
@@ -189,6 +198,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
     },
     rigionFirst:{
+        fontFamily: 'Pretendard-Medium',
         display:'flex',
         flexDirection:'column',
         textAlign: 'center',
@@ -208,6 +218,7 @@ const styles = StyleSheet.create({
         })
     },
     rigionSecond:{
+        fontFamily: 'Pretendard-Medium',
         display:'flex',
         flexDirection:'column',
         textAlign: 'center',

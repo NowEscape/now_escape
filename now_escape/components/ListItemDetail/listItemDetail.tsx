@@ -3,6 +3,7 @@ import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView, Linking} 
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
+import * as Font from 'expo-font'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -22,6 +23,15 @@ const renderItem = ({item}) => {
 export default function ListItemDetail(props){
     const {escapeList} = escapeListStore();
     const {escapeID} = props;
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../assets/fonts/Pretendard-Medium.otf'),
+        "Pretendard-Regular": require('../../assets/fonts/Pretendard-Regular.otf'),
+      }).then(() => setIsFont(true));
+    },[])
 
     return(
         <View style={styles.container}>
@@ -159,6 +169,7 @@ const styles = StyleSheet.create({
         }),
     },
     textLocation:{
+        fontFamily: 'Pretendard-Regular',
         textAlign: 'left',
         ...Platform.select({
             android:{
@@ -192,7 +203,7 @@ const styles = StyleSheet.create({
         })
     },
     title:{
-        fontWeight: 'bold',
+        fontFamily: 'Pretendard',
         textAlign:'left',
         color:'black',
         ...Platform.select({
@@ -205,6 +216,7 @@ const styles = StyleSheet.create({
         })
     },
     timeListItem: {
+        fontFamily: 'Pretendard-Medium',
         backgroundColor: 'rgba(234, 75, 155, 0.13)',
         textAlign: 'center',
         color:'black',
@@ -233,6 +245,7 @@ const styles = StyleSheet.create({
         })
     },
     synopsis:{
+        fontFamily: 'Pretendard-Regular',
         textAlign: 'left',
         color:'black',
         ...Platform.select({

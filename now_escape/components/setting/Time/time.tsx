@@ -5,6 +5,7 @@ import {Picker} from '@react-native-picker/picker';
 import Button from "../../Button/button";
 import timeStore from "../../../store/timeStore";
 import Modal from "react-native-modal";
+import * as Font from 'expo-font'
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -32,6 +33,15 @@ export default function Time(){
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
     const {rigion} = rigionStore();
+    const [isFont, setIsFont] = React.useState(false);
+
+    React.useEffect(() => {
+      Font.loadAsync({
+        "Pretendard": require('../../../assets/fonts/Pretendard-Bold.otf'),
+        "Pretendard-Medium": require('../../../assets/fonts/Pretendard-Medium.otf'),
+      }).then(() => setIsFont(true));
+    },[]) 
+
     const timeListItem = timeList.map(
         (value, index)=>(
             <Picker.Item
@@ -97,7 +107,7 @@ export default function Time(){
                             canceled={true} 
                             height={iosHeightRatio*48} 
                             width={iosWidthRatio*145}
-                            fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                            fontSize={iosWidthRatio<1?iosWidthRatio*17.5:iosWidthRatio*16.5}
                             onPress={()=>setTimeVisible(timeVisible)}/>
                         <Button 
                             text={'적용'}
@@ -106,7 +116,7 @@ export default function Time(){
                             canceled={false}
                             height={iosHeightRatio*48}
                             width={iosWidthRatio*145}
-                            fontSize={iosWidthRatio<1?iosWidthRatio*18.5:iosWidthRatio*16.5}
+                            fontSize={iosWidthRatio<1?iosWidthRatio*17.5:iosWidthRatio*16.5}
                             onPress={()=>{
                                 setTime(currentTime);
                                 setSearchData({
@@ -166,7 +176,7 @@ export default function Time(){
                             canceled={true} 
                             height={iosHeightRatio*48} 
                             width={iosWidthRatio*145}
-                            fontSize={aosWidthRatio*14}
+                            fontSize={aosWidthRatio<1?aosWidthRatio*14:aosWidthRatio*13.5}
                             onPress={()=>setTimeVisible(timeVisible)}/>
                         <Button 
                             text={'적용'} 
@@ -175,7 +185,7 @@ export default function Time(){
                             canceled={false} 
                             height={iosHeightRatio*48} 
                             width={iosWidthRatio*145} 
-                            fontSize={aosWidthRatio*14}
+                            fontSize={aosWidthRatio<1?aosWidthRatio*14:aosWidthRatio*13.5}
                             onPress={()=>{
                                 setTime(currentTime);
                                 setSearchData({
@@ -237,8 +247,8 @@ const styles = StyleSheet.create({
         })
     },
     text:{
+        fontFamily: 'Pretendard',
         textAlign: 'center',
-        fontWeight: 'bold',
         ...Platform.select({
             android:{
                 fontSize: aosWidthRatio<1?aosWidthRatio*16:aosWidthRatio*15,
@@ -256,7 +266,7 @@ const styles = StyleSheet.create({
             android:{
                 marginTop: aosHeightRatio*30,
                 marginBottom: aosHeightRatio*30,                
-                width: aosWidthRatio*100, 
+                width: aosWidthRatio*120, 
             },
             ios:{
                 width:iosWidthRatio*300,
