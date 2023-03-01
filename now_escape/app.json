@@ -4,7 +4,7 @@
     "slug": "now_escape",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./asset/icon_app_1024.png",
+    "icon": "./assets/icon_app_1024.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash_demo.png",
@@ -35,19 +35,24 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "now_escape",
+      "bundleIdentifier": "com.TeamEscape.NowEscape",
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "now_escape",
+      "package": "com.now_escape.now_escape",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./asset/icon_app_1024.png",
+        "foregroundImage": "./assets/icon_app_1024.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b278f7a4-0b33-4e7e-9e0e-fee9dc346b74"
+      }
     }
   }
 }
