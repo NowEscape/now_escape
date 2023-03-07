@@ -17,7 +17,7 @@
 
 ## 설치 방법
 Android : 출시 예정
-ios : 출시 예정
+ios : https://apps.apple.com/kr/app/%EC%A7%80%EA%B8%88-%EB%B0%A9%ED%83%88%EC%B6%9C/id6445975673
 
 <br/>
 
