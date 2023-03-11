@@ -12,8 +12,8 @@ import timeStore from "../../store/timeStore";
 import dateStore from "../../store/dateStore";
 import DateSetting from "../../components/setting/Date/dateSetting";
 import Time from "../../components/setting/Time/time";
-import rigionStore from "../../store/rigionStore";
-import Rigion from "../../components/setting/Rigion/rigion";
+import regionStore from "../../store/regionStore";
+import region from "../../components/setting/region/region";
 import 'react-native-gesture-handler'
 
 import ArrowBackSVG from '../../assets/iconArrowBack'
@@ -38,9 +38,9 @@ export default function Search({navigation}){
     const {genre} = genreStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {rigion, rigionName, rigionList, rigionListString, setRigionList, setRigion} = rigionStore();
+    const {region, regionName, regionList, regionListString, setregionList, setregion} = regionStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
-    const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const [isregionSettingOpen, setIsregionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
     async function getList(searchData){
@@ -70,8 +70,8 @@ export default function Search({navigation}){
                                 themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
 
                             });
-                            setRigion(rigionName, rigionListString, 0, 0);
-                            setRigionList(rigionList, 0, 0);
+                            setregion(regionName, regionListString, 0, 0);
+                            setregionList(regionList, 0, 0);
                             setDate(new Date());
                             setCurrentPage("Index");
                             navigation.navigate('Index')
@@ -94,8 +94,8 @@ export default function Search({navigation}){
                         onPress={()=>{
                             setCurrentPage("searchPage");
                             getList({
-                                region1: _.split(rigion, ' ', 2)[0],
-                                region2: _.split(rigion, ' ', 2)[1],
+                                region1: _.split(region, ' ', 2)[0],
+                                region2: _.split(region, ' ', 2)[1],
                                 searchWord: searchText,
                                 genreName: genre,
                                 themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
@@ -150,7 +150,7 @@ export default function Search({navigation}){
                         active={isGenreSettingOpen?true:false}
                         open={()=>{
                             Keyboard.dismiss()
-                            {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
+                            {isregionSettingOpen?setIsregionSettingOpen(false):null}
                             setIsGenreSettingOpen((prevState => !prevState))
                         }}
                         arrow='true'
@@ -160,12 +160,12 @@ export default function Search({navigation}){
                         width={Platform.OS==='ios'?iosWidthRatio*165:aosWidthRatio*159}
                         fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
-                        text={rigion}
-                        active={isRigionSettingOpen?true:false}
+                        text={region}
+                        active={isregionSettingOpen?true:false}
                         open={()=>{
                             Keyboard.dismiss()
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
-                            setIsRigionSettingOpen((prevState => !prevState))
+                            setIsregionSettingOpen((prevState => !prevState))
                             setModal(true)
                         }}
                         arrow='true'
@@ -180,13 +180,13 @@ export default function Search({navigation}){
                         <Genre search={true} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
                     </View>
                     : null}
-                {isRigionSettingOpen === true ? 
+                {isregionSettingOpen === true ? 
                     <Modal 
-                    visible={isRigionSettingOpen} 
+                    visible={isregionSettingOpen} 
                     transparent
                     animationType={'slide'}
                     onRequestClose={()=>{
-                        setIsRigionSettingOpen((prevState => !prevState))
+                        setIsregionSettingOpen((prevState => !prevState))
                     }}
                     >
                     <View style={{
@@ -197,10 +197,10 @@ export default function Search({navigation}){
                         <Pressable 
                             style={{flex:1}}
                             onPress={()=>
-                            setIsRigionSettingOpen((prevState => !prevState))
+                            setIsregionSettingOpen((prevState => !prevState))
                             }
                         />
-                        <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                        <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
                     </View>
                     </Modal>
                 : null}
@@ -222,8 +222,8 @@ export default function Search({navigation}){
                         onPress={()=>{
                             setCurrentPage("searchPage");
                             getList({
-                                region1: _.split(rigion, ' ', 2)[0],
-                                region2: _.split(rigion, ' ', 2)[1],
+                                region1: _.split(region, ' ', 2)[0],
+                                region2: _.split(region, ' ', 2)[1],
                                 searchWord: searchText,
                                 genreName: genre,
                                 themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time

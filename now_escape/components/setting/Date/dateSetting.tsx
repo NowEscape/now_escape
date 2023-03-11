@@ -15,7 +15,7 @@ import {format} from "date-fns";
 import genreStore from "../../../store/genreStore";
 import searchStore from "../../../store/searchStore";
 import timeStore from "../../../store/timeStore";
-import rigionStore from "../../../store/rigionStore";
+import regionStore from "../../../store/regionStore";
 import axios from "axios";
 import escapeListStore from "../../../store/escapeListStore";
 import currentPageStore from "../../../store/currentPageStore";
@@ -31,7 +31,7 @@ export default function DateSetting(){
     const {genre} = genreStore();
     const {setSearchData, searchText} = searchStore();
     const {time} = timeStore();
-    const {rigion} = rigionStore();
+    const {region} = regionStore();
     const [currentDate, setCurrentDate] = useState(date);
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const [isVisible, setVisible] = useState(false);
@@ -115,15 +115,15 @@ export default function DateSetting(){
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
-                                   region1: _.split(rigion, ' ', 2)[0],
-                                   region2: _.split(rigion, ' ', 2)[1],
+                                   region1: _.split(region, ' ', 2)[0],
+                                   region2: _.split(region, ' ', 2)[1],
                                    searchWord: searchText,
                                    genreName: genre,
                                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
                                });
                                getList({
-                                   region1: _.split(rigion, ' ', 2)[0],
-                                   region2: _.split(rigion, ' ', 2)[1],
+                                   region1: _.split(region, ' ', 2)[0],
+                                   region2: _.split(region, ' ', 2)[1],
                                    searchWord: searchText,
                                    genreName: genre,
                                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
@@ -205,16 +205,16 @@ export default function DateSetting(){
                            onPress={()=>{
                                setDate(currentDate);
                                setSearchData({
-                                   region1: _.split(rigion, ' ', 2)[0],
-                                   region2: _.split(rigion, ' ', 2)[1],
+                                   region1: _.split(region, ' ', 2)[0],
+                                   region2: _.split(region, ' ', 2)[1],
                                    searchWord: searchText,
                                    genreName: genre,
                                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time
        
                                });
                                getList({
-                                   region1: _.split(rigion, ' ', 2)[0],
-                                   region2: _.split(rigion, ' ', 2)[1],
+                                   region1: _.split(region, ' ', 2)[0],
+                                   region2: _.split(region, ' ', 2)[1],
                                    searchWord: searchText,
                                    genreName: genre,
                                    themeTime: format(currentDate, 'yyyy-MM-dd')+ ' ' + time

@@ -7,7 +7,7 @@ import ArrowDownSVG from '../../assets/iconArrowDown'
 import TriangleDownSVG from '../../assets/iconTriangleDown'
 import * as Font from 'expo-font'
 
-import rigionStore from "../../store/rigionStore";
+import regionStore from "../../store/regionStore";
 import dateStore from "../../store/dateStore";
 import timeStore from "../../store/timeStore";
 import genreStore from "../../store/genreStore";

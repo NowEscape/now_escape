@@ -5,9 +5,9 @@ import Entypo from '@expo/vector-icons/Entypo'
 
 import SearchResult from "./screens/SearchResult/SearchResult";
 import Index from "./screens/Index/Index";
-import RigionSetting from "./screens/RigionSetting/RigionSetting";
+import regionSetting from "./screens/regionSetting/regionSetting";
 import Search from "./screens/Search/Search";
-import rigionStore from "./store/rigionStore";
+import regionStore from "./store/regionStore";
 
 import {NavigationContainer} from "@react-navigation/native";
 import {createNativeStackNavigator} from "react-native-screens/native-stack";
@@ -17,7 +17,7 @@ SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const {rigion} = rigionStore();
+  const {region} = regionStore();
 
   useEffect(() => {
     async function prepare() {
@@ -46,12 +46,12 @@ export default function App() {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-          initialRouteName={rigion==""?'RigionSetting':'Index'}
+          initialRouteName={region==""?'regionSetting':'Index'}
           screenOptions={{
             headerShown: false
           }}
       >
-        <Stack.Screen name={'RigionSetting'} component={RigionSetting}/>
+        <Stack.Screen name={'regionSetting'} component={regionSetting}/>
         <Stack.Screen name={'Index'} component={Index}/>
         <Stack.Screen name={'Search'} component={Search}/>
         <Stack.Screen name={'SearchResult'} component={SearchResult}/>

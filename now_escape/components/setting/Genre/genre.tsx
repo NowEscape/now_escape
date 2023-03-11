@@ -8,7 +8,7 @@ import {aosWidth, aosHeight} from '../../../globalStyles_aos'
 import dateStore from "../../../store/dateStore";
 import searchStore from "../../../store/searchStore";
 import timeStore from "../../../store/timeStore";
-import rigionStore from "../../../store/rigionStore";
+import regionStore from "../../../store/regionStore";
 import _ from "lodash";
 import {format} from "date-fns";
 import escapeListStore from "../../../store/escapeListStore";
@@ -34,7 +34,7 @@ export default function Genre(props:genrePropsType){
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {date} = dateStore();
     const {time} = timeStore();
-    const {rigion} = rigionStore();
+    const {region} = regionStore();
     const [isFont, setIsFont] = React.useState(false);
 
     React.useEffect(() => {
@@ -72,15 +72,15 @@ export default function Genre(props:genrePropsType){
                 {setGenreList(genreList, index);
                 setGenreValue(genreListName, index);
                 setSearchData({
-                    region1: _.split(rigion, ' ', 2)[0],
-                    region2: _.split(rigion, ' ', 2)[1],
+                    region1: _.split(region, ' ', 2)[0],
+                    region2: _.split(region, ' ', 2)[1],
                     searchWord: searchText,
                     genreName: genreListName[index],
                     themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
                 });
                 getList({
-                    region1: _.split(rigion, ' ', 2)[0],
-                    region2: _.split(rigion, ' ', 2)[1],
+                    region1: _.split(region, ' ', 2)[0],
+                    region2: _.split(region, ' ', 2)[1],
                     searchWord: searchText,
                     genreName: genreListName[index],
                     themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time

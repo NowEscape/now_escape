@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, FlatList, Platform, Pressable, ActivityIndicator
 import {useState, useEffect} from "react";
 import _ from "lodash";
 import * as Font from 'expo-font'
-import regionStore from "../../../store/rigionStore";
+import regionStore from "../../../store/regionStore";
 
 import {iosWidth, iosHeight} from '../../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../../globalStyles_aos'
@@ -20,10 +20,10 @@ const iosHeightRatio = iosHeight as unknown as number;
 const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
-export default function Rigion(props){
+export default function Region(props){
     const {currentPage} = currentPageStore();
-    const {rigionName, rigionListString, rigionList, setRigionList, setRigion} = regionStore();
-    const [currentRigionIdx, setCurrentRigionIdx] = useState(findRigionIdx(rigionList));
+    const {regionName, regionListString, regionList, setRegionList, setRegion} = regionStore();
+    const [currentRegionIdx, setCurrentRegionIdx] = useState(findRegionIdx(regionList));
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {isOpen} = props;
     const {date} = dateStore();
@@ -60,22 +60,22 @@ export default function Rigion(props){
         getEscapeList(response.data);
     }
 
-  const renderRigionItem = ({item, index}:{item:any, index:number}) => {
+  const renderRegionItem = ({item, index}:{item:any, index:number}) => {
       return(
           <Pressable
               onPress={()=>{
-                setRigionList(rigionList,currentRigionIdx,index);
-                setRigion(rigionName,rigionListString,currentRigionIdx,index);
+                setRegionList(regionList,currentRegionIdx,index);
+                setRegion(regionName,regionListString,currentRegionIdx,index);
                 setSearchData({
-                    region1: String(rigionName[currentRigionIdx]),
-                    region2: String(rigionListString[currentRigionIdx][index]),
+                    region1: String(regionName[currentRegionIdx]),
+                    region2: String(regionListString[currentRegionIdx][index]),
                     searchWord: searchText,
                     genreName: genre,
                     themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
                 });
                 getList({
-                    region1: String(rigionName[currentRigionIdx]),
-                    region2: String(rigionListString[currentRigionIdx][index]),
+                    region1: String(regionName[currentRegionIdx]),
+                    region2: String(regionListString[currentRegionIdx][index]),
                     searchWord: searchText,
                     genreName: genre,
                     themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
@@ -83,7 +83,7 @@ export default function Rigion(props){
                 isOpen();
               }}
           >
-              <Text style={styles.rigionSecond}>{item}</Text>
+              <Text style={styles.regionSecond}>{item}</Text>
           </Pressable>
       );
   }
@@ -92,12 +92,12 @@ export default function Rigion(props){
     return(
         <Pressable
             style={{backgroundColor:
-                    index === currentRigionIdx
+                    index === currentRegionIdx
                         ? 'rgb(255,210,230)'
                         : 'rgb(239,239,239)'}}
-            onPress={()=>setCurrentRigionIdx(index)}
+            onPress={()=>setCurrentRegionIdx(index)}
         >
-            <Text style={styles.rigionFirst}>{item}</Text>
+            <Text style={styles.regionFirst}>{item}</Text>
         </Pressable>
     );
   }
@@ -106,9 +106,9 @@ export default function Rigion(props){
       <View style={styles.container}>
           <Text style={styles.text}>지역 설정</Text>
           <View style={styles.sectionBar}/>
-          <View style={styles.rigionBox}>
+          <View style={styles.regionBox}>
               <FlatList
-                  data={rigionName}
+                  data={regionName}
                   renderItem={renderItem}
               />
               <View style={{...Platform.select({
@@ -121,8 +121,8 @@ export default function Rigion(props){
                       }
                   })}}>
                   <FlatList
-                      data={rigionListString[currentRigionIdx]}
-                      renderItem={renderRigionItem}
+                      data={regionListString[currentRegionIdx]}
+                      renderItem={renderRegionItem}
                   />
               </View>
           </View>
@@ -130,9 +130,9 @@ export default function Rigion(props){
     );
 }
 
-function findRigionIdx(rigionList:boolean[][]){
-    for(let i=0; i<rigionList.length; i++){
-        if(-1 !== _.indexOf(rigionList[i], true)){
+function findRegionIdx(regionList:boolean[][]){
+    for(let i=0; i<regionList.length; i++){
+        if(-1 !== _.indexOf(regionList[i], true)){
             return i;
         }
     }
@@ -193,11 +193,11 @@ const styles = StyleSheet.create({
             }
         })
     },
-    rigionBox:{
+    regionBox:{
         display:'flex',
         flexDirection:'row',
     },
-    rigionFirst:{
+    regionFirst:{
         fontFamily: 'Pretendard-Medium',
         display:'flex',
         flexDirection:'column',
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
             }
         })
     },
-    rigionSecond:{
+    regionSecond:{
         fontFamily: 'Pretendard-Medium',
         display:'flex',
         flexDirection:'column',
