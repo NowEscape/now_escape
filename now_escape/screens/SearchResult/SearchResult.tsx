@@ -10,12 +10,12 @@ import SearchSVG from '../../assets/iconSearchPink'
 import searchStore from "../../store/searchStore";
 import timeStore from "../../store/timeStore";
 import dateStore from "../../store/dateStore";
-import rigionStore from "../../store/rigionStore";
+import regionStore from "../../store/regionStore";
 import genreStore from "../../store/genreStore";
 import DateSetting from "../../components/setting/Date/dateSetting";
 import Time from "../../components/setting/Time/time";
 import Genre from "../../components/setting/Genre/genre";
-import Rigion from "../../components/setting/Rigion/rigion";
+import region from "../../components/setting/region/region";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -36,11 +36,11 @@ export default function SearchResult({navigation}){
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {rigion, setRigionList, rigionListString, rigionList, rigionName, setRigion} = rigionStore();
+    const {region, setregionList, regionListString, regionList, regionName, setregion} = regionStore();
     const {escapeList, getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
-    const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const [isregionSettingOpen, setIsregionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
     async function getList(searchData){
@@ -74,8 +74,8 @@ export default function SearchResult({navigation}){
                         themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
 
                     });
-                    setRigion(rigionName, rigionListString, 0, 0);
-                    setRigionList(rigionList, 0, 0);
+                    setregion(regionName, regionListString, 0, 0);
+                    setregionList(regionList, 0, 0);
                     setDate(new Date());
                     setCurrentPage("Index");
                     navigation.navigate('Index')
@@ -97,8 +97,8 @@ export default function SearchResult({navigation}){
             <Pressable
                 onPress={()=>{
                     getList({
-                        region1: _.split(rigion, ' ', 2)[0],
-                        region2: _.split(rigion, ' ', 2)[1],
+                        region1: _.split(region, ' ', 2)[0],
+                        region2: _.split(region, ' ', 2)[1],
                         searchWord: searchText,
                         genreName: genre,
                         themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
@@ -144,10 +144,10 @@ export default function SearchResult({navigation}){
                         marginRight={Platform.OS==='ios'?iosWidthRatio*5:aosWidthRatio*5}
                         fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
-                        text={rigion}
-                        active={isRigionSettingOpen?true:false}
+                        text={region}
+                        active={isregionSettingOpen?true:false}
                         open={()=>{
-                            setIsRigionSettingOpen((prevState => !prevState))
+                            setIsregionSettingOpen((prevState => !prevState))
                             setModal(true)
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
                         }}
@@ -162,7 +162,7 @@ export default function SearchResult({navigation}){
                         active={isGenreSettingOpen?true:false}
                         open={()=>{
                             setIsGenreSettingOpen((prevState => !prevState))
-                            {isRigionSettingOpen?setIsRigionSettingOpen(false):null}
+                            {isregionSettingOpen?setIsregionSettingOpen(false):null}
                         }}
                     />
                 </ScrollView>
@@ -191,13 +191,13 @@ export default function SearchResult({navigation}){
                         </View>
                         : null}
                 </View>
-                {isRigionSettingOpen === true ? 
+                {isregionSettingOpen === true ? 
                     <Modal 
-                    visible={isRigionSettingOpen} 
+                    visible={isregionSettingOpen} 
                     transparent
                     animationType={'slide'}
                     onRequestClose={()=>{
-                        setIsRigionSettingOpen((prevState => !prevState))
+                        setIsregionSettingOpen((prevState => !prevState))
                     }}
                     >
                     <View style={{
@@ -208,10 +208,10 @@ export default function SearchResult({navigation}){
                         <Pressable 
                             style={{flex:1}}
                             onPress={()=>
-                            setIsRigionSettingOpen((prevState => !prevState))
+                            setIsregionSettingOpen((prevState => !prevState))
                             }
                         />
-                        <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                        <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
                     </View>
                     </Modal>
                 : null}

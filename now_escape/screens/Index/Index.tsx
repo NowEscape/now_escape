@@ -6,10 +6,10 @@ import ListItem from "../../components/ListItem/listItem";
 import SearchSvg from '../../assets/iconSearchBlack'
 import DateSetting from "../../components/setting/Date/dateSetting";
 import dateStore from "../../store/dateStore";
-import rigionStore from "../../store/rigionStore";
+import regionStore from "../../store/regionStore";
 import genreStore from "../../store/genreStore";
 import timeStore from "../../store/timeStore";
-import Rigion from "../../components/setting/Rigion/rigion";
+import region from "../../components/setting/region/region";
 import useInterval from './useInterval';
 import 'react-native-gesture-handler'
 import {useState, useRef, useEffect, useMemo} from "react";
@@ -34,8 +34,8 @@ export default function Index({navigation}){
     const {setSearchText, searchData} = searchStore();
     const {setGenreValue, setGenreList, genreList, genreListName, genre} = genreStore();
     const {setTime} = timeStore();
-    const {rigion, setRigion, setRigionList, rigionList, rigionListString, rigionName} = rigionStore();
-    const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+    const {region, setregion, setregionList, regionList, regionListString, regionName} = regionStore();
+    const [isregionSettingOpen, setIsregionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
     const [isRefreshing,setIsRefreshing] = useState(false);
     const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
@@ -131,9 +131,9 @@ export default function Index({navigation}){
                             width={iosWidthRatio*115}                    
                             type={'mainLabel'}
                             bold={true}
-                            text={rigion}
+                            text={region}
                             open={()=>{
-                                setIsRigionSettingOpen((prevState => !prevState))
+                                setIsregionSettingOpen((prevState => !prevState))
                                 setModal(true)
                             }}
                             arrow={true}
@@ -143,8 +143,8 @@ export default function Index({navigation}){
                             onPress={()=>{
                                 setSearchText("");
                                 setTime("09:00");
-                                setRigion(rigionName, rigionListString, 0, 0);
-                                setRigionList(rigionList, 0, 0);
+                                setregion(regionName, regionListString, 0, 0);
+                                setregionList(regionList, 0, 0);
                                 setDate(new Date());
                                 setGenreList(genreList, 0);
                                 setGenreValue(genreListName, 0);
@@ -182,13 +182,13 @@ export default function Index({navigation}){
                         }
                     </ScrollView>
                     
-            {isRigionSettingOpen === true ? 
+            {isregionSettingOpen === true ? 
                 <Modal 
-                  visible={isRigionSettingOpen} 
+                  visible={isregionSettingOpen} 
                   transparent
                   animationType={'slide'}
                   onRequestClose={()=>{
-                      setIsRigionSettingOpen((prevState => !prevState))
+                      setIsregionSettingOpen((prevState => !prevState))
                   }}
                 >
                   <View style={{
@@ -199,10 +199,10 @@ export default function Index({navigation}){
                     <Pressable 
                         style={{flex:1}}
                         onPress={()=>
-                          setIsRigionSettingOpen((prevState => !prevState))
+                          setIsregionSettingOpen((prevState => !prevState))
                         }
                     />
-                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                    <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
                   </View>
                 </Modal>
               : null}
@@ -233,9 +233,9 @@ export default function Index({navigation}){
                             fontSize={aosWidthRatio<=1?aosWidthRatio*14:aosWidthRatio*12.5}
                             type={'mainLabel'}
                             bold={true}
-                            text={rigion}
+                            text={region}
                             open={()=>{
-                                setIsRigionSettingOpen((prevState => !prevState))
+                                setIsregionSettingOpen((prevState => !prevState))
                                 setModal(true)
                             }}
                             arrow={true}
@@ -245,8 +245,8 @@ export default function Index({navigation}){
                             onPress={()=>{
                                 setSearchText("");
                                 setTime("09:00");
-                                setRigion(rigionName, rigionListString, 0, 0);
-                                setRigionList(rigionList, 0, 0);
+                                setregion(regionName, regionListString, 0, 0);
+                                setregionList(regionList, 0, 0);
                                 setDate(new Date());
                                 setGenreList(genreList, 0);
                                 setGenreValue(genreListName, 0);
@@ -284,13 +284,13 @@ export default function Index({navigation}){
                         }
                     </ScrollView>
                     
-            {isRigionSettingOpen === true ? 
+            {isregionSettingOpen === true ? 
                 <Modal 
-                  visible={isRigionSettingOpen} 
+                  visible={isregionSettingOpen} 
                   transparent
                   animationType={'slide'}
                   onRequestClose={()=>{
-                      setIsRigionSettingOpen((prevState => !prevState))
+                      setIsregionSettingOpen((prevState => !prevState))
                   }}
                 >
                   <View style={{
@@ -301,10 +301,10 @@ export default function Index({navigation}){
                     <Pressable 
                         style={{flex:1}}
                         onPress={()=>
-                          setIsRigionSettingOpen((prevState => !prevState))
+                          setIsregionSettingOpen((prevState => !prevState))
                         }
                     />
-                    <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                    <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
                   </View>
                 </Modal>
               : null}

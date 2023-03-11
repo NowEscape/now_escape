@@ -2,18 +2,14 @@ import React, {useCallback, useEffect, useState} from 'react'
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable, StatusBar} from 'react-native'
 import Button from '../../components/Button/button'
 import Label from "../../components/Label/label";
-import Rigion from "../../components/setting/Rigion/rigion";
-import rigionStore from "../../store/rigionStore";
+import Region from "../../components/setting/Region/region";
+import regionStore from "../../store/regionStore";
 import DoorOpenSVG from "../../assets/iconDoorOpen"
 import * as Font from 'expo-font'
 import 'react-native-gesture-handler'
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
-import _ from "lodash";
-import {format} from "date-fns";
-import searchStore from "../../store/searchStore";
-import currentPageStore from "../../store/currentPageStore";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -22,8 +18,8 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function RegionSetting({navigation}) {
-  const {rigion} = rigionStore();
-  const [isRigionSettingOpen, setIsRigionSettingOpen] = useState(false);
+  const {region} = regionStore();
+  const [isRegionSettingOpen, setIsRegionSettingOpen] = useState(false);
   const [isFont, setIsFont] = useState(false);
 
   useEffect(() => {
@@ -52,15 +48,15 @@ export default function RegionSetting({navigation}) {
               width={Platform.OS==='ios'?iosWidthRatio*341:aosWidthRatio*328}
               fontSize={Platform.OS==='ios'?16:15}
               type={'regionSetting'}
-              text={rigion?rigion:'지역'}
+              text={region?region:'지역'}
               open={()=>{
-                setIsRigionSettingOpen((prevState => !prevState))
+                setIsRegionSettingOpen((prevState => !prevState))
             }}
               arrow={true}
             />
           </View>
           <View style={styles.confirmButton}>
-            {rigion !== ""
+            {region !== ""
               ?<Button
                   text="시작하기"
                   bold
@@ -79,13 +75,13 @@ export default function RegionSetting({navigation}) {
               />
             }
           </View>
-          {isRigionSettingOpen === true ? 
+          {isRegionSettingOpen === true ?
             <Modal 
-              visible={isRigionSettingOpen} 
+              visible={isRegionSettingOpen}
               transparent
               animationType={'slide'}
               onRequestClose={()=>{
-                  setIsRigionSettingOpen((prevState => !prevState))
+                  setIsRegionSettingOpen((prevState => !prevState))
               }}
             >
               <View style={{
@@ -96,10 +92,10 @@ export default function RegionSetting({navigation}) {
                 <Pressable 
                     style={{flex:1}}
                     onPress={()=>
-                      setIsRigionSettingOpen((prevState => !prevState))
+                      setIsRegionSettingOpen((prevState => !prevState))
                     }
                 />
-                <Rigion isOpen={()=>setIsRigionSettingOpen((prevState => !prevState))}/>
+                <Region isOpen={()=>setIsRegionSettingOpen((prevState => !prevState))}/>
               </View>
             </Modal>
           : null}
