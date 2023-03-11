@@ -16,7 +16,7 @@
 <br/>
 
 ## 설치 방법
-Android : 출시 예정 <br/>
+Android : https://play.google.com/store/apps/details?id=com.now_escape.now_escape&pli=1 <br/>
 ios : https://apps.apple.com/kr/app/%EC%A7%80%EA%B8%88-%EB%B0%A9%ED%83%88%EC%B6%9C/id6445975673
 
 <br/>
