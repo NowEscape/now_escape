@@ -1,10 +1,11 @@
 import React from 'react';
-import {Image, Text, View, StyleSheet, FlatList, Platform, ScrollView, Linking} from "react-native";
+import {Image, Text, View, Alert, StyleSheet, FlatList, Platform, ScrollView, Linking} from "react-native";
 import Button from "../Button/button";
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
 import * as Font from 'expo-font'
 
+import axios from "axios";
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 import _ from "lodash";
@@ -32,6 +33,15 @@ export default function ListItemDetail(props){
         "Pretendard-Regular": require('../../assets/fonts/Pretendard-Regular.otf'),
       }).then(() => setIsFont(true));
     },[])
+
+    async function openURL(url){
+        const supported = await Linking.canOpenURL(url);
+        if(supported){
+            await Linking.openURL(url);
+        }else{
+            Alert.alert('해당 URL이 존재하지 않습니다.');
+        }
+    }
 
     return(
         <View style={styles.container}>
@@ -77,7 +87,7 @@ export default function ListItemDetail(props){
                     </ScrollView>
                 </View>
                 <Button 
-                    onPress={()=>{Linking.openURL(escapeList[escapeID].shortCutUrl)}}
+                    onPress={()=>{openURL(escapeList[escapeID].shortCutUrl)}}
                     text={'예약하기'}
                     active={true} 
                     rounded={true} 

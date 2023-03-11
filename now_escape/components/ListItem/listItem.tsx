@@ -36,23 +36,23 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                             <Text style={styles.textLocation}>{cafeName}</Text>
                         </View>
                         <View style={styles.timeList}>
-                            {themeDateList.length == 2 ?
+                            {themeDateList.length == 1 ?
                                 <FlatList
-                                    key={0}
+                                    key={'_'}
                                     data={themeDateList}
                                     renderItem={({index})=><RenderTimeList
                                         themeDateListItem = {themeDateList[index]}
                                     />}
-                                    keyExtractor={(item) => item.themeDateId}
+                                    keyExtractor={(item) => "_" + item.themeDateId}
                                     numColumns={1}
                                 /> :
                                 <FlatList
-                                    key={1}
+                                    key={"#"}
                                     data={themeDateList}
                                     renderItem={({index})=><RenderTimeList
                                         themeDateListItem = {themeDateList[index]}
                                     />}
-                                    keyExtractor={(item) => item.themeDateId}
+                                    keyExtractor={(item) => "#"+item.themeDateId}
                                     numColumns={4}
                                 />
                             }

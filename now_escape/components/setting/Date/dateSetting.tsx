@@ -64,6 +64,7 @@ export default function DateSetting(){
             setIsEscapeListNull(false);
         }
         getEscapeList(response.data);
+        console.log(response.data);
     }
 
     if (Platform.OS === 'ios') {
