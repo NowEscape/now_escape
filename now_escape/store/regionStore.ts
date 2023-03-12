@@ -1,6 +1,7 @@
 import create from "zustand"
 import _ from "lodash"
-import {persist, createJSONStorage} from 'zustand/middleware';
+import {persist} from 'zustand/middleware'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface regionState{
     region: string;
@@ -11,30 +12,34 @@ interface regionState{
     setRegion : (regionName:string[], regionListString:string[][], regionIdx:number, regionItemIdx: number)=>void;
 }
 
-const regionStore = create<regionState>((set)=>({
-    region : "",
-    regionName : ["서울", "경기/인천", "충청", "경상","전라"],
-    regionListString : [
-        ["전체","강남","잠실","홍대","대학로","성신여대앞","노원","종로","신림","노량진"],
-        ["전체","안양","화성","평택","성남","구리","의정부","부천","인천"],
-        ["전체","아산","천안","대전","청주"],
-        ["전체","대구","부산"],
-        ["전체","전주","여수"]
-    ],
-    regionList: [
-        [true, false, false,false,false,false,false,false,false,false,],
-        [false, false, false,false,false,false,false,false,false,],
-        [false, false, false,false,false,],
-        [false,false,false],
-        [false,false,false]
-    ],
-    setRegionList: (regionList, regionIdx, regionItemIdx)=>set((state)=>({
-        regionList: settingRegionList(regionList, regionIdx, regionItemIdx),
-    })),
-    setRegion: (regionName, regionListString, regionIdx, regionItemIdx)=>set((state)=>({
-        region: settingRegion(regionName, regionListString, regionIdx, regionItemIdx)
-    }))
-    }))
+const RegionStore = create(
+    persist(
+        (set, get) =>({
+            region: "",
+            regionName : ["서울", "경기/인천", "충청", "경상","전라"],
+            regionListString : [
+                ["전체","강남","잠실","홍대","대학로","성신여대앞","노원","종로","신림","노량진"],
+                ["전체","안양","화성","평택","성남","구리","의정부","부천","인천"],
+                ["전체","아산","천안","대전","청주"],
+                ["전체","대구","부산"],
+                ["전체","전주","여수"]
+            ],
+            regionList: [
+                [true, false, false,false,false,false,false,false,false,false,],
+                [false, false, false,false,false,false,false,false,false,],
+                [false, false, false,false,false,],
+                [false,false,false],
+                [false,false,false]
+            ],
+            setRegion: (regionName, regionListString, regionIdx, regionItemIdx) => set((state: regionState)=>({region: settingRegion(regionName, regionListString, regionIdx, regionItemIdx)})),
+            setRegionList : (regionList, regionIdx, regionItemIdx) => set((state:regionState) => ({regionList: settingRegionList(regionList, regionIdx, regionItemIdx)}))
+        }),
+        {
+            name: 'region-state',
+            getStorage: () => AsyncStorage
+        }
+    )
+);
 
 function settingRegionList(regionList:boolean[][], regionIdx:number, regionItemIdx: number){
     const isTrue = (element) => element==true;
@@ -50,16 +55,4 @@ function settingRegion(regionName:string[], regionListString:string[][], regionI
     return String(regionName[regionIdx]) + ' ' + String(regionListString[regionIdx][regionItemIdx]);
 }
 
-export const useRegionStore = create(
-    persist(
-        (set, get) => ({
-            region: ""
-        }),
-        {
-            name: 'region-storage',
-            storage: createJSONStorage(()=>sessionStorage)
-        }
-    )
-)
-
-export default regionStore;
+export default RegionStore;

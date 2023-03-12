@@ -5,7 +5,7 @@ import Entypo from '@expo/vector-icons/Entypo'
 
 import SearchResult from "./screens/SearchResult/SearchResult";
 import Index from "./screens/Index/Index";
-import regionSetting from "./screens/regionSetting/regionSetting";
+import RegionSetting from "./screens/RegionSetting/RegionSetting";
 import Search from "./screens/Search/Search";
 import regionStore from "./store/regionStore";
 
@@ -46,12 +46,12 @@ export default function App() {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-          initialRouteName={region==""?'regionSetting':'Index'}
+          initialRouteName={region==""?'RegionSetting':'Index'}
           screenOptions={{
             headerShown: false
           }}
       >
-        <Stack.Screen name={'regionSetting'} component={regionSetting}/>
+        <Stack.Screen name={'RegionSetting'} component={RegionSetting}/>
         <Stack.Screen name={'Index'} component={Index}/>
         <Stack.Screen name={'Search'} component={Search}/>
         <Stack.Screen name={'SearchResult'} component={SearchResult}/>
