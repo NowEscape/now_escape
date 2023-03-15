@@ -90,7 +90,7 @@ export default function DateSetting(){
                        maximumDate={new Date(
                         new Date().getFullYear(),
                         new Date().getMonth(),
-                        (new Date().getDate()+7)
+                        (new Date().getDate()+6)
                        )}
                        onChange={(event, date)=>setCurrentDate(date)}
                    />
@@ -170,7 +170,7 @@ export default function DateSetting(){
                     maximumDate={new Date(
                         new Date().getFullYear(),
                         new Date().getMonth(),
-                        (new Date().getDate()+7)
+                        (new Date().getDate()+6)
                        )}
                     onConfirm={(pickerDate)=>{
                         setVisible(false)
