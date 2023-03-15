@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'white',
         borderRadius: 8,
-        overflow:'hidden',
         ...Platform.select({
             android:{
                 height:aosHeightRatio*190,
@@ -242,7 +241,6 @@ const styles = StyleSheet.create({
             ios:{
                 height:iosHeightRatio*360,
                 width:iosWidthRatio*325,
-                paddingBottom: iosHeightRatio*12,
             }
         })
     },
@@ -287,6 +285,7 @@ const styles = StyleSheet.create({
             },
             ios:{
                 width: iosWidthRatio*299,
+                height: iosHeightRatio*48,
             }
         })
     }
