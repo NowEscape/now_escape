@@ -279,15 +279,15 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         ...Platform.select({
             android:{
-                height: aosHeightRatio*204,
+                height: renderItem.length==1?aosHeightRatio*204:aosHeightRatio*199,
                 width: aosWidthRatio*318,
-                marginTop: aosHeightRatio*20,
+                marginTop: renderItem.length==1?aosHeightRatio*20:aosHeightRatio*25,
                 marginBottom: aosHeightRatio*11
             },
             ios:{
-                height: iosHeightRatio*213,
-                width: iosWidthRatio*331,
-                marginTop: iosHeightRatio*15,
+                height: renderItem.length==1?iosHeightRatio*213:iosHeightRatio*208,
+                width: iosWidthRatio*330,
+                marginTop: renderItem.length==1?iosHeightRatio*15:iosHeightRatio*20,
                 marginBottom: iosHeightRatio*11
             }
         })
