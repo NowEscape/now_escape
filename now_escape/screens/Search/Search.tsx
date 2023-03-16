@@ -13,7 +13,7 @@ import dateStore from "../../store/dateStore";
 import DateSetting from "../../components/setting/Date/dateSetting";
 import Time from "../../components/setting/Time/time";
 import regionStore from "../../store/regionStore";
-import region from "../../components/setting/region/region";
+import Region from "../../components/setting/Region/region";
 import 'react-native-gesture-handler'
 
 import ArrowBackSVG from '../../assets/iconArrowBack'
@@ -38,13 +38,13 @@ export default function Search({navigation}){
     const {genre} = genreStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {region, regionName, regionList, regionListString, setregionList, setregion} = regionStore();
+    const {region, regionName, regionList, regionListString, setRegionList, setRegion} = regionStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
-    const [isregionSettingOpen, setIsregionSettingOpen] = useState(false);
+    const [isRegionSettingOpen, setIsRegionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
     async function getList(searchData){
-        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+        const response = await axios.post('https://www.now-escape.kro.kr/openTimeThemeList',
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
@@ -70,8 +70,8 @@ export default function Search({navigation}){
                                 themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
 
                             });
-                            setregion(regionName, regionListString, 0, 0);
-                            setregionList(regionList, 0, 0);
+                            setRegion(regionName, regionListString, 0, 0);
+                            setRegionList(regionList, 0, 0);
                             setDate(new Date());
                             setCurrentPage("Index");
                             navigation.navigate('Index')
@@ -150,7 +150,7 @@ export default function Search({navigation}){
                         active={isGenreSettingOpen?true:false}
                         open={()=>{
                             Keyboard.dismiss()
-                            {isregionSettingOpen?setIsregionSettingOpen(false):null}
+                            {isRegionSettingOpen?setIsRegionSettingOpen(false):null}
                             setIsGenreSettingOpen((prevState => !prevState))
                         }}
                         arrow='true'
@@ -161,11 +161,11 @@ export default function Search({navigation}){
                         fontSize={Platform.OS==='ios'?iosWidthRatio*16:aosWidthRatio*14}
                         type={"searchLabel"}
                         text={region}
-                        active={isregionSettingOpen?true:false}
+                        active={isRegionSettingOpen?true:false}
                         open={()=>{
                             Keyboard.dismiss()
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
-                            setIsregionSettingOpen((prevState => !prevState))
+                            setIsRegionSettingOpen((prevState => !prevState))
                             setModal(true)
                         }}
                         arrow='true'
@@ -180,13 +180,13 @@ export default function Search({navigation}){
                         <Genre search={true} isOpen={()=>setIsGenreSettingOpen((prevState => !prevState))}/>
                     </View>
                     : null}
-                {isregionSettingOpen === true ? 
+                {isRegionSettingOpen === true ?
                     <Modal 
-                    visible={isregionSettingOpen} 
+                    visible={isRegionSettingOpen}
                     transparent
                     animationType={'slide'}
                     onRequestClose={()=>{
-                        setIsregionSettingOpen((prevState => !prevState))
+                        setIsRegionSettingOpen((prevState => !prevState))
                     }}
                     >
                     <View style={{
@@ -197,10 +197,10 @@ export default function Search({navigation}){
                         <Pressable 
                             style={{flex:1}}
                             onPress={()=>
-                            setIsregionSettingOpen((prevState => !prevState))
+                            setIsRegionSettingOpen((prevState => !prevState))
                             }
                         />
-                        <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
+                        <Region isOpen={()=>setIsRegionSettingOpen((prevState => !prevState))}/>
                     </View>
                     </Modal>
                 : null}

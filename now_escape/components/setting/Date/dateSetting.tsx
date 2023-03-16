@@ -50,7 +50,7 @@ export default function DateSetting(){
             searchData.genreName="";
             searchData.searchWord="";
         }
-        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+        const response = await axios.post('https://www.now-escape.kro.kr/openTimeThemeList',
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
