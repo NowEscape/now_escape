@@ -22,6 +22,7 @@ import searchStore from "../../store/searchStore";
 import escapeListStore from "../../store/escapeListStore";
 import { ScrollView } from 'react-native-gesture-handler';
 import currentPageStore from "../../store/currentPageStore";
+import _ from "lodash";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -30,10 +31,11 @@ const aosHeightRatio = aosHeight as unknown as number;
 const statusBarHeight = StatusBar.currentHeight
 
 export default function Index({navigation}){
+    const {setCurrentPage} = currentPageStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {setSearchText, searchData} = searchStore();
+    const {setSearchText, searchData, searchText} = searchStore();
     const {setGenreValue, setGenreList, genreList, genreListName, genre} = genreStore();
-    const {setTime} = timeStore();
+    const {setTime, time} = timeStore();
     const {region, setRegion, setRegionList, regionList, regionListString, regionName} = regionStore();
     const [isRegionSettingOpen, setIsRegionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
@@ -107,12 +109,20 @@ export default function Index({navigation}){
           offset: snapToOffsets[currentIndex],
         });
       }
-
     }, [currentIndex, snapToOffsets]);
     useInterval(() => {
         setCurrentIndex(prev => (prev === snapToOffsets.length - 1 ? 0 : prev + 1));
       }, 5000);
 
+    useEffect(()=>{
+        getList({
+            region1: "서울",
+            region2: "",
+            searchWord: "",
+            genreName: "",
+            themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+        })
+    },[])
 
     if (Platform.OS === 'ios') {
         return(

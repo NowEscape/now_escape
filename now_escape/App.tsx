@@ -45,7 +45,7 @@ export default function App() {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-          initialRouteName={region==""?'RegionSetting':'Index'}
+          initialRouteName={'Index'}
           screenOptions={{
             headerShown: false
           }}

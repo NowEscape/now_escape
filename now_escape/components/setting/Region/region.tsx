@@ -40,7 +40,7 @@ export default function Region(props){
     },[])
 
     async function getList(searchData){
-        if(currentPage==="index"){
+        if(currentPage==="Index"){
             searchData.genreName="";
             searchData.searchWord="";
         }
