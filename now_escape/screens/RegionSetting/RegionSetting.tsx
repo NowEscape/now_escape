@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import { View, Text, StyleSheet, ActivityIndicator, SafeAreaView, Platform, Modal, Pressable, StatusBar} from 'react-native'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Button from '../../components/Button/button'
 import Label from "../../components/Label/label";
 import Region from "../../components/setting/Region/region";
@@ -65,6 +66,7 @@ export default function RegionSetting({navigation}) {
                   active={true}
                   onPress={()=>{{
                     navigation.navigate('Index');
+                    AsyncStorage.setItem('regionStorage', 'set', ()=>{});
                   }}}
               />
               :<Button

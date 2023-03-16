@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Font from 'expo-font'
 import Entypo from '@expo/vector-icons/Entypo'
 
@@ -17,7 +17,8 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false);
-  const {region} = regionStore();
+  const [region, setRegion] = useState("");
+  AsyncStorage.getItem('regionStorage', (err, result)=> setRegion(result));
 
   useEffect(() => {
     async function prepare() {
@@ -46,7 +47,7 @@ export default function App() {
   return (
     <NavigationContainer onReady={onLayoutRootView}>
       <Stack.Navigator
-          initialRouteName={region==""?'RegionSetting':'Index'}
+          initialRouteName={region!=="set"?'RegionSetting':'Index'}
           screenOptions={{
             headerShown: false
           }}
