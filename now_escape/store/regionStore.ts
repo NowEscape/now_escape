@@ -11,7 +11,7 @@ interface regionState{
 }
 
 const RegionStore = create<regionState>((set)=>({
-    region : "",
+    region : "서울 전체",
     regionName : ["서울", "경기/인천", "충청", "경상","전라"],
     regionListString : [
         ["전체","강남","잠실","홍대","대학로","성신여대앞","노원","종로","신림","노량진"],

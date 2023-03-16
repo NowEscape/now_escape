@@ -15,7 +15,7 @@ import genreStore from "../../store/genreStore";
 import DateSetting from "../../components/setting/Date/dateSetting";
 import Time from "../../components/setting/Time/time";
 import Genre from "../../components/setting/Genre/genre";
-import region from "../../components/setting/region/region";
+import Region from "../../components/setting/Region/region";
 
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
@@ -36,15 +36,15 @@ export default function SearchResult({navigation}){
     const {searchData, setSearchData, searchText, setSearchText} = searchStore();
     const {time, setTimeVisible, timeVisible} = timeStore();
     const {date, setDateVisible, dateVisible, setDate} = dateStore();
-    const {region, setregionList, regionListString, regionList, regionName, setregion} = regionStore();
+    const {region, setRegionList, regionListString, regionList, regionName, setRegion} = regionStore();
     const {escapeList, getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
     const {genre} = genreStore();
     const [isGenreSettingOpen, setIsGenreSettingOpen] = useState(false);
-    const [isregionSettingOpen, setIsregionSettingOpen] = useState(false);
+    const [isRegionSettingOpen, setIsRegionSettingOpen] = useState(false);
     const [modal, setModal] = useState(false);
 
     async function getList(searchData){
-        const response = await axios.post('http://ec2-3-38-93-20.ap-northeast-2.compute.amazonaws.com:8080/openTimeThemeList',
+        const response = await axios.post('https://www.now-escape.kro.kr/openTimeThemeList',
             {
                 region1: searchData.region1,
                 region2: searchData.region2==="전체"?"":searchData.region2,
@@ -74,8 +74,8 @@ export default function SearchResult({navigation}){
                         themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
 
                     });
-                    setregion(regionName, regionListString, 0, 0);
-                    setregionList(regionList, 0, 0);
+                    setRegion(regionName, regionListString, 0, 0);
+                    setRegionList(regionList, 0, 0);
                     setDate(new Date());
                     setCurrentPage("Index");
                     navigation.navigate('Index')
@@ -145,9 +145,9 @@ export default function SearchResult({navigation}){
                         fontSize={Platform.OS==='ios'?iosWidthRatio*13:aosWidthRatio*12}
                         type={"mainLabel"}
                         text={region}
-                        active={isregionSettingOpen?true:false}
+                        active={isRegionSettingOpen?true:false}
                         open={()=>{
-                            setIsregionSettingOpen((prevState => !prevState))
+                            setIsRegionSettingOpen((prevState => !prevState))
                             setModal(true)
                             {isGenreSettingOpen?setIsGenreSettingOpen(false):null}
                         }}
@@ -162,7 +162,7 @@ export default function SearchResult({navigation}){
                         active={isGenreSettingOpen?true:false}
                         open={()=>{
                             setIsGenreSettingOpen((prevState => !prevState))
-                            {isregionSettingOpen?setIsregionSettingOpen(false):null}
+                            {isRegionSettingOpen?setIsRegionSettingOpen(false):null}
                         }}
                     />
                 </ScrollView>
@@ -191,13 +191,13 @@ export default function SearchResult({navigation}){
                         </View>
                         : null}
                 </View>
-                {isregionSettingOpen === true ? 
+                {isRegionSettingOpen === true ?
                     <Modal 
-                    visible={isregionSettingOpen} 
+                    visible={isRegionSettingOpen}
                     transparent
                     animationType={'slide'}
                     onRequestClose={()=>{
-                        setIsregionSettingOpen((prevState => !prevState))
+                        setIsRegionSettingOpen((prevState => !prevState))
                     }}
                     >
                     <View style={{
@@ -208,10 +208,10 @@ export default function SearchResult({navigation}){
                         <Pressable 
                             style={{flex:1}}
                             onPress={()=>
-                            setIsregionSettingOpen((prevState => !prevState))
+                            setIsRegionSettingOpen((prevState => !prevState))
                             }
                         />
-                        <region isOpen={()=>setIsregionSettingOpen((prevState => !prevState))}/>
+                        <Region isOpen={()=>setIsRegionSettingOpen((prevState => !prevState))}/>
                     </View>
                     </Modal>
                 : null}
