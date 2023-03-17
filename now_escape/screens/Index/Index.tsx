@@ -145,7 +145,7 @@ export default function Index({navigation}){
                             width={iosWidthRatio*115}                    
                             type={'mainLabel'}
                             bold={true}
-                            text={region}
+                            text={String(region).length<7 ? String(region):String(region).substring(0, 5)+'…'}
                             open={()=>{
                                 setIsRegionSettingOpen((prevState => !prevState))
                                 setModal(true)
