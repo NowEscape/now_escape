@@ -35,40 +35,43 @@ export default function Label(props) {
     }).then(() => setIsFont(true));
   },[])
 
-  return (
-    <Fragment>
-      {type === 'regionSetting' && (
-        <TouchableOpacity onPress={()=>{{open()}}}>
-          <View style={style.region}>
-            <Text style={style.text}>{props.text}</Text>
-            <TriangleDownSVG height={iosHeightRatio*13}/>
-          </View>
-        </TouchableOpacity>
-      )}      
-      {type === 'mainLabel' && (
-        <TouchableOpacity onPress={()=>{{open()}}}>
-          <View style={style.main}>
-            {icon=== 'date' && <CalenderSVG height={10.8}/>}
-            {icon=== 'time' && <ClockSVG height={10.8}/>}
-            <Text style={style.text}>{props.text}</Text>
-            { arrow && <TriangleDownSVG height={iosHeightRatio*9}/> }
-          </View>
-        </TouchableOpacity>
-      )}
-      {type === 'searchLabel' && (
-        <TouchableOpacity onPress={()=>{{open()}}}>
-          <View style={style.search}>
-            <View style={{flexDirection: 'row'}}>
-            {icon=== 'date' && <CalenderSVG/>}
-            {icon=== 'time' && <ClockSVG/>}
-            <Text style={style.searchText}>{props.text}</Text>      
+  if (isFont) {
+    return (
+      <Fragment>
+        {type === 'regionSetting' && (
+          <TouchableOpacity onPress={()=>{{open()}}}>
+            <View style={style.region}>
+              <Text style={style.text}>{props.text}</Text>
+              <TriangleDownSVG height={iosHeightRatio*13}/>
             </View>
-            { arrow && (active?<ArrowUpSVG/>:<ArrowDownSVG/>) }
-          </View>
-        </TouchableOpacity>   
-      )}     
-    </Fragment>
-  );
+          </TouchableOpacity>
+        )}      
+        {type === 'mainLabel' && (
+          <TouchableOpacity onPress={()=>{{open()}}}>
+            <View style={style.main}>
+              {icon=== 'date' && <CalenderSVG height={10.8}/>}
+              {icon=== 'time' && <ClockSVG height={10.8}/>}
+              <Text style={style.text}>{props.text}</Text>
+              { arrow && <TriangleDownSVG height={iosHeightRatio*9}/> }
+            </View>
+          </TouchableOpacity>
+        )}
+        {type === 'searchLabel' && (
+          <TouchableOpacity onPress={()=>{{open()}}}>
+            <View style={style.search}>
+              <View style={{flexDirection: 'row'}}>
+              {icon=== 'date' && <CalenderSVG/>}
+              {icon=== 'time' && <ClockSVG/>}
+              <Text style={style.searchText}>{props.text}</Text>      
+              </View>
+              { arrow && (active?<ArrowUpSVG/>:<ArrowDownSVG/>) }
+            </View>
+          </TouchableOpacity>   
+        )}     
+      </Fragment>
+    );
+  }
+
 }
 
 const styles = (active, width, height, fontSize, marginRight, icon, bold, arrow) => StyleSheet.create({

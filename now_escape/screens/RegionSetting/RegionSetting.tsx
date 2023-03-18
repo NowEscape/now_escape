@@ -79,7 +79,7 @@ export default function RegionSetting({navigation}) {
             <Modal 
               visible={isRegionSettingOpen}
               transparent
-              animationType={'slide'}
+              animationType={'fade'}
               onRequestClose={()=>{
                   setIsRegionSettingOpen((prevState => !prevState))
               }}

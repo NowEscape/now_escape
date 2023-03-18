@@ -184,7 +184,7 @@ export default function Search({navigation}){
                     <Modal 
                     visible={isRegionSettingOpen}
                     transparent
-                    animationType={'slide'}
+                    animationType={'fade'}
                     onRequestClose={()=>{
                         setIsRegionSettingOpen((prevState => !prevState))
                     }}
