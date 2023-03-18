@@ -247,7 +247,7 @@ export default function Index({navigation}){
                             fontSize={aosWidthRatio<=1?aosWidthRatio*14:aosWidthRatio*12.5}
                             type={'mainLabel'}
                             bold={true}
-                            text={region}
+                            text={String(region).length<7 ? String(region):String(region).substring(0, 5)+'…'}
                             open={()=>{
                                 setIsRegionSettingOpen((prevState => !prevState))
                                 setModal(true)
