@@ -22,7 +22,7 @@ ios : https://apps.apple.com/kr/app/%EC%A7%80%EA%B8%88-%EB%B0%A9%ED%83%88%EC%B6%
 <br/>
 
 ## 업데이트 내역
-- 1.0.1 : 방탈출 list 업데이트, 작은 오류들 수정
+- 1.0.1 : 방탈출 리스트 업데이트, 작은 오류들 수정
 - 1.0.0 : Android, ios 출시
 	
 <br/>
