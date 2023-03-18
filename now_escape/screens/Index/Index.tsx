@@ -200,7 +200,7 @@ export default function Index({navigation}){
                 <Modal 
                   visible={isRegionSettingOpen}
                   transparent
-                  animationType={'slide'}
+                  animationType={'fade'}
                   onRequestClose={()=>{
                       setIsRegionSettingOpen((prevState => !prevState))
                   }}
@@ -302,7 +302,7 @@ export default function Index({navigation}){
                 <Modal 
                   visible={isRegionSettingOpen}
                   transparent
-                  animationType={'slide'}
+                  animationType={'fade'}
                   onRequestClose={()=>{
                       setIsRegionSettingOpen((prevState => !prevState))
                   }}

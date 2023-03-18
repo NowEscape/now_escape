@@ -1,6 +1,5 @@
-import { View, Text, ImageBackground, Platform, SafeAreaView} from "react-native";
+import { View, Text, ImageBackground, Platform, Image} from "react-native";
 
-import IconLogo from './ios/iconLogo'
 import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
@@ -15,7 +14,11 @@ export default function SplashScreen() {
       <View style={{ flex: 1 }}>
         <ImageBackground source={require("./ios/background.png")} style={{width: '100%', height: '100%',flex: 1, alignItems: 'center'}}>
         <View style={{paddingTop: iosHeightRatio*283}}>
-          <IconLogo height={iosHeightRatio*218}/>
+          <Image style={{
+            resizeMode: 'contain',
+            width: iosWidthRatio*298.7,
+            height: iosHeightRatio*218.3
+            }} source={require('./ios/logo_ios.png')} />
         </View>
         </ImageBackground>
       </View>
@@ -25,7 +28,11 @@ export default function SplashScreen() {
       <View style={{ flex: 1 }}>
       <ImageBackground source={require("./aos/background.png")} style={{width: '100%', height: '100%',flex: 1, alignItems: 'center'}}>
       <View style={{paddingTop: aosHeightRatio*225}}>
-        <IconLogo height={aosHeightRatio*189.5}/>
+        <Image style={{
+          resizeMode: 'contain',
+          width: aosWidthRatio*259.2,
+          height: aosHeightRatio*189.5
+          }} source={require('./aos/logo_aos.png')} />
       </View>
       </ImageBackground>
     </View>
