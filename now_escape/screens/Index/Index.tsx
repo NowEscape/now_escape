@@ -44,6 +44,7 @@ export default function Index({navigation}){
     const nullTextContent = "조건에 맞는 예약 가능한\n방탈출이 없습니다.";
 
     async function getList(searchData){
+        getEscapeList([]);
         setIsRefreshing(true)
         try{
             const response = await axios.post('http://www.now-escape.kro.kr/openTimeThemeList',

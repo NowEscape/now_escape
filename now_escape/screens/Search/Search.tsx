@@ -44,6 +44,7 @@ export default function Search({navigation}){
     const [modal, setModal] = useState(false);
 
     async function getList(searchData){
+        getEscapeList([]);
         const response = await axios.post('http://www.now-escape.kro.kr/openTimeThemeList',
             {
                 region1: searchData.region1,

@@ -46,6 +46,7 @@ export default function DateSetting(){
 
 
     async function getList(searchData){
+        getEscapeList([]);
         if(currentPage==="index"){
             searchData.genreName="";
             searchData.searchWord="";
