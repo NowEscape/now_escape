@@ -45,6 +45,7 @@ export default function Genre(props:genrePropsType){
     },[]) 
 
     async function getList(searchData){
+        getEscapeList([]);
         if(currentPage==="index"){
             searchData.genreName="";
             searchData.searchWord="";

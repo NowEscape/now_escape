@@ -24,7 +24,7 @@ export default function Region(props){
     const {currentPage} = currentPageStore();
     const {regionName, regionListString, regionList, setRegionList, setRegion} = regionStore();
     const [currentRegionIdx, setCurrentRegionIdx] = useState(findRegionIdx(regionList));
-    const {getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
+    const {getEscapeList,isEscapeListNull,setIsEscapeListNull,escapeList} = escapeListStore();
     const {isOpen} = props;
     const {date} = dateStore();
     const {genre} = genreStore();
@@ -40,6 +40,7 @@ export default function Region(props){
     },[])
 
     async function getList(searchData){
+        getEscapeList([]);
         if(currentPage==="Index"){
             searchData.genreName="";
             searchData.searchWord="";

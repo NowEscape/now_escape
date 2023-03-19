@@ -1,7 +1,7 @@
 import React, {Fragment, useState, useEffect, useCallback} from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
 import escapeListStore from "../../store/escapeListStore";
-import _ from "lodash";
+import _, {toInteger} from "lodash";
 import LocationSVG from '../../assets/iconLocation'
 import ListItemDetail from "../ListItemDetail/listItemDetail";
 import * as Font from 'expo-font'
@@ -19,6 +19,7 @@ const aosWidthRatio = aosWidth as unknown as number;
 const aosHeightRatio = aosHeight as unknown as number;
 
 const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress}) => {
+    themeDateList = _.sortBy(themeDateList, (a)=>a.themeTime);
     return(
         <Fragment>
             <Pressable
@@ -43,7 +44,7 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                                     renderItem={({index})=><RenderTimeList
                                         themeDateListItem = {themeDateList[index]}
                                     />}
-                                    keyExtractor={(item) => "_" + item.themeDateId}
+                                    keyExtractor={(item) => "_" + item.id}
                                     numColumns={1}
                                 /> :
                                 <FlatList
@@ -52,7 +53,7 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                                     renderItem={({index})=><RenderTimeList
                                         themeDateListItem = {themeDateList[index]}
                                     />}
-                                    keyExtractor={(item) => "#"+item.themeDateId}
+                                    keyExtractor={(item) => "#"+item.id}
                                     numColumns={4}
                                 />
                             }
@@ -96,6 +97,7 @@ export default function ListItem(props) {
     },[])
 
     async function getList(searchData){
+        getEscapeList([]);
         setIsRefreshing(true)
         if(currentPage==="index"){
             searchData.genreName="";

@@ -52,6 +52,7 @@ export default function Time(){
             />));
 
     async function getList(searchData){
+        getEscapeList([]);
         if(currentPage==="index"){
             searchData.genreName="";
             searchData.searchWord="";

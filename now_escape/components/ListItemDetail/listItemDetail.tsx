@@ -59,7 +59,7 @@ export default function ListItemDetail(props){
                             key={'!'}
                             data={escapeList[escapeID].themeDateList}
                             renderItem={renderItem}
-                            keyExtractor={(item) => '!'+item.themeDateId}
+                            keyExtractor={(item) => '!'+item.id}
                             numColumns={1}
                             contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start',}}
                             /> :
@@ -67,7 +67,7 @@ export default function ListItemDetail(props){
                                 key={"@"}
                                 data={escapeList[escapeID].themeDateList}
                                 renderItem={renderItem}
-                                keyExtractor={(item) => '@'+item.themeDateId}
+                                keyExtractor={(item) => '@'+item.id}
                                 numColumns={4}
                                 contentContainerStyle={{flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', }}
                         />                                            
