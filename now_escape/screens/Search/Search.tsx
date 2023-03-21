@@ -64,12 +64,11 @@ export default function Search({navigation}){
                     <Pressable 
                         onPress={()=>{
                             getList({
-                                region1: "서울",
-                                region2: "",
-                                searchWord: "",
-                                genreName: "",
-                                themeTime: format(new Date(), 'yyyy-MM-dd')+ ' ' + time
-
+                                region1: _.split(region, ' ', 2)[0],
+                                region2: _.split(region, ' ', 2)[1],
+                                searchWord: searchText,
+                                genreName: genre,
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
                             });
                             setRegion(regionName, regionListString, 0, 0);
                             setRegionList(regionList, 0, 0);

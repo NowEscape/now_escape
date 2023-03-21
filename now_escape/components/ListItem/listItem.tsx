@@ -11,8 +11,13 @@ import {iosWidth, iosHeight} from '../../globalStyles_ios'
 import {aosWidth, aosHeight} from '../../globalStyles_aos'
 
 import searchStore from "../../store/searchStore";
+import dateStore from "../../store/dateStore";
+import RegionStore from "../../store/regionStore";
+import genreStore from "../../store/genreStore";
+import timeStore from "../../store/timeStore";
 import axios from "axios";
 import currentPageStore from "../../store/currentPageStore";
+import {format} from "date-fns";
 
 const iosWidthRatio = iosWidth as unknown as number;
 const iosHeightRatio = iosHeight as unknown as number;
@@ -92,7 +97,11 @@ export default function ListItem(props) {
     const {currentPage} = currentPageStore();
     const {scrollEnabled} = props;
     const {escapeList, getEscapeList,isEscapeListNull,setIsEscapeListNull} = escapeListStore();
-    const {searchData} = searchStore();
+    const {searchText} = searchStore();
+    const {date} = dateStore();
+    const {genre} = genreStore();
+    const {region} = RegionStore();
+    const {time} = timeStore();
     const [modal, setModal] = useState(false);
     const [escapeID, setEscapeID] = useState(0);
     const [isRefreshing,setIsRefreshing] = useState(false);
@@ -136,7 +145,13 @@ export default function ListItem(props) {
                 showsVerticalScrollIndicator={false}
                 data={escapeList}
                 refreshing={isRefreshing}
-                onRefresh={()=>getList(searchData)}
+                onRefresh={()=>getList({
+                    region1: _.split(region, ' ', 2)[0],
+                    region2: _.split(region, ' ', 2)[1],
+                    searchWord: searchText,
+                    genreName: genre,
+                    themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                })}
                 renderItem={({item, index})=><RenderEscapeListItem
                     cafeName={item.cafeName}
                     theme={item.theme}
