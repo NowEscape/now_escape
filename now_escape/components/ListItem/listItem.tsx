@@ -1,5 +1,6 @@
 import React, {Fragment, useState, useEffect, useCallback} from 'react';
 import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
+import TextTicker from 'react-native-text-ticker';
 import escapeListStore from "../../store/escapeListStore";
 import _, {toInteger} from "lodash";
 import LocationSVG from '../../assets/iconLocation'
@@ -31,7 +32,16 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                 <View style={styles.itemContainer}>
                     <Image style={styles.poster} source={{uri:theme.themeImageUrl?theme.themeImageUrl:null}}/>
                     <View style={styles.textBox}>
-                        <Text style={styles.textTitle}>{theme.themeName}</Text>
+                        <TextTicker
+                            style={styles.textTitle}
+                            duration={10000}
+                            loop
+                            bounce={false}
+                            repeatSpacer={50}
+                            marqueeDelay={1500}
+                        >
+                            {theme.themeName}
+                        </TextTicker>
                         <View style={styles.locationBox}>
                             <LocationSVG height={aosHeightRatio*12.1}/>
                             <Text style={styles.textLocation}>{cafeName}</Text>
@@ -219,10 +229,12 @@ const styles = StyleSheet.create({
             android:{
                 paddingTop: aosHeightRatio*12,
                 marginLeft: aosWidthRatio*26.2,
+                width: aosWidthRatio*190,
             },
             ios:{
                 paddingTop: iosHeightRatio*12.5,
                 marginLeft: iosWidthRatio*26.8,
+                width: iosWidthRatio*200
             }
         }),
     },
@@ -283,7 +295,7 @@ const styles = StyleSheet.create({
                 ios:{
                     fontSize: iosWidthRatio<1?iosWidthRatio*18.5:18,
                     lineHeight: 19,
-                    letterSpacing: 0.72,
+                    letterSpacing: 0.72
                 }
             }),
         },
