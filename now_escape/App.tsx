@@ -23,7 +23,7 @@ export default function App() {
       try {
         await Font.loadAsync(Entypo.font);
         setFontIsLoaded(true);
-        await new Promise(resolve => setTimeout(resolve, 2300));
+        await new Promise(resolve => setTimeout(resolve, 2200));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -33,7 +33,11 @@ export default function App() {
     prepare();
   }, []);
 
-  if (!appIsReady && !fontIsLoaded) {
+  if (!appIsReady) {
+    return <SplashScreen/>;
+  }
+
+  if (!fontIsLoaded) {
     return <SplashScreen/>;
   }
 
