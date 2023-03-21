@@ -171,7 +171,15 @@ export default function Index({navigation}){
                     </View>
     
                     <ScrollView
-                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
+                        refreshControl={<RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={()=>{getList({
+                                region1: _.split(region, ' ', 2)[0],
+                                region2: _.split(region, ' ', 2)[1],
+                                searchWord: "",
+                                genreName: "",
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                        })}} />}
                         style={styles.listContainer}>
                         <View style={styles.banner}>         
                             <Animated.FlatList
@@ -273,7 +281,16 @@ export default function Index({navigation}){
                     </View>
     
                     <ScrollView
-                        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={()=>{getList(searchData)}} />}
+                        refreshControl={<RefreshControl
+                            refreshing={isRefreshing}
+                            onRefresh={()=>{getList({
+                                region1: _.split(region, ' ', 2)[0],
+                                region2: _.split(region, ' ', 2)[1],
+                                searchWord: "",
+                                genreName: "",
+                                themeTime: format(date, 'yyyy-MM-dd')+ ' ' + time
+                            })}}
+                        />}
                         style={styles.listContainer}>
                         <View style={styles.banner}>         
                             <Animated.FlatList
