@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, Text, View, Alert, StyleSheet, FlatList, Platform, ScrollView, Linking} from "react-native";
 import Button from "../Button/button";
+import TextTicker from 'react-native-text-ticker';
 import escapeListStore from "../../store/escapeListStore";
 import LocationSVG from '../../assets/iconLocation'
 import * as Font from 'expo-font'
@@ -26,6 +27,8 @@ export default function ListItemDetail(props){
     const {escapeID} = props;
     const [isFont, setIsFont] = React.useState(false);
 
+    escapeList[escapeID].themeDateList = _.sortBy(escapeList[escapeID].themeDateList, (a)=>a.themeTime);
+
     React.useEffect(() => {
       Font.loadAsync({
         "Pretendard": require('../../assets/fonts/Pretendard-Bold.otf'),
@@ -48,7 +51,16 @@ export default function ListItemDetail(props){
                 <View style={styles.listItem}>
                     <Image style={styles.poster} source={{uri:escapeList[escapeID].theme.themeImageUrl}}/>
                     <View style={styles.textBox}>
-                        <Text style={styles.title}>{escapeList[escapeID].theme.themeName}</Text>
+                        <TextTicker
+                            style={styles.title}
+                            duration={10000}
+                            loop
+                            bounce={false}
+                            repeatSpacer={30}
+                            marqueeDelay={2000}
+                        >
+                            {escapeList[escapeID].theme.themeName}
+                        </TextTicker>
                         <View style={styles.locationBox}>
                             <LocationSVG height={aosHeightRatio*12.1}/>
                             <Text style={styles.textLocation}>{escapeList[escapeID].cafeName}</Text>
@@ -155,12 +167,14 @@ const styles = StyleSheet.create({
             android:{
                 paddingTop: aosHeightRatio*9,
                 paddingBottom: aosHeightRatio*4.3,
-                marginLeft: aosWidthRatio*14.1     
+                marginLeft: aosWidthRatio*14.1,
+                width:aosWidthRatio*190
             },
             ios:{
                 paddingTop: iosHeightRatio*8.9,
                 paddingBottom: iosHeightRatio*4.8,
-                marginLeft: iosWidthRatio*14.5
+                marginLeft: iosWidthRatio*14.5,
+                width: iosWidthRatio*200
             }
         })
     },
