@@ -1,9 +1,10 @@
 import React, {Fragment, useState, useEffect, useCallback} from 'react';
-import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable} from 'react-native';
+import {Image, Text, View, StyleSheet, FlatList, Platform, Modal, Pressable, TouchableOpacity} from 'react-native';
 import TextTicker from 'react-native-text-ticker';
 import escapeListStore from "../../store/escapeListStore";
 import _, {toInteger} from "lodash";
 import LocationSVG from '../../assets/iconLocation'
+import IconArrowDown from '../../assets/iconArrowUp_bl'
 import ListItemDetail from "../ListItemDetail/listItemDetail";
 import * as Font from 'expo-font'
 
@@ -26,6 +27,19 @@ const aosHeightRatio = aosHeight as unknown as number;
 
 const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress}) => {
     themeDateList = _.sortBy(themeDateList, (a)=>a.themeTime);
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const sortedDates = _.sortBy(themeDateList, (a) => a.themeTime);
+    const maxItemsToShow = 8;
+    const shouldShowMoreButton = sortedDates.length > maxItemsToShow;
+
+    useEffect(() => {
+        return () => {
+          setIsExpanded(false);
+        };
+      }, []);
+
     return(
         <Fragment>
             <Pressable
@@ -34,7 +48,7 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                     onPress()
                 }}
             >
-                <View style={styles.itemContainer}>
+                <View style={dstyles(themeDateList, isExpanded).itemContainer}>
                     <Image style={styles.poster} source={{uri:theme.themeImageUrl?theme.themeImageUrl:null}}/>
                     <View style={styles.textBox}>
                         <TextTicker
@@ -64,15 +78,31 @@ const RenderEscapeListItem = ({cafeName, theme, themeDateList, setModal, onPress
                                 /> :
                                 <FlatList
                                     key={"#"}
-                                    data={themeDateList}
-                                    renderItem={({index})=><RenderTimeList
-                                        themeDateListItem = {themeDateList[index]}
-                                    />}
+                                    data={isExpanded ? sortedDates : sortedDates.slice(0, maxItemsToShow)}
+                                    renderItem={({item: themeDateListItem}) => (
+                                        <View>
+                                            {themeDateListItem.isOpen && (
+                                                <Text style={styles.timeListItem}>
+                                                    {_.split(themeDateListItem.themeTime, ' ', 2)[1]}
+                                                </Text>
+                                            )}
+                                        </View>
+                                    )}
                                     keyExtractor={(item) => "#"+item.id}
                                     numColumns={4}
                                 />
                             }
                         </View>
+                        {shouldShowMoreButton && (
+                    <TouchableOpacity 
+                        onPress={() => setIsExpanded(!isExpanded)}
+                        style={styles.buttonContainer}>
+                        {isExpanded ? 
+                            <IconArrowDown/> : 
+                            <Text style={styles.buttonText}>…</Text>
+                        }
+                    </TouchableOpacity>
+                )}
                     </View>
                 </View>
             </Pressable>
@@ -357,6 +387,59 @@ const styles = StyleSheet.create({
                     height: iosHeightRatio*1.5,
                 }
             }),
-        }
-    // }
+        },
+        buttonContainer: {
+            ...Platform.select({
+                android: {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: aosHeightRatio*20,
+                },
+                ios: {
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: iosHeightRatio*25,
+                    paddingBottom: iosHeightRatio*10
+                }
+            })
+        },
+    // },
+    buttonText: {
+        ...Platform.select({
+            android: {
+                fontSize: aosWidthRatio*15
+            },
+            ios: {
+                fontSize: iosWidthRatio*16
+            }
+        })
+    }
+})
+
+const dstyles = (themeDateList, isExpanded) => StyleSheet.create({
+    itemContainer:{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        ...Platform.select({
+            android:{
+                width: aosWidthRatio*326.8,
+                height: isExpanded ? aosHeightRatio*147 +
+                aosHeightRatio*(Math.trunc((themeDateList.length-9)/4)+1)*18
+                    :aosHeightRatio*147,
+                paddingLeft: aosWidthRatio*4.4,
+                paddingTop: aosHeightRatio*14.6,
+                paddingBottom: aosHeightRatio*15.3,
+            },
+            ios:{
+                width: iosWidthRatio*340.4,
+                height: isExpanded ? iosHeightRatio*160 +
+                    iosHeightRatio*(Math.trunc((themeDateList.length-9)/4)+1)*20
+                        :iosHeightRatio*160,
+                paddingLeft: iosWidthRatio*4.7,
+                paddingTop: iosHeightRatio*15.3,
+                paddingBottom: iosHeightRatio*15.9,
+            }
+        }),
+    },
 })
