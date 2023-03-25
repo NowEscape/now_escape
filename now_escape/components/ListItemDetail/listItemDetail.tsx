@@ -69,7 +69,7 @@ export default function ListItemDetail(props){
                             {renderItem.length == 1 ?
                             <FlatList
                             key={'!'}
-                            data={escapeList[escapeID].themeDateList}
+                            data={escapeList[escapeID].themeDateList.slice(0, 8)}
                             renderItem={renderItem}
                             keyExtractor={(item) => '!'+item.id}
                             numColumns={1}
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
             android:{
                 marginTop: aosHeightRatio*18.4,
                 height: aosHeightRatio*45.7,
-                width: aosWidthRatio*210
+                width: aosWidthRatio*215
             },
             ios:{
                 marginTop: iosHeightRatio*18.8,
